@@ -8,7 +8,7 @@ let carouselInterval;
 // Carousel Data
 const carouselSlides = [
     {
-        image: '/assets/images/products/Mystery Box.png',
+        image: 'assets/images/products/Mystery Box.png',
         title1: 'EXPLORE',
         accent: 'the',
         title2: 'MYSTERY',
@@ -17,7 +17,7 @@ const carouselSlides = [
         link: 'shop.html?category=Mystery'
     },
     {
-        image: '/assets/images/products/Hoodies.png',
+        image: 'assets/images/products/Hoodies.png',
         title1: 'WEAR',
         accent: 'the',
         title2: 'VIBE',
@@ -26,7 +26,7 @@ const carouselSlides = [
         link: 'shop.html?category=Apparel'
     },
     {
-        image: '/assets/images/products/Gaming Headset.png',
+        image: 'assets/images/products/Gaming Headset.png',
         title1: 'LEVEL',
         accent: 'up',
         title2: 'YOUR GAME',
@@ -35,7 +35,7 @@ const carouselSlides = [
         link: 'shop.html?category=Tech'
     },
     {
-        image: '/assets/images/products/Mechanical Keyboard.png',
+        image: 'assets/images/products/Mechanical Keyboard.png',
         title1: 'TYPE',
         accent: 'with',
         title2: 'STYLE',
@@ -44,7 +44,7 @@ const carouselSlides = [
         link: 'shop.html?category=Tech'
     },
     {
-        image: '/assets/images/products/Mentorship Session.png',
+        image: 'assets/images/products/Mentorship Session.png',
         title1: 'LEARN',
         accent: 'from',
         title2: 'LEADERS',
