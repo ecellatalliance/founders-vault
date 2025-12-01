@@ -230,7 +230,7 @@ function showToast(type = 'info', title, message) {
 // ============================================
 
 function formatPrice(price) {
-    return `${CONFIG.DEFAULTS.CURRENCY}${price.toLocaleString('en-IN')}`;
+    return `${price.toLocaleString('en-IN')}${CONFIG.DEFAULTS.CURRENCY}`;
 }
 
 function formatDate(dateString) {
