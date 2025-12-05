@@ -1,0 +1,57 @@
+[
+    {
+        "id": "user_001",
+        "email": "admin@spp.com",
+        "password": "admin123",
+        "name": "Faraaz Moosa",
+        "role": "admin",
+        "vcBalance": 100000,
+        "joinDate": "2024-01-15",
+        "college": "IIT Delhi",
+        "phone": "+91 98765 43210"
+    },
+    {
+        "id": "user_002",
+        "email": "student@college.edu",
+        "password": "student123",
+        "name": "Aarja",
+        "role": "student",
+        "vcBalance": 5000,
+        "joinDate": "2024-09-01",
+        "college": "IIT Bombay",
+        "phone": "+91 98765 43211"
+    },
+    {
+        "id": "user_003",
+        "email": "raj@college.edu",
+        "password": "demo123",
+        "name": "Raj",
+        "role": "student",
+        "vcBalance": 3500,
+        "joinDate": "2024-08-15",
+        "college": "BITS Pilani",
+        "phone": "+91 98765 43212"
+    },
+    {
+        "id": "user_004",
+        "email": "arjun.m@college.edu",
+        "password": "demo123",
+        "name": "Arjun Mehta",
+        "role": "student",
+        "vcBalance": 7200,
+        "joinDate": "2024-07-20",
+        "college": "NIT Trichy",
+        "phone": "+91 98765 43213"
+    },
+    {
+        "id": "user_005",
+        "email": "sneha.p@college.edu",
+        "password": "demo123",
+        "name": "Sneha Patel",
+        "role": "student",
+        "vcBalance": 2800,
+        "joinDate": "2024-09-10",
+        "college": "IIIT Hyderabad",
+        "phone": "+91 98765 43214"
+    }
+]

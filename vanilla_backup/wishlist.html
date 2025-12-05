@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wishlist - e-store">
+    <title>Wishlist | E-cell Store</title>
+
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Oswald:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-main-content">
+                <!-- Logo -->
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">🚀</div>
+                    <div class="logo-text">
+                        <span class="logo-text-main">E-Cell</span>
+                        <span class="logo-text-sub">Store</span>
+                    </div>
+                </a>
+
+                <!-- Search Bar -->
+                <div class="search-input-wrapper" style="flex: 1; max-width: 600px; margin: 0 var(--space-6);">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" id="searchInput"
+                        placeholder="Search for products, categories...">
+                    <button class="search-btn" onclick="performSearch()">Search</button>
+                </div>
+
+                <!-- Header Actions -->
+                <div class="header-actions">
+                    <div class="vc-balance" id="vcBalance">
+                        <i class="fas fa-coins"></i>
+                        <span id="vcAmount">0🪙</span>
+                    </div>
+
+                    <button class="header-action-btn" onclick="window.location.href='wishlist.html'">
+                        <i class="fas fa-heart header-action-icon"></i>
+                        <span class="header-action-label">Wishlist</span>
+                        <span class="header-action-badge" id="wishlistCount">0</span>
+                    </button>
+
+                    <button class="header-action-btn" onclick="window.location.href='cart.html'">
+                        <i class="fas fa-shopping-cart header-action-icon"></i>
+                        <span class="header-action-label">Cart</span>
+                        <span class="header-action-badge" id="cartCount">0</span>
+                    </button>
+
+                    <button class="header-action-btn" id="userBtn">
+                        <i class="fas fa-user header-action-icon"></i>
+                        <span class="header-action-label" id="userLabel">Login</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="container">
+                <div class="nav-content">
+                    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="index.html" class="nav-link">Home</a></li>
+                        <li><a href="shop.html" class="nav-link">Shop</a></li>
+                        <li><a href="#" class="nav-link" onclick="filterByCategory('Tech Essentials')">Tech
+                                Essentials</a></li>
+                        <li><a href="#" class="nav-link" onclick="filterByCategory('Premium Apparel')">Apparel</a></li>
+                        <li><a href="#" class="nav-link" onclick="filterByCategory('Student Startups')">Student
+                                Startups</a></li>
+                        <li><a href="community.html" class="nav-link">Announcements📢</a></li>
+                        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                    </ul>
+
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                        <span id="themeLabel">Dark</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Wishlist Content -->
+    <main style="padding: var(--space-8) 0; min-height: calc(100vh - 400px);">
+        <div class="container">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-8);">
+                <h1>My Wishlist</h1>
+                <button class="btn btn-outline" onclick="clearWishlist()" id="clearWishlistBtn" style="display: none;">
+                    <i class="fas fa-trash"></i>
+                    Clear Wishlist
+                </button>
+            </div>
+
+            <div class="products-grid" id="wishlistGrid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-main">
+                <div>
+                    <h4 class="footer-section-title">E-cell Store</h4>
+                    <p style="color: var(--gray-300); margin-bottom: var(--space-4);">
+                        Your trusted platform for exclusive student deals and innovative products from student startups.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://facebook.com" class="footer-social-link" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com" class="footer-social-link" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://instagram.com" class="footer-social-link" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://linkedin.com" class="footer-social-link" target="_blank">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-section-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="shop.html" class="footer-link">Shop</a></li>
+                        <li><a href="cart.html" class="footer-link">Cart</a></li>
+                        <li><a href="wishlist.html" class="footer-link">Wishlist</a></li>
+                        <li><a href="dashboard.html" class="footer-link">My Account</a></li>
+                        <li><a href="community.html" class="footer-link">Announcements📢</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-section-title">Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link" onclick="filterByCategory('Tech Essentials')">Tech
+                                Essentials</a></li>
+                        <li><a href="#" class="footer-link" onclick="filterByCategory('Premium Apparel')">Premium
+                                Apparel</a></li>
+                        <li><a href="#" class="footer-link" onclick="filterByCategory('Student Startups')">Student
+                                Startups</a></li>
+                        <li><a href="#" class="footer-link" onclick="filterByCategory('Office Supplies')">Office
+                                Supplies</a></li>
+                        <li><a href="#" class="footer-link" onclick="filterByCategory('Books & Learning')">Books &
+                                Learning</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-section-title">Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Help Center</a></li>
+                        <li><a href="#" class="footer-link">Shipping Info</a></li>
+                        <li><a href="#" class="footer-link">Returns</a></li>
+                        <li><a href="#" class="footer-link">Contact Us</a></li>
+                        <li><a href="#" class="footer-link">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-cell Store. Powered by E-Cell. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        async function initWishlist() {
+            const wishlist = Wishlist.get();
+            const grid = document.getElementById('wishlistGrid');
+            const clearBtn = document.getElementById('clearWishlistBtn');
+
+            if (wishlist.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-16);">
+                        <div style="font-size: 5rem; margin-bottom: var(--space-4); opacity: 0.3;">❤️</div>
+                        <h2>Your wishlist is empty</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: var(--space-6);">
+                            Save your favorite products here!
+                        </p>
+                        <button class="btn btn-primary btn-lg" onclick="window.location.href='shop.html'">
+                            <i class="fas fa-shopping-bag"></i>
+                            Browse Products
+                        </button>
+                    </div>
+                `;
+                clearBtn.style.display = 'none';
+                return;
+            }
+
+            clearBtn.style.display = 'block';
+
+            // Fetch full product details
+            const products = await fetchProducts();
+            const wishlistProducts = wishlist.map(item =>
+                products.find(p => p.id === item.id)
+            ).filter(p => p);
+
+            grid.innerHTML = wishlistProducts.map(product => createWishlistCard(product)).join('');
+        }
+
+        function createWishlistCard(product) {
+            const discount = calculateDiscount(product.originalPrice, product.price);
+
+            return `
+                <div class="product-card">
+                    <div class="product-card-image" onclick="viewProduct('${product.id}')">
+                        <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x300?text=${encodeURIComponent(product.name)}'">
+                        ${discount > 0 ? `<span class="product-card-badge">${discount}% OFF</span>` : ''}
+                    </div>
+                    
+                    <div class="product-card-content">
+                        <div class="product-card-category">${product.category}</div>
+                        <h3 class="product-card-title">${product.name}</h3>
+                        
+                        <div class="product-card-rating">
+                            <div class="product-card-stars">
+                                ${generateStars(product.rating)}
+                            </div>
+                            <span class="product-card-reviews">(${product.reviews})</span>
+                        </div>
+                        
+                        <div class="product-card-price">
+                            <span class="product-card-price-current">${formatPrice(product.price)}</span>
+                            ${product.originalPrice ? `<span class="product-card-price-original">${formatPrice(product.originalPrice)}</span>` : ''}
+                        </div>
+                        
+                        <div class="product-card-footer" style="display: flex; gap: var(--space-2);">
+                            <button class="btn btn-primary" style="flex: 1;" onclick="addToCartFromWishlist('${product.id}')">
+                                <i class="fas fa-shopping-cart"></i>
+                                Add to Cart
+                            </button>
+                            <button class="btn btn-outline" onclick="removeFromWishlist('${product.id}')" title="Remove from wishlist">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function addToCartFromWishlist(productId) {
+            const products = await fetchProducts();
+            const product = products.find(p => p.id === productId);
+
+            if (product) {
+                Cart.add(product);
+                Wishlist.remove(productId);
+                initWishlist();
+            }
+        }
+
+        function removeFromWishlist(productId) {
+            Wishlist.remove(productId);
+            initWishlist();
+            showToast('info', 'Removed', 'Product removed from wishlist.');
+        }
+
+        function clearWishlist() {
+            if (confirm('Are you sure you want to clear your entire wishlist?')) {
+                Wishlist.clear();
+                initWishlist();
+                showToast('info', 'Wishlist Cleared', 'All items removed from wishlist.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initWishlist();
+        });
+    </script>
+</body>
+
+</html>

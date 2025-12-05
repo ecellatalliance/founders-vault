@@ -1,0 +1,34 @@
+[
+    {
+        "id": "ann_001",
+        "title": "Welcome to e-store!",
+        "content": "We're excited to launch our new platform offering exclusive deals for students. Earn VC points with every purchase!",
+        "author": "Admin Team",
+        "date": "2024-11-01T10:00:00Z",
+        "category": "general"
+    },
+    {
+        "id": "ann_002",
+        "title": "New Tech Essentials Added",
+        "content": "Check out our latest collection of laptops, headphones, and accessories at student-friendly prices.",
+        "author": "Product Team",
+        "date": "2024-11-15T14:30:00Z",
+        "category": "products"
+    },
+    {
+        "id": "ann_003",
+        "title": "Student Startup Showcase",
+        "content": "Support your fellow students! Browse products from student-led startups in our new category.",
+        "author": "E-Cell Team",
+        "date": "2024-11-20T09:00:00Z",
+        "category": "community"
+    },
+    {
+        "id": "ann_004",
+        "title": "Cyber Monday Sale - Up to 50% Off!",
+        "content": "Don't miss our biggest sale of the year. Limited stock available on premium products.",
+        "author": "Marketing Team",
+        "date": "2024-11-25T00:00:00Z",
+        "category": "sale"
+    }
+]
