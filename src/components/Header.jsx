@@ -102,6 +102,7 @@ const Header = () => {
                                 <li><Link to="/shop?category=Premium Apparel" className="nav-link">Apparel</Link></li>
                                 <li><Link to="/shop?category=The Launchpad" className="nav-link">The Launchpad</Link></li>
                                 <li><Link to="/community" className="nav-link">Announcements</Link></li>
+                                <li><a href="#earn-vc" className="nav-link">How to earn VCs</a></li>
                                 <li><a href="#about" className="nav-link">About Entrepreneurship Cell</a></li>
                             </ul>
 

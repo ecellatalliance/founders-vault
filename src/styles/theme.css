@@ -107,16 +107,6 @@
 }
 
 /* Dark Mode Variables */
-[data-theme="dark"] {
-    --primary-navy: #0f1419;
-    --primary-navy-light: #1a2332;
-    --bg-primary: #0f1419;
-    --bg-secondary: #1a2332;
-    --text-primary: #f9fafb;
-    --text-secondary: #d1d5db;
-    --border-color: #374151;
-}
-
 /* Light Mode Variables (Default) */
 [data-theme="light"],
 :root {
@@ -125,6 +115,17 @@
     --text-primary: #111827;
     --text-secondary: #6b7280;
     --border-color: #e5e7eb;
+}
+
+/* Dark Mode Variables */
+[data-theme="dark"] {
+    --primary-navy: #0f1419;
+    --primary-navy-light: #1a2332;
+    --bg-primary: #0f1419;
+    --bg-secondary: #1a2332;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --border-color: #374151;
 }
 
 /* ============================================
@@ -139,6 +140,8 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 150px;
+    /* Offset for sticky header */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -707,6 +710,8 @@ a:hover {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+
+
 /* ============================================
    RESPONSIVE DESIGN
    ============================================ */
@@ -740,5 +745,11 @@ a:hover {
     .grid-cols-3,
     .grid-cols-4 {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    html {
+        scroll-padding-top: 110px;
     }
 }

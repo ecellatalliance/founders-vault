@@ -28,16 +28,22 @@ const Shop = () => {
         fetchProducts()
     }, [])
 
+    // Sync URL params to state
     useEffect(() => {
         const category = searchParams.get('category')
-        const search = searchParams.get('search')
-
-        if (category && !selectedCategories.includes(category)) {
-            setSelectedCategories([category])
+        if (category) {
+            setSelectedCategories(prev => {
+                if (prev.includes(category)) return prev
+                return [category]
+            })
         }
+    }, [searchParams])
 
+    // Apply filters when state changes settings
+    useEffect(() => {
+        const search = searchParams.get('search')
         applyFilters(search)
-    }, [products, searchParams, selectedCategories, selectedPriceRanges, minRating, sortBy])
+    }, [products, selectedCategories, selectedPriceRanges, minRating, sortBy, searchParams])
 
     const fetchProducts = async () => {
         try {

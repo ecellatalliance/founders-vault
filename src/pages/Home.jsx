@@ -141,35 +141,35 @@ const Home = () => {
             </section>
 
             {/* How to Earn VCs Section */}
-            <section className="section" style={{ backgroundColor: 'var(--bg-secondary)', padding: 'var(--space-12) 0' }}>
+            <section className="section" id="earn-vc" style={{ backgroundColor: 'var(--bg-secondary)', padding: 'var(--space-12) 0' }}>
                 <div className="container">
                     <h2 className="carousel-title" style={{ marginBottom: 'var(--space-8)', textAlign: 'center' }}>How to earn VC's</h2>
                     <div className="promo-grid">
                         <div className="earn-vc-card" style={{ backgroundColor: 'var(--bg-primary)' }}>
-                            <span className="earn-vc-icon">🏆</span>
-                            <h3 className="earn-vc-card-title">Win Competitions</h3>
+                            <span className="earn-vc-icon">🎉</span>
+                            <h3 className="earn-vc-card-title">Participate in events</h3>
                             <p className="earn-vc-card-description">
-                                Compete in hackathons, pitch competitions, and challenges to win big 🪙 rewards!
+                                Join our workshops, seminars, and networking sessions to earn VC coins while learning.
                             </p>
-                            <span className="earn-vc-amount">+500-2000🪙</span>
-                        </div>
-
-                        <div className="earn-vc-card" style={{ backgroundColor: 'var(--bg-primary)' }}>
-                            <span className="earn-vc-icon">🚀</span>
-                            <h3 className="earn-vc-card-title">Register Your Startup</h3>
-                            <p className="earn-vc-card-description">
-                                Register your student startup with E-Cell and get 🪙 points to kickstart your journey.
-                            </p>
-                            <span className="earn-vc-amount">+1000🪙</span>
+                            <span className="earn-vc-amount">+50-200🪙</span>
                         </div>
 
                         <div className="earn-vc-card" style={{ backgroundColor: 'var(--bg-primary)' }}>
                             <span className="earn-vc-icon">🤝</span>
-                            <h3 className="earn-vc-card-title">Refer Friends</h3>
+                            <h3 className="earn-vc-card-title">Refer people</h3>
                             <p className="earn-vc-card-description">
                                 Invite your friends to join Founders Vault and earn 🪙 for every successful referral.
                             </p>
                             <span className="earn-vc-amount">+200🪙 per referral</span>
+                        </div>
+
+                        <div className="earn-vc-card" style={{ backgroundColor: 'var(--bg-primary)' }}>
+                            <span className="earn-vc-icon">🏆</span>
+                            <h3 className="earn-vc-card-title">Win Events</h3>
+                            <p className="earn-vc-card-description">
+                                Compete in hackathons, pitch competitions, and challenges to win big 🪙 rewards!
+                            </p>
+                            <span className="earn-vc-amount">+500-2000🪙</span>
                         </div>
                     </div>
                 </div>

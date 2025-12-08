@@ -1,204 +1,137 @@
-# 🚀 E-Cell Store - React Version
+# Founders Vault - E-Cell Store
 
-A modern React rebuild of the E-Cell Store with **exact UI/UX matching** the vanilla JavaScript version.
+A modern, responsive e-commerce platform for E-Cell built with React, Vite, and tailored for a premium user experience.
 
-## ✨ What's New
+## 🚀 Features
 
-This React version maintains **100% visual parity** with the vanilla version while adding:
-- ⚡ **Faster navigation** (Single Page Application)
-- 🔄 **Better state management** (React Context API)
-- 🎨 **Same beautiful UI** (Original CSS preserved)
-- 📦 **Component-based** (Easier to maintain)
-- 🚀 **Vite dev server** (Lightning-fast HMR)
+- **Student & Admin Portals**: Dedicated interfaces for students to shop and admins to manage the platform.
+- **Premium UI/UX**: Designed with a "Space/Innovation" theme using modern CSS, glassmorphism, and smooth animations.
+- **Dark/Light Mode**: Fully supported theme toggling with persistent preferences.
+- **Functionality**:
+  - **Authentication**: Login and Registration system (currently using LocalStorage for demo).
+  - **Shopping**: Product browsing, filtering by category/price.
+  - **Cart & Wishlist**: Fully functional cart management and wishlist marking.
+  - **Admin Dashboard**: Overview of sales and quick statistics.
 
-## 🎯 Quick Start
+## 🛠️ Setup & Installation
 
-### 1. Install Dependencies
-```bash
-npm install
-```
+Follow these steps to run the project locally on your machine.
 
-### 2. Start Development Server
-```bash
-npm run dev
-```
+### Prerequisites
+- Node.js (v16 or higher) installed. [Download Node.js](https://nodejs.org/)
 
-The app will open at **http://localhost:3000**
-
-### 3. Build for Production
-```bash
-npm run build
-```
-
-## 🔐 Demo Accounts
-
-### Student Account
-- **Email**: `student@ecell.com`
-- **Password**: `password`
-- **VC Balance**: 5000🪙
-
-### Admin Account
-- **Email**: `admin@ecell.com`
-- **Password**: `admin123`
-- **Access**: Full admin dashboard
-
-## 📸 UI Features (Matching Vanilla Version)
-
-### ✅ Header
-- Logo with E-Cell branding
-- Search bar with live search
-- VC balance display
-- Wishlist & Cart counters
-- User authentication status
-- Dark/Light theme toggle
-
-### ✅ Category Icon Bar
-- Best Sellers
-- New Arrivals
-- Express Shipping
-- Sale
-- Home Hacks
-- Top 100
-- Bottles & Sippers
-- Storage & Organizers
-
-### ✅ Hero Carousel
-- Auto-rotating slides (5 seconds)
-- "WEAR THE VIBE" style layout
-- Product images on left
-- Bold typography on right
-- Navigation arrows & dots
-
-### ✅ Product Carousels
-- ⭐ Top Picks for Students
-- Products Under 300🪙
-- Products 301-1000🪙
-- Premium Products (1000🪙+)
-- Student Startup Collection
-- Horizontal scrolling
-- "View All" links
-
-### ✅ Promotional Cards
-- Tech Essentials (Purple gradient)
-- Premium Apparel (Pink gradient)
-- Student Startups (Blue gradient)
-- Earn VC Cards (Win, Register, Refer)
-
-### ✅ Product Cards
-- Product image with hover effects
-- Discount badge
-- Wishlist heart icon
-- Star ratings
-- Price with strikethrough
-- Add to Cart button
-
-## 📁 Project Structure
-
-```
-src/
-├── components/
-│   ├── Header.jsx           # Header with category icon bar
-│   ├── Footer.jsx           # Site footer
-│   ├── Layout.jsx           # Page wrapper
-│   ├── HeroCarousel.jsx     # Hero image carousel
-│   ├── ProductCarousel.jsx  # Horizontal product carousel
-│   └── ProductCard.jsx      # Product display card
-├── context/
-│   ├── AuthContext.jsx      # User authentication
-│   ├── CartContext.jsx      # Cart & wishlist
-│   └── ThemeContext.jsx     # Dark/light mode
-├── pages/
-│   ├── Home.jsx             # Homepage with carousels
-│   ├── Shop.jsx             # Product listing
-│   ├── Login.jsx            # Authentication
-│   ├── Dashboard.jsx        # User profile
-│   ├── Cart.jsx             # Shopping cart
-│   ├── Wishlist.jsx         # Saved products
-│   ├── Community.jsx        # Announcements
-│   └── Admin.jsx            # Admin panel
-├── styles/                  # Original vanilla CSS
-│   ├── theme.css
-│   ├── main.css
-│   └── hero-carousel.css
-├── App.jsx                  # Main app with routing
-├── main.jsx                 # React entry point
-└── index.css                # CSS imports
-```
-
-## 🎨 Styling
-
-This project uses the **original vanilla CSS files** to ensure 100% visual consistency:
-
-- `theme.css` - CSS variables and theming
-- `main.css` - Component styles
-- `hero-carousel.css` - Hero carousel animations
-
-**No Tailwind CSS** - We're using the original custom CSS for exact UI matching!
-
-## 🔧 Technologies
-
-- **React 18** - UI library
-- **Vite** - Build tool (fast HMR)
-- **React Router** - Client-side routing
-- **React Context** - State management
-- **Original CSS** - Vanilla styles preserved
-- **Font Awesome** - Icons
-- **Google Fonts** - Inter & Oswald
-
-## 📱 Pages
-
-1. **Home** (`/`) - Hero carousel, product carousels, promo cards
-2. **Shop** (`/shop`) - All products with filtering
-3. **Login** (`/login`) - Authentication
-4. **Dashboard** (`/dashboard`) - User profile
-5. **Cart** (`/cart`) - Shopping cart
-6. **Wishlist** (`/wishlist`) - Saved products
-7. **Community** (`/community`) - Announcements
-8. **Admin** (`/admin`) - Admin dashboard
-
-## 🌐 Deployment
-
-### GitHub Pages
-1. Update `vite.config.js`:
-   ```js
-   export default defineConfig({
-     base: '/your-repo-name/',
-     plugins: [react()]
-   })
+### Steps
+1. **Clone or Download** the repository to your local machine.
+2. Open the project folder in VS Code or your terminal.
+3. **Install Dependencies**:
+   ```bash
+   npm install
    ```
-2. Build: `npm run build`
-3. Deploy the `dist` folder
-
-### Vercel/Netlify
-- Connect your repository
-- Automatic deployments on push
-- No configuration needed!
-
-## 🔄 Differences from Vanilla Version
-
-| Aspect | Vanilla | React |
-|--------|---------|-------|
-| **UI/UX** | ✅ Original | ✅ **Exact Match** |
-| **Navigation** | Page reloads | Instant (SPA) |
-| **State** | localStorage + globals | React Context |
-| **Components** | Copy-paste HTML | Reusable React |
-| **Dev Server** | Python/Node | Vite (HMR) |
-| **Build** | None | Optimized bundle |
-
-## 📝 Notes
-
-- **Original CSS preserved** - All vanilla styles imported
-- **Same visual design** - Hero carousel, product carousels, promo cards
-- **Same interactions** - Hover effects, animations, transitions
-- **Better performance** - React's virtual DOM + Vite's HMR
-- **Easier maintenance** - Component-based architecture
-
-## 🎓 E-Cell Store
-
-Built for students, by students. Support student entrepreneurs and get exclusive deals!
+4. **Start Development Server**:
+   ```bash
+   npm run dev
+   ```
+5. Click the link shown in the terminal (usually `http://localhost:5173` or `http://localhost:3000`) to open the app.
 
 ---
 
-**Made with ❤️ by E-Cell**
+## 🔐 Login Credentials
 
-**Note**: Your original vanilla files are safely preserved in the `vanilla_backup/` folder!
+The application comes with built-in demo logic. You can use the "Quick Demo Login" buttons on the login page, or use these credentials manually:
+
+### Student Login
+- **Email**: `student@ecell.com`
+- **Password**: `password`
+- **Access**: Shop, Cart, Wishlist, Profile.
+
+### Admin Login
+- **Email**: `admin@ecell.com`
+- **Password**: `admin123`
+- **Access**: Full Admin Dashboard, Manage Products, Users, etc.
+
+---
+
+## 🌐 How to Host on Hostinger (Frontend)
+
+To make your website live on the internet using Hostinger:
+
+1. **Build the Project**:
+   Run the build command to generate a production-ready folder.
+   ```bash
+   npm run build
+   ```
+   This will create a `dist` folder in your project directory.
+
+2. **Upload to Hostinger**:
+   - Log in to your Hostinger hPanel.
+   - Go to **File Manager** (usually under "Files").
+   - Navigate to the `public_html` folder.
+   - Delete the default `default.php` or `index.php` if present.
+   - **Upload** all the *contents* of your local `dist` folder directly into `public_html`. (Do not upload the `dist` folder itself, just the files inside it like `index.html`, `assets/`, etc.).
+
+3. **Configure fallback for React Router**:
+   Since this is a Single Page Application (SPA), you need to tell the server to redirect all requests to `index.html`.
+   - In `public_html`, create a new file named `.htaccess`.
+   - Paste the following code into it:
+     ```apache
+     <IfModule mod_rewrite.c>
+       RewriteEngine On
+       RewriteBase /
+       RewriteRule ^index\.html$ - [L]
+       RewriteCond %{REQUEST_FILENAME} !-f
+       RewriteCond %{REQUEST_FILENAME} !-d
+       RewriteRule . /index.html [L]
+     </IfModule>
+     ```
+
+---
+
+## ⚡ Connecting to Supabase (Backend)
+
+Currently, this app uses `localStorage` to simulate a database. To make it a real app, you should connect it to **Supabase** (an open-source Firebase alternative).
+
+### Estimated Cost
+- **Frontend (Hostinger)**: ~$3.00/month (Basic Web Hosting).
+- **Backend (Supabase)**: **Free** (Generous free tier includes 500MB database, sufficient for thousands of products/users).
+
+### Integration Steps
+
+1. **Create Supabase Project**:
+   - Go to [supabase.com](https://supabase.com) and create a new project.
+   - Get your `SUPABASE_URL` and `SUPABASE_ANON_KEY` from Project Settings > API.
+
+2. **Install Client Library**:
+   ```bash
+   npm install @supabase/supabase-js
+   ```
+
+3. **Initialize Client**:
+   Create a file `src/supabaseClient.js`:
+   ```javascript
+   import { createClient } from '@supabase/supabase-js'
+
+   const supabaseUrl = 'YOUR_SUPABASE_URL'
+   const supabaseKey = 'YOUR_SUPABASE_ANON_KEY'
+
+   export const supabase = createClient(supabaseUrl, supabaseKey)
+   ```
+
+4. **Migrate AuthContext**:
+   Modify `src/context/AuthContext.jsx` to use Supabase Auth instead of LocalStorage.
+   ```javascript
+   // Example Login
+   const { data, error } = await supabase.auth.signInWithPassword({
+     email: email,
+     password: password,
+   })
+   ```
+
+5. **Migrate Data**:
+   - Create tables in Supabase (e.g., `products`, `orders`).
+   - Import your `products.json` data into the Supabase `products` table.
+   - Update `Home.jsx` to fetch from Supabase:
+     ```javascript
+     const { data: products } = await supabase.from('products').select('*')
+     ```
+
+This setup gives you a professional, scalable, and low-cost architecture!
