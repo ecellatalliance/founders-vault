@@ -14,11 +14,14 @@ const Header = () => {
 
     const handleSearch = (e) => {
         e.preventDefault()
-        if (searchQuery.trim() === '/secret') {
+        const query = searchQuery.trim().toLowerCase()
+
+        if (query === '/secret' || query === '/admin') {
             navigate('/admin-login')
             setSearchQuery('')
             return
         }
+
         if (searchQuery.trim()) {
             navigate(`/shop?search=${encodeURIComponent(searchQuery)}`)
         }
