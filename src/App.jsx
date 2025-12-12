@@ -17,6 +17,8 @@ import ProductDetails from './pages/ProductDetails'
 import Checkout from './pages/Checkout'
 
 
+import ProtectedRoute from './components/ProtectedRoute'
+
 function App() {
     return (
         <ThemeProvider>
@@ -28,13 +30,35 @@ function App() {
                             <Route path="/shop" element={<Shop />} />
                             <Route path="/earn-vc" element={<EarnVC />} />
                             <Route path="/login" element={<Login />} />
-                            <Route path="/dashboard" element={<Dashboard />} />
-                            <Route path="/cart" element={<Cart />} />
-                            <Route path="/wishlist" element={<Wishlist />} />
                             <Route path="/community" element={<Community />} />
-                            <Route path="/admin" element={<Admin />} />
                             <Route path="/product/:id" element={<ProductDetails />} />
-                            <Route path="/checkout" element={<Checkout />} />
+
+                            {/* Protected Routes */}
+                            <Route path="/dashboard" element={
+                                <ProtectedRoute>
+                                    <Dashboard />
+                                </ProtectedRoute>
+                            } />
+                            <Route path="/cart" element={
+                                <ProtectedRoute>
+                                    <Cart />
+                                </ProtectedRoute>
+                            } />
+                            <Route path="/wishlist" element={
+                                <ProtectedRoute>
+                                    <Wishlist />
+                                </ProtectedRoute>
+                            } />
+                            <Route path="/admin" element={
+                                <ProtectedRoute>
+                                    <Admin />
+                                </ProtectedRoute>
+                            } />
+                            <Route path="/checkout" element={
+                                <ProtectedRoute>
+                                    <Checkout />
+                                </ProtectedRoute>
+                            } />
 
                         </Routes>
                     </Router>

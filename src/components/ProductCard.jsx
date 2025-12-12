@@ -1,9 +1,8 @@
-import { useCart } from '../context/CartContext'
-import { Link } from 'react-router-dom'
-
+import { useAuth } from '../context/AuthContext' // Import useAuth
 
 const ProductCard = ({ product, variant = 'vertical' }) => {
     const { addToCart, toggleWishlist, isInWishlist } = useCart()
+    const { isAuthenticated } = useAuth() // Get auth state
 
     const discount = product.originalPrice
         ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -41,15 +40,17 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
                     </div>
                 )}
 
-                {/* Wishlist Button (Overlay) */}
-                <button
-                    className="product-card-action-btn"
-                    style={{ position: 'absolute', top: 'var(--space-3)', right: 'var(--space-3)', zIndex: 10, background: 'rgba(255,255,255,0.9)' }}
-                    onClick={(e) => { e.preventDefault(); toggleWishlist(product); }}
-                    title={isInWishlist(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
-                >
-                    <i className={`${isInWishlist(product.id) ? 'fas' : 'far'} fa-heart`}></i>
-                </button>
+                {/* Wishlist Button (Overlay) - Only for authenticated users */}
+                {isAuthenticated && (
+                    <button
+                        className="product-card-action-btn"
+                        style={{ position: 'absolute', top: 'var(--space-3)', right: 'var(--space-3)', zIndex: 10, background: 'rgba(255,255,255,0.9)' }}
+                        onClick={(e) => { e.preventDefault(); toggleWishlist(product); }}
+                        title={isInWishlist(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                    >
+                        <i className={`${isInWishlist(product.id) ? 'fas' : 'far'} fa-heart`}></i>
+                    </button>
+                )}
 
                 {/* Highlight Bar */}
                 <div className="highlight-bar">
@@ -78,26 +79,32 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
                 </Link>
 
 
-                {/* Price Row */}
-                <div className="product-price-row">
-                    <span className="price-current">{product.price.toLocaleString('en-IN')}🪙</span>
-                    {product.originalPrice && (
-                        <span className="price-original">{product.originalPrice.toLocaleString('en-IN')}🪙</span>
-                    )}
-                    {discount > 0 && (
-                        <span className="price-discount">{discount}% off</span>
-                    )}
+                {/* Price Row logic */}
+                {isAuthenticated ? (
+                    <div className="product-price-row">
+                        <span className="price-current">{product.price.toLocaleString('en-IN')}🪙</span>
+                        {product.originalPrice && (
+                            <span className="price-original">{product.originalPrice.toLocaleString('en-IN')}🪙</span>
+                        )}
+                        {discount > 0 && (
+                            <span className="price-discount">{discount}% off</span>
+                        )}
 
-                    {/* Horizontal: Color picker on right of price line */}
-                    {variant === 'horizontal' && (
-                        <div className="color-options">
-                            {colors.slice(0, 2).map((c, i) => (
-                                <div key={i} className="color-dot" style={{ backgroundColor: c }}></div>
-                            ))}
-                            <span className="color-dot more">+{colors.length - 2}</span>
-                        </div>
-                    )}
-                </div>
+                        {/* Horizontal: Color picker on right of price line */}
+                        {variant === 'horizontal' && (
+                            <div className="color-options">
+                                {colors.slice(0, 2).map((c, i) => (
+                                    <div key={i} className="color-dot" style={{ backgroundColor: c }}></div>
+                                ))}
+                                <span className="color-dot more">+{colors.length - 2}</span>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div className="product-price-row">
+                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Login to view price</span>
+                    </div>
+                )}
 
                 {/* Horizontal: Features chips */}
                 {variant === 'horizontal' && (
@@ -109,7 +116,7 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
                 )}
 
                 {/* Vertical: Color options at bottom right of price line or separate */}
-                {variant === 'vertical' && (
+                {isAuthenticated && variant === 'vertical' && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'var(--space-2)' }}>
                         <div style={{ textDecoration: 'line-through', color: 'transparent' }}>.</div> {/* Spacer */}
                         <div className="color-options">
@@ -122,7 +129,7 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
                 )}
 
                 {/* Horizontal: Add to Cart button */}
-                {variant === 'horizontal' && (
+                {isAuthenticated && variant === 'horizontal' && (
                     <div className="horizontal-actions">
                         <button
                             className="add-to-cart-btn"

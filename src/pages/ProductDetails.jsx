@@ -1,13 +1,10 @@
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { useCart } from '../context/CartContext'
-import Layout from '../components/Layout'
-import { useProducts } from '../hooks/useProducts'
+import { useAuth } from '../context/AuthContext'
 
 const ProductDetails = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const { addToCart, isInWishlist, toggleWishlist } = useCart()
+    const { isAuthenticated } = useAuth()
     const { products, loading: productsLoading } = useProducts()
     const [product, setProduct] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -15,12 +12,10 @@ const ProductDetails = () => {
 
     useEffect(() => {
         if (!productsLoading) {
-            // loose comparison for id (string vs number)
             const foundProduct = products.find(p => p.id == id)
             if (foundProduct) {
                 setProduct(foundProduct)
             } else if (products.length > 0) {
-                // Only redirect if we have loaded products and still didn't find it
                 console.error('Product not found')
             }
             setLoading(false)
@@ -54,6 +49,11 @@ const ProductDetails = () => {
         ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
         : 0
 
+    const handleBuyNow = () => {
+        addToCart(product)
+        navigate('/checkout')
+    }
+
     return (
         <Layout>
             <main className="product-details-main" style={{ padding: 'var(--space-8) 0' }}>
@@ -83,7 +83,7 @@ const ProductDetails = () => {
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 />
                             </div>
-                            {/* Thumbnails (Mock since we only have 1 image per product in JSON generally) */}
+                            {/* Thumbnails */}
                             <div className="thumbnails" style={{ display: 'flex', gap: 'var(--space-2)' }}>
                                 {[product.image].map((img, i) => (
                                     <div
@@ -121,23 +121,31 @@ const ProductDetails = () => {
                                 </span>
                             </div>
 
-                            <div className="price-block" style={{ marginBottom: 'var(--space-6)' }}>
-                                <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)' }}>
-                                    <span style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--primary-color)' }}>
-                                        {product.price.toLocaleString('en-IN')}🪙
-                                    </span>
-                                    {product.originalPrice && (
-                                        <span style={{ textDecoration: 'line-through', color: 'var(--text-secondary)', fontSize: '1.2rem' }}>
-                                            {product.originalPrice.toLocaleString('en-IN')}🪙
+                            {/* Price Block - Protected */}
+                            {isAuthenticated ? (
+                                <div className="price-block" style={{ marginBottom: 'var(--space-6)' }}>
+                                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)' }}>
+                                        <span style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--primary-color)' }}>
+                                            {product.price.toLocaleString('en-IN')}🪙
                                         </span>
-                                    )}
-                                    {discount > 0 && (
-                                        <span style={{ background: '#fee2e2', color: '#dc2626', padding: '2px 8px', borderRadius: '4px', fontSize: '0.9rem', fontWeight: 600 }}>
-                                            {discount}% OFF
-                                        </span>
-                                    )}
+                                        {product.originalPrice && (
+                                            <span style={{ textDecoration: 'line-through', color: 'var(--text-secondary)', fontSize: '1.2rem' }}>
+                                                {product.originalPrice.toLocaleString('en-IN')}🪙
+                                            </span>
+                                        )}
+                                        {discount > 0 && (
+                                            <span style={{ background: '#fee2e2', color: '#dc2626', padding: '2px 8px', borderRadius: '4px', fontSize: '0.9rem', fontWeight: 600 }}>
+                                                {discount}% OFF
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="price-auth-block" style={{ marginBottom: 'var(--space-6)', padding: 'var(--space-4)', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)' }}>
+                                    <p style={{ marginBottom: 'var(--space-3)' }}>Login to view pricing and purchase this item.</p>
+                                    <button className="btn btn-outline" onClick={() => navigate('/login')}>Login Now</button>
+                                </div>
+                            )}
 
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 'var(--space-6)' }}>
                                 {product.description}
@@ -158,30 +166,38 @@ const ProductDetails = () => {
                                 </div>
                             )}
 
-                            {/* Actions */}
-                            <div className="product-actions" style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-4)' }}>
-                                <div className="quantity-selector" style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
-                                    {/* Placeholder for quantity selector if we want one locally, for now just Add to Cart usually adds 1 */}
+                            {/* Actions - Protected */}
+                            {isAuthenticated && (
+                                <div className="product-actions" style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-4)' }}>
+                                    <button
+                                        className="btn btn-primary"
+                                        style={{ flex: 1, padding: 'var(--space-3)', fontSize: '1.1rem' }}
+                                        onClick={() => addToCart(product)}
+                                        disabled={product.stock === 0}
+                                    >
+                                        <i className="fas fa-shopping-cart" style={{ marginRight: 'var(--space-2)' }}></i>
+                                        {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+                                    </button>
+
+                                    <button
+                                        className="btn"
+                                        style={{ flex: 1, padding: 'var(--space-3)', fontSize: '1.1rem', background: '#059669', color: 'white', border: 'none' }}
+                                        onClick={handleBuyNow}
+                                        disabled={product.stock === 0}
+                                    >
+                                        <i className="fas fa-bolt" style={{ marginRight: 'var(--space-2)' }}></i>
+                                        Buy Now
+                                    </button>
+
+                                    <button
+                                        className="btn btn-outline"
+                                        style={{ padding: '0 var(--space-4)', fontSize: '1.2rem' }}
+                                        onClick={() => toggleWishlist(product)}
+                                    >
+                                        <i className={`${isInWishlist(product.id) ? 'fas' : 'far'} fa-heart`} style={{ color: isInWishlist(product.id) ? '#ef4444' : 'inherit' }}></i>
+                                    </button>
                                 </div>
-
-                                <button
-                                    className="btn btn-primary"
-                                    style={{ flex: 1, padding: 'var(--space-3)', fontSize: '1.1rem' }}
-                                    onClick={() => addToCart(product)}
-                                    disabled={product.stock === 0}
-                                >
-                                    <i className="fas fa-shopping-cart" style={{ marginRight: 'var(--space-2)' }}></i>
-                                    {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-                                </button>
-
-                                <button
-                                    className="btn btn-outline"
-                                    style={{ padding: '0 var(--space-4)', fontSize: '1.2rem' }}
-                                    onClick={() => toggleWishlist(product)}
-                                >
-                                    <i className={`${isInWishlist(product.id) ? 'fas' : 'far'} fa-heart`} style={{ color: isInWishlist(product.id) ? '#ef4444' : 'inherit' }}></i>
-                                </button>
-                            </div>
+                            )}
                         </div>
                     </div>
                 </div>
