@@ -91,23 +91,8 @@ export const AuthProvider = ({ children }) => {
         }
 
         if (authData.user) {
-            // 2. Create profile in 'profiles' table
-            const { error: profileError } = await supabase
-                .from('profiles')
-                .insert([
-                    {
-                        id: authData.user.id,
-                        email: userData.email,
-                        name: userData.name,
-                        vc_balance: 5000, // Default signup bonus
-                        is_admin: false
-                    }
-                ])
-
-            if (profileError) {
-                console.error('Error creating profile:', profileError)
-                return { success: true, warning: 'Account created but profile setup failed.' }
-            }
+            // Profile is now created automatically by Supabase Trigger (handle_new_user)
+            // No manual insertion needed here.
         }
 
         return { success: true }
