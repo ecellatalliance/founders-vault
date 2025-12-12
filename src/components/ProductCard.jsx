@@ -15,7 +15,6 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
         'Hi-Res Audio with LDAC',
         'boAt Spatial Audio'
     ]
-    const playbackTime = product.playbackTime || '35 Hours'
     const colors = product.colors || ['#000', '#aaa', '#f00']
 
     return (
@@ -56,7 +55,6 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
 
                 {/* Highlight Bar */}
                 <div className="highlight-bar">
-                    {variant === 'horizontal' ? '80 Hours Playback' : `${playbackTime} Playback`}
                     {variant === 'vertical' && (
                         <div className="rating-pill">
                             <i className="fas fa-star" style={{ color: '#fbbf24' }}></i> {product.rating}
