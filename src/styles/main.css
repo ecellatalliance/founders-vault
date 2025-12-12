@@ -238,6 +238,7 @@
     font-weight: var(--font-medium);
     padding: var(--space-2) 0;
     transition: color var(--transition-fast);
+    font-family: 'Glacial Indifference', sans-serif;
 }
 
 .nav-link:hover {
@@ -276,15 +277,164 @@
     transition: all var(--transition-fast);
 }
 
+
+
 .theme-toggle:hover {
     border-color: var(--accent-gold);
 }
 
-/* ============================================
-   HERO SECTION
-   ============================================ */
+/* Dropdown Menu Styles */
+.nav-content {
+    position: relative;
+}
 
-.hero {
+.nav-item-dropdown {
+    position: static;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-trigger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-base);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    padding: var(--space-8);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base);
+    z-index: 1000;
+    margin-top: 0;
+}
+
+.nav-item-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dropdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-8);
+}
+
+.dropdown-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.dropdown-header {
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--space-2);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background-color: var(--bg-secondary);
+    color: var(--accent-gold);
+    transform: translateX(4px);
+}
+
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+
+.dropdown-item:hover i {
+    color: var(--accent-gold);
+}
+
+.text-accent {
+    color: var(--accent-gold) !important;
+}
+
+/* Responsive adjustments for dropdown */
+@media (max-width: 1024px) {
+    .dropdown-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-content {
+        position: static;
+    }
+
+    .nav-item-dropdown {
+        position: relative;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dropdown-trigger {
+        width: 100%;
+        justify-content: space-between;
+        padding: var(--space-3) 0;
+    }
+
+    .dropdown-menu {
+        position: static;
+        width: 100%;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        display: none;
+        opacity: 1;
+        visibility: visible;
+        background-color: var(--bg-secondary);
+        margin-top: var(--space-2);
+        border-radius: var(--radius-md);
+    }
+
+    .nav-item-dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+        padding: var(--space-4);
+    }
+}
+
+HERO SECTION============================================*/ .hero {
     position: relative;
     background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-navy-light) 100%);
     color: var(--white);
@@ -802,15 +952,6 @@
         font-size: var(--text-3xl);
     }
 
-    .carousel-item {
-        flex: 0 0 250px;
-    }
-}/ *   = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
-/* ============================================
-   CATEGORY ICON BAR
-   ============================================ */
-
-.category-icon-bar {
     padding: var(--space-4) 0;
     background-color: var(--white);
     border-bottom: 1px solid var(--border-color);
@@ -869,6 +1010,7 @@
     text-align: center;
     white-space: nowrap;
     color: var(--text-secondary);
+    font-family: 'Glacial Indifference', sans-serif;
 }
 
 .category-separator {

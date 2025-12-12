@@ -96,14 +96,67 @@ const Header = () => {
                             </button>
 
                             <ul className={`nav-links ${mobileMenuOpen ? 'active' : ''}`} id="navLinks">
-                                <li><Link to="/" className="nav-link">Home</Link></li>
-                                <li><Link to="/shop" className="nav-link">Shop</Link></li>
-                                <li><Link to="/shop?category=Tech Essentials" className="nav-link">Tech Essentials</Link></li>
-                                <li><Link to="/shop?category=Premium Apparel" className="nav-link">Apparel</Link></li>
-                                <li><Link to="/shop?category=The Launchpad" className="nav-link">The Launchpad</Link></li>
-                                <li><Link to="/community" className="nav-link">Announcements</Link></li>
-                                <li><a href="#earn-vc" className="nav-link">How to earn VCs</a></li>
-                                <li><a href="#about" className="nav-link">About Entrepreneurship Cell</a></li>
+                                <li className="nav-item-dropdown">
+                                    <button className="nav-link dropdown-trigger">
+                                        Categories <i className="fas fa-chevron-down ml-1"></i>
+                                    </button>
+                                    <div className="dropdown-menu">
+                                        <div className="dropdown-grid">
+                                            <div className="dropdown-column">
+                                                <h4 className="dropdown-header">Shop By Category</h4>
+                                                <Link to="/shop?category=Tech Essentials" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-microchip"></i> Tech Essentials
+                                                </Link>
+                                                <Link to="/shop?category=Premium Apparel" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-tshirt"></i> Premium Apparel
+                                                </Link>
+                                                <Link to="/shop?category=The Launchpad" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-rocket"></i> The Launchpad
+                                                </Link>
+                                                <Link to="/shop?category=Home Hacks" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-couch"></i> Home Hacks
+                                                </Link>
+                                                <Link to="/shop?category=Bottles %26 Sippers" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-wine-bottle"></i> Bottles & Sippers
+                                                </Link>
+                                                <Link to="/shop?category=Storage %26 Organizers" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-archive"></i> Storage & Organizers
+                                                </Link>
+                                            </div>
+                                            <div className="dropdown-column">
+                                                <h4 className="dropdown-header">Featured</h4>
+                                                <Link to="/shop?sort=bestsellers" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-heart text-accent"></i> Best Sellers
+                                                </Link>
+                                                <Link to="/shop?sort=newest" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-box-open text-accent"></i> New Arrivals
+                                                </Link>
+                                                <Link to="/shop?filter=sale" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-tags text-accent"></i> Sale
+                                                </Link>
+                                                <Link to="/shop?sort=trending" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-fire text-accent"></i> Top 100
+                                                </Link>
+                                            </div>
+                                            <div className="dropdown-column">
+                                                <h4 className="dropdown-header">Personalisation</h4>
+                                                <Link to="/shop?category=Personalised Products" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-pen-fancy"></i> Personalised Products
+                                                </Link>
+                                                <Link to="/corporate" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-building"></i> Corporate Orders
+                                                </Link>
+                                                <Link to="/gifting" className="dropdown-item" onClick={() => setMobileMenuOpen(false)}>
+                                                    <i className="fas fa-gift"></i> Gifting Store
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><Link to="/shop" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Shop All</Link></li>
+                                <li><Link to="/community" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Announcements</Link></li>
+                                <li><Link to="/earn-vc" className="nav-link" onClick={() => setMobileMenuOpen(false)}>How to earn VCs</Link></li>
+                                <li><a href="#about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About E-Cell</a></li>
                             </ul>
 
                             <button className="theme-toggle" onClick={toggleTheme}>
@@ -114,48 +167,6 @@ const Header = () => {
                     </div>
                 </nav>
             </header>
-
-            {/* Category Icon Bar */}
-            <div className="category-icon-bar">
-                <div className="container">
-                    <div className="category-icons-scroll">
-                        <Link to="/shop?sort=bestsellers" className="category-icon-item">
-                            <div className="icon-circle"><i className="fas fa-heart"></i></div>
-                            <span>Best Sellers</span>
-                        </Link>
-                        <div className="category-separator"></div>
-                        <Link to="/shop?sort=newest" className="category-icon-item">
-                            <div className="icon-circle"><i className="fas fa-box-open"></i></div>
-                            <span>New Arrivals</span>
-                        </Link>
-                        <div className="category-separator"></div>
-                        <Link to="/shop?filter=sale" className="category-icon-item">
-                            <div className="icon-circle"><i className="fas fa-tags"></i></div>
-                            <span>Sale</span>
-                        </Link>
-                        <div className="category-separator"></div>
-                        <Link to="/shop?category=Home" className="category-icon-item">
-                            <div className="icon-circle"><i className="fas fa-couch"></i></div>
-                            <span>Home Hacks</span>
-                        </Link>
-                        <div className="category-separator"></div>
-                        <Link to="/shop?sort=trending" className="category-icon-item">
-                            <div className="icon-circle"><i className="fas fa-fire"></i></div>
-                            <span>Top 100</span>
-                        </Link>
-                        <div className="category-separator"></div>
-                        <Link to="/shop?category=Bottles" className="category-icon-item">
-                            <div className="icon-circle"><i className="fas fa-wine-bottle"></i></div>
-                            <span>Bottles & Sippers</span>
-                        </Link>
-                        <div className="category-separator"></div>
-                        <Link to="/shop?category=Storage" className="category-icon-item">
-                            <div className="icon-circle"><i className="fas fa-archive"></i></div>
-                            <span>Storage & Organizers</span>
-                        </Link>
-                    </div>
-                </div>
-            </div>
         </>
     )
 }

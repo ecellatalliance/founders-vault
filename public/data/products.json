@@ -388,5 +388,87 @@
         "featured": true,
         "rating": 4.9,
         "reviews": 256
+    },
+    {
+        "id": "prod_cat_01",
+        "name": "Smart WiFi Plug",
+        "category": "Home Hacks",
+        "price": 899,
+        "originalPrice": 1299,
+        "description": "Control your appliances from anywhere. Works with Alexa and Google Assistant.",
+        "image": "https://images.unsplash.com/photo-1558089687-f282ffcbc126?w=500",
+        "stock": 45,
+        "featured": false,
+        "rating": 4.4,
+        "reviews": 32,
+        "features": [
+            "Voice Control",
+            "Energy Monitoring"
+        ]
+    },
+    {
+        "id": "prod_cat_02",
+        "name": "Under-Desk Drawer",
+        "category": "Home Hacks",
+        "price": 499,
+        "originalPrice": 899,
+        "description": "Self-adhesive hidden drawer for desk organization.",
+        "image": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=500",
+        "stock": 60,
+        "featured": false,
+        "rating": 4.2,
+        "reviews": 15
+    },
+    {
+        "id": "prod_cat_03",
+        "name": "Smart LED Bottle",
+        "category": "Bottles & Sippers",
+        "price": 999,
+        "originalPrice": 1999,
+        "description": "Temperature display vacuum flask. Keeps water hot/cold for 12 hours.",
+        "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500",
+        "stock": 25,
+        "featured": true,
+        "rating": 4.6,
+        "reviews": 48
+    },
+    {
+        "id": "prod_cat_04",
+        "name": "Gym Protein Shaker",
+        "category": "Bottles & Sippers",
+        "price": 299,
+        "originalPrice": 599,
+        "description": "Leak-proof shaker bottle with mixer ball.",
+        "image": "https://images.unsplash.com/photo-1570161406856-78b196726854?w=500",
+        "stock": 80,
+        "featured": false,
+        "rating": 4.3,
+        "reviews": 110
+    },
+    {
+        "id": "prod_cat_05",
+        "name": "Desk Cable Organizer",
+        "category": "Storage & Organizers",
+        "price": 199,
+        "originalPrice": 399,
+        "description": "Silicone cable clip holder for clean desk setup.",
+        "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500",
+        "stock": 150,
+        "featured": false,
+        "rating": 4.5,
+        "reviews": 90
+    },
+    {
+        "id": "prod_cat_06",
+        "name": "Custom Name Mug",
+        "category": "Personalised Products",
+        "price": 349,
+        "originalPrice": 599,
+        "description": "Ceramic mug with custom name printing.",
+        "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=500",
+        "stock": 100,
+        "featured": true,
+        "rating": 4.8,
+        "reviews": 22
     }
 ]

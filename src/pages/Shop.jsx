@@ -16,7 +16,17 @@ const Shop = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 12
 
-    const categories = ['Tech Essentials', 'Premium Apparel', 'The Launchpad', 'Office Supplies', 'Books & Learning']
+    const categories = [
+        'Tech Essentials',
+        'Premium Apparel',
+        'The Launchpad',
+        'Office Supplies',
+        'Books & Learning',
+        'Home Hacks',
+        'Bottles & Sippers',
+        'Storage & Organizers',
+        'Personalised Products'
+    ]
     const priceRanges = [
         { label: 'Under 300🪙', min: 0, max: 300 },
         { label: '301🪙 - 1000🪙', min: 301, max: 1000 },
@@ -270,10 +280,14 @@ const Shop = () => {
                                 </div>
                             </div>
 
-                            <div className={`products-grid ${currentView}`} id="productsGrid">
+                            <div className={`products-grid ${currentView}`} id="productsGrid" style={currentView === 'list' ? { gridTemplateColumns: '1fr' } : {}}>
                                 {getPaginatedProducts().length > 0 ? (
                                     getPaginatedProducts().map((product) => (
-                                        <ProductCard key={product.id} product={product} />
+                                        <ProductCard
+                                            key={product.id}
+                                            product={product}
+                                            variant={currentView === 'list' ? 'horizontal' : 'vertical'}
+                                        />
                                     ))
                                 ) : (
                                     <div className="empty-state" style={{ gridColumn: '1 / -1', textAlign: 'center', padding: 'var(--space-16)' }}>

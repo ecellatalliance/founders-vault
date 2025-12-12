@@ -1,9 +1,11 @@
 /* Import original vanilla CSS files */
+@import url('https://fonts.cdnfonts.com/css/glacial-indifference');
 @import './styles/theme.css';
 @import './styles/main.css';
 @import './styles/hero-carousel.css';
 @import './styles/components.css';
 @import './styles/global.css';
+@import './styles/product-card.css';
 @import './styles/pages/shop.css';
 
 /* Reset for React */
