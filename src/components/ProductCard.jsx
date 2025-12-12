@@ -1,8 +1,10 @@
-import { useAuth } from '../context/AuthContext' // Import useAuth
+import { useCart } from '../context/CartContext'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const ProductCard = ({ product, variant = 'vertical' }) => {
     const { addToCart, toggleWishlist, isInWishlist } = useCart()
-    const { isAuthenticated } = useAuth() // Get auth state
+    const { isAuthenticated } = useAuth()
 
     const discount = product.originalPrice
         ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)

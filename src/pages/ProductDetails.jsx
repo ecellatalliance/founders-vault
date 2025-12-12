@@ -1,3 +1,8 @@
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useCart } from '../context/CartContext'
+import Layout from '../components/Layout'
+import { useProducts } from '../hooks/useProducts'
 import { useAuth } from '../context/AuthContext'
 
 const ProductDetails = () => {
