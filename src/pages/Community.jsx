@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
+import { supabase } from '../supabaseClient'
 
 const Community = () => {
     const [announcements, setAnnouncements] = useState([])
@@ -11,9 +12,13 @@ const Community = () => {
 
     const fetchAnnouncements = async () => {
         try {
-            const response = await fetch('/data/announcements.json')
-            const data = await response.json()
-            setAnnouncements(data)
+            const { data, error } = await supabase
+                .from('announcements')
+                .select('*')
+                .order('created_at', { ascending: false })
+
+            if (error) throw error
+            setAnnouncements(data || [])
             setLoading(false)
         } catch (error) {
             console.error('Error fetching announcements:', error)

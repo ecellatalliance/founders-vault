@@ -15,6 +15,7 @@ import EarnVC from './pages/EarnVC'
 import Admin from './pages/Admin'
 import ProductDetails from './pages/ProductDetails'
 import Checkout from './pages/Checkout'
+import AdminLogin from './pages/AdminLogin'
 
 
 import ProtectedRoute from './components/ProtectedRoute'
@@ -31,6 +32,7 @@ function App() {
                             <Route path="/earn-vc" element={<EarnVC />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/community" element={<Community />} />
+                            <Route path="/admin-login" element={<AdminLogin />} />
                             <Route path="/product/:id" element={<ProductDetails />} />
 
                             {/* Protected Routes */}

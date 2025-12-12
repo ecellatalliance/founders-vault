@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Layout from '../components/Layout'
+import { supabase } from '../supabaseClient'
 
 const Admin = () => {
     const { user, isAuthenticated } = useAuth()
@@ -89,25 +90,104 @@ const Admin = () => {
         </section>
     )
 
+    const handleAddProduct = async (e) => {
+        e.preventDefault()
+        const form = e.target
+        const productData = {
+            name: form.name.value,
+            description: form.description.value,
+            price: parseFloat(form.price.value),
+            category: form.category.value,
+            image_url: form.image_url.value,
+            stock: parseInt(form.stock.value),
+            rating: 4.5, // Default start rating
+            reviews: 0,
+            features: form.features.value.split(',').map(f => f.trim())
+        }
+
+        try {
+            const { error } = await supabase.from('products').insert([productData])
+            if (error) throw error
+            alert('✅ Product added successfully!')
+            form.reset()
+        } catch (error) {
+            console.error('Error adding product:', error)
+            alert('Error adding product: ' + error.message)
+        }
+    }
+
     const renderProducts = () => (
         <section className="section active">
             <div className="admin-header">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                        <h1 className="admin-title">Products</h1>
-                        <p className="admin-subtitle">Manage your product catalog</p>
-                    </div>
-                    <button className="btn btn-primary">
-                        <i className="fas fa-plus"></i> Add Product
-                    </button>
+                <div>
+                    <h1 className="admin-title">Products</h1>
+                    <p className="admin-subtitle">Manage your product catalog</p>
                 </div>
             </div>
-            <div className="empty-state">
-                <i className="fas fa-box"></i>
-                <p>Product management coming soon</p>
+
+            <div className="admin-card" style={{ maxWidth: '800px', margin: '0 0' }}>
+                <h3 style={{ marginBottom: 'var(--space-4)' }}>Add New Product</h3>
+                <form className="login-form" onSubmit={handleAddProduct}>
+                    <div className="form-group">
+                        <label className="form-label">Product Name</label>
+                        <input name="name" className="form-input" required placeholder="e.g. Wireless Headphones" />
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label">Description</label>
+                        <textarea name="description" className="form-input" required rows="3" placeholder="Product details..."></textarea>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+                        <div className="form-group">
+                            <label className="form-label">Price (🪙)</label>
+                            <input name="price" type="number" className="form-input" required placeholder="499" />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Stock</label>
+                            <input name="stock" type="number" className="form-input" required placeholder="50" />
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+                        <div className="form-group">
+                            <label className="form-label">Category</label>
+                            <select name="category" className="form-input" required>
+                                <option value="Tech Essentials">Tech Essentials</option>
+                                <option value="Premium Apparel">Premium Apparel</option>
+                                <option value="The Launchpad">The Launchpad</option>
+                                <option value="Home Hacks">Home Hacks</option>
+                                <option value="Stationery">Stationery</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Image URL</label>
+                            <input name="image_url" className="form-input" required placeholder="https://..." />
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label">Features (comma separated)</label>
+                        <input name="features" className="form-input" placeholder="Long battery life, Noise cancelling, ..." />
+                    </div>
+
+                    <button type="submit" className="btn btn-primary">
+                        <i className="fas fa-plus"></i> Add Product
+                    </button>
+                </form>
             </div>
         </section>
     )
+
+    const handleAddUser = async (e) => {
+        e.preventDefault()
+        const form = e.target
+        // Note: Real user creation requires Supabase Auth API interactively or Admin API (backend).
+        // Here we will just create a Profile entry for simulation/management purposes
+        // or guide the admin.
+
+        alert("To create a new login-able user, please use the Registration page or Supabase Dashboard. \n\nAdding users directly via Admin Console requires 'Service Role' keys which are not safe for client-side.")
+    }
 
     const renderUsers = () => (
         <section className="section active">
@@ -115,9 +195,18 @@ const Admin = () => {
                 <h1 className="admin-title">Users</h1>
                 <p className="admin-subtitle">Manage user accounts</p>
             </div>
-            <div className="empty-state">
-                <i className="fas fa-users"></i>
-                <p>User management coming soon</p>
+
+            <div className="admin-card">
+                <div className="empty-state" style={{ padding: 'var(--space-6)' }}>
+                    <i className="fas fa-user-shield" style={{ fontSize: '3rem', marginBottom: 'var(--space-4)' }}></i>
+                    <h3>User Management</h3>
+                    <p>For security, new users should register themselves via the Login page.</p>
+                    <p>You can manage existing users (ban/promote) directly in the Supabase Dashboard > Authentication.</p>
+
+                    <a href="https://supabase.com/dashboard/project/ydusbkvnkxtfudleiukk/auth/users" target="_blank" className="btn btn-outline" style={{ marginTop: 'var(--space-4)' }}>
+                        <i className="fas fa-external-link-alt"></i> Go to Supabase Auth
+                    </a>
+                </div>
             </div>
         </section>
     )
@@ -135,22 +224,64 @@ const Admin = () => {
         </section>
     )
 
+    const handleAddAnnouncement = async (e) => {
+        e.preventDefault()
+        const form = e.target
+        const announcementData = {
+            title: form.title.value,
+            content: form.content.value,
+            category: form.category.value,
+            date: new Date().toISOString().split('T')[0],
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+
+        try {
+            const { error } = await supabase.from('announcements').insert([announcementData])
+            if (error) throw error
+            alert('✅ Announcement posted!')
+            form.reset()
+        } catch (error) {
+            console.error('Error posting announcement:', error)
+            alert('Error: ' + error.message)
+        }
+    }
+
     const renderAnnouncements = () => (
         <section className="section active">
             <div className="admin-header">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                        <h1 className="admin-title">Announcements</h1>
-                        <p className="admin-subtitle">Manage community announcements</p>
-                    </div>
-                    <button className="btn btn-primary">
-                        <i className="fas fa-plus"></i> New Announcement
-                    </button>
+                <div>
+                    <h1 className="admin-title">Announcements</h1>
+                    <p className="admin-subtitle">Manage community announcements</p>
                 </div>
             </div>
-            <div className="empty-state">
-                <i className="fas fa-bullhorn"></i>
-                <p>Announcement management coming soon</p>
+
+            <div className="admin-card" style={{ maxWidth: '800px' }}>
+                <h3 style={{ marginBottom: 'var(--space-4)' }}>Post New Announcement</h3>
+                <form className="login-form" onSubmit={handleAddAnnouncement}>
+                    <div className="form-group">
+                        <label className="form-label">Title</label>
+                        <input name="title" className="form-input" required placeholder="e.g. Workshop on AI" />
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label">Category</label>
+                        <select name="category" className="form-input" required>
+                            <option value="General">General</option>
+                            <option value="Event">Event</option>
+                            <option value="Workshop">Workshop</option>
+                            <option value="News">News</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label">Content</label>
+                        <textarea name="content" className="form-input" required rows="4" placeholder="Announcement details..."></textarea>
+                    </div>
+
+                    <button type="submit" className="btn btn-primary">
+                        <i className="fas fa-paper-plane"></i> Post Announcement
+                    </button>
+                </form>
             </div>
         </section>
     )
