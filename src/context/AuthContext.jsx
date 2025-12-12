@@ -23,6 +23,9 @@ export const AuthProvider = ({ children }) => {
             } else {
                 setIsLoading(false)
             }
+        }).catch(err => {
+            console.error('Session check failed:', err)
+            setIsLoading(false)
         })
 
         // Listen for changes

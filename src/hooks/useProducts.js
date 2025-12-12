@@ -20,8 +20,10 @@ export const useProducts = () => {
 
             if (error) throw error
 
+            const dataToMap = data || []
+
             // Map DB fields to frontend expected format
-            const mappedProducts = data.map(p => ({
+            const mappedProducts = dataToMap.map(p => ({
                 ...p,
                 image: p.image_url, // UI expects 'image'
                 originalPrice: p.price * 1.5, // Mock original price for now as it wasn't in DB schema
