@@ -3,26 +3,10 @@ import { Link } from 'react-router-dom'
 import Layout from '../components/Layout'
 import HeroCarousel from '../components/HeroCarousel'
 import ProductCarousel from '../components/ProductCarousel'
+import { useProducts } from '../hooks/useProducts'
 
 const Home = () => {
-    const [products, setProducts] = useState([])
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        fetchProducts()
-    }, [])
-
-    const fetchProducts = async () => {
-        try {
-            const response = await fetch('/data/products.json')
-            const data = await response.json()
-            setProducts(data)
-            setLoading(false)
-        } catch (error) {
-            console.error('Error fetching products:', error)
-            setLoading(false)
-        }
-    }
+    const { products, loading } = useProducts()
 
     const getProductsByPrice = (min, max) => {
         return products.filter(p => p.price >= min && p.price <= max).slice(0, 8)

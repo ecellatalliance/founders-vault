@@ -2,39 +2,30 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import Layout from '../components/Layout'
+import { useProducts } from '../hooks/useProducts'
 
 const ProductDetails = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const { addToCart, isInWishlist, toggleWishlist } = useCart()
+    const { products, loading: productsLoading } = useProducts()
     const [product, setProduct] = useState(null)
     const [loading, setLoading] = useState(true)
     const [selectedImage, setSelectedImage] = useState(0)
 
     useEffect(() => {
-        fetchProducts()
-    }, [id])
-
-    const fetchProducts = async () => {
-        try {
-            // In a real app with Supabase, we would fetch by ID:
-            // const { data } = await supabase.from('products').select('*').eq('id', id).single()
-            const response = await fetch('/data/products.json')
-            const data = await response.json()
-            const foundProduct = data.find(p => p.id === id)
-
+        if (!productsLoading) {
+            // loose comparison for id (string vs number)
+            const foundProduct = products.find(p => p.id == id)
             if (foundProduct) {
                 setProduct(foundProduct)
-            } else {
-                // Handle not found
+            } else if (products.length > 0) {
+                // Only redirect if we have loaded products and still didn't find it
                 console.error('Product not found')
             }
             setLoading(false)
-        } catch (error) {
-            console.error('Error fetching details:', error)
-            setLoading(false)
         }
-    }
+    }, [id, products, productsLoading])
 
     if (loading) {
         return (

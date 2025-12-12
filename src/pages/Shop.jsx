@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 import ProductCard from '../components/ProductCard'
+import { useProducts } from '../hooks/useProducts'
 
 const Shop = () => {
     const [searchParams] = useSearchParams()
-    const [products, setProducts] = useState([])
+    const { products, loading } = useProducts()
     const [filteredProducts, setFilteredProducts] = useState([])
-    const [loading, setLoading] = useState(true)
     const [selectedCategories, setSelectedCategories] = useState([])
     const [selectedPriceRanges, setSelectedPriceRanges] = useState([])
     const [minRating, setMinRating] = useState(0)
@@ -34,10 +34,6 @@ const Shop = () => {
         { label: 'Above 5000🪙', min: 5001, max: Infinity },
     ]
 
-    useEffect(() => {
-        fetchProducts()
-    }, [])
-
     // Sync URL params to state
     useEffect(() => {
         const category = searchParams.get('category')
@@ -54,18 +50,6 @@ const Shop = () => {
         const search = searchParams.get('search')
         applyFilters(search)
     }, [products, selectedCategories, selectedPriceRanges, minRating, sortBy, searchParams])
-
-    const fetchProducts = async () => {
-        try {
-            const response = await fetch('/data/products.json')
-            const data = await response.json()
-            setProducts(data)
-            setLoading(false)
-        } catch (error) {
-            console.error('Error fetching products:', error)
-            setLoading(false)
-        }
-    }
 
     const applyFilters = (searchQuery = null) => {
         let filtered = [...products]
