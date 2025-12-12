@@ -26,8 +26,9 @@ export const useProducts = () => {
             const mappedProducts = dataToMap.map(p => ({
                 ...p,
                 image: p.image_url, // UI expects 'image'
-                originalPrice: p.price * 1.5, // Mock original price for now as it wasn't in DB schema
-                rating: 4.5, // Mock rating
+                originalPrice: p.price * 1.5, // Mock original price
+                // Generate deterministic random rating between 3.8 and 5.0 based on ID
+                rating: 3.8 + ((p.id % 12) / 10),
                 features: p.features || [], // Ensure array
                 colors: ['#000', '#aaa'] // Mock colors
             }))
