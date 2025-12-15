@@ -201,7 +201,7 @@ const Admin = () => {
                     <i className="fas fa-user-shield" style={{ fontSize: '3rem', marginBottom: 'var(--space-4)' }}></i>
                     <h3>User Management</h3>
                     <p>For security, new users should register themselves via the Login page.</p>
-                    <p>You can manage existing users (ban/promote) directly in the Supabase Dashboard > Authentication.</p>
+                    <p>You can manage existing users (ban/promote) directly in the Supabase Dashboard &gt; Authentication.</p>
 
                     <a href="https://supabase.com/dashboard/project/ydusbkvnkxtfudleiukk/auth/users" target="_blank" className="btn btn-outline" style={{ marginTop: 'var(--space-4)' }}>
                         <i className="fas fa-external-link-alt"></i> Go to Supabase Auth
@@ -211,18 +211,57 @@ const Admin = () => {
         </section>
     )
 
-    const renderOrders = () => (
-        <section className="section active">
-            <div className="admin-header">
-                <h1 className="admin-title">Orders</h1>
-                <p className="admin-subtitle">View and manage orders</p>
-            </div>
-            <div className="empty-state">
-                <i className="fas fa-shopping-cart"></i>
-                <p>Order management coming soon</p>
-            </div>
-        </section>
-    )
+    const renderOrders = () => {
+        // Mock data for admin view
+        const adminOrders = [
+            { id: 'ORD5512', customer: 'John Doe', date: '2025-12-15', total: 1200, status: 'Processing' },
+            { id: 'ORD5513', customer: 'Jane Smith', date: '2025-12-14', total: 450, status: 'Shipped' },
+            { id: 'ORD5514', customer: 'Bob Johnson', date: '2025-12-14', total: 2200, status: 'Delivered' },
+            { id: 'ORD5515', customer: 'Alice Brown', date: '2025-12-13', total: 850, status: 'Processing' }
+        ]
+
+        return (
+            <section className="section active">
+                <div className="admin-header">
+                    <h1 className="admin-title">Orders</h1>
+                    <p className="admin-subtitle">View and manage orders</p>
+                </div>
+
+                <div className="admin-card" style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+                        <thead>
+                            <tr style={{ background: 'var(--bg-secondary)', textAlign: 'left' }}>
+                                <th style={{ padding: 'var(--space-3)' }}>Order ID</th>
+                                <th style={{ padding: 'var(--space-3)' }}>Customer</th>
+                                <th style={{ padding: 'var(--space-3)' }}>Date</th>
+                                <th style={{ padding: 'var(--space-3)' }}>Total</th>
+                                <th style={{ padding: 'var(--space-3)' }}>Status</th>
+                                <th style={{ padding: 'var(--space-3)' }}>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {adminOrders.map(order => (
+                                <tr key={order.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                    <td style={{ padding: 'var(--space-3)' }}>{order.id}</td>
+                                    <td style={{ padding: 'var(--space-3)' }}>{order.customer}</td>
+                                    <td style={{ padding: 'var(--space-3)' }}>{order.date}</td>
+                                    <td style={{ padding: 'var(--space-3)' }}>{order.total} 🪙</td>
+                                    <td style={{ padding: 'var(--space-3)' }}>
+                                        <span className={`order-status status-${order.status.toLowerCase()}`}>{order.status}</span>
+                                    </td>
+                                    <td style={{ padding: 'var(--space-3)' }}>
+                                        <button className="btn btn-outline btn-sm" onClick={() => alert(`View details for ${order.id}`)}>
+                                            View
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        )
+    }
 
     const handleAddAnnouncement = async (e) => {
         e.preventDefault()

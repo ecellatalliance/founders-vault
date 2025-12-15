@@ -38,6 +38,29 @@ button {
     flex-direction: column;
 }
 
+/* Base Responsive Variables */
+:root {
+    --container-padding: var(--space-8);
+}
+
+@media (max-width: 640px) {
+    :root {
+        --container-padding: var(--space-4);
+        --text-5xl: 2.5rem;
+        --text-4xl: 2rem;
+        --text-3xl: 1.75rem;
+        --text-2xl: 1.5rem;
+    }
+}
+
+.container {
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
 /* ============================================
    DASHBOARD STYLES
    ============================================ */
@@ -357,6 +380,16 @@ button {
     margin-bottom: var(--space-4);
 }
 
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Mobile Dashboard Order Table Scrolling */
+.order-history-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 @media (max-width: 768px) {
     .dashboard-welcome {
         font-size: var(--text-2xl);
@@ -368,6 +401,28 @@ button {
 
     .profile-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Admin Sidebar Mobile */
+    .admin-container {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-sidebar {
+        position: static;
+        margin-bottom: var(--space-6);
+        overflow-x: auto;
+    }
+
+    .admin-nav {
+        flex-direction: row;
+        gap: var(--space-2);
+        padding-bottom: var(--space-2);
+    }
+
+    .admin-nav-item {
+        white-space: nowrap;
+        width: auto;
     }
 }
 

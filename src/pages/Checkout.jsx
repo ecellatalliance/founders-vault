@@ -51,8 +51,17 @@ const Checkout = () => {
 
             clearCart()
             // Redirect to success or history
-            alert('Order placed successfully! (Demo)')
-            navigate('/dashboard')
+            // Redirect to success or history
+            navigate('/order-confirmation', {
+                state: {
+                    order: {
+                        id: 'ORD' + Math.floor(Math.random() * 10000),
+                        items: cart,
+                        total: total,
+                        date: new Date()
+                    }
+                }
+            })
         } catch (error) {
             console.error('Checkout error:', error)
             alert('Failed to place order.')

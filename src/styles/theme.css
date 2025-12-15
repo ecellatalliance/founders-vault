@@ -119,13 +119,18 @@
 
 /* Dark Mode Variables */
 [data-theme="dark"] {
-    --primary-navy: #0f1419;
-    --primary-navy-light: #1a2332;
-    --bg-primary: #0f1419;
-    --bg-secondary: #1a2332;
-    --text-primary: #f9fafb;
-    --text-secondary: #d1d5db;
-    --border-color: #374151;
+    --primary-navy: #0f172a;
+    /* Slate 900 */
+    --primary-navy-light: #1e293b;
+    /* Slate 800 */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #f8fafc;
+    /* Slate 50 */
+    --text-secondary: #94a3b8;
+    /* Slate 400 */
+    --border-color: #334155;
+    /* Slate 700 */
 }
 
 /* ============================================
@@ -316,11 +321,17 @@ a:hover {
     transform: translateY(-4px);
 }
 
-.card-glass {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: var(--shadow-xl);
+/* Dark mode specific for cards to ensure visibility */
+[data-theme="dark"] .card {
+    border-color: var(--border-color);
+    box-shadow: none;
+    /* Flatten shadows in dark mode */
+}
+
+/* Glass effect refinement for dark mode */
+[data-theme="dark"] .card-glass {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* ============================================
@@ -501,6 +512,12 @@ a:hover {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     transition: all var(--transition-fast);
+}
+
+[data-theme="dark"] .input {
+    background-color: var(--primary-navy-light);
+    /* Slightly lighter than bg */
+    border-color: var(--border-color);
 }
 
 .input:focus {

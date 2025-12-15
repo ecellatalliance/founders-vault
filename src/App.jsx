@@ -16,6 +16,7 @@ import Admin from './pages/Admin'
 import ProductDetails from './pages/ProductDetails'
 import Checkout from './pages/Checkout'
 import AdminLogin from './pages/AdminLogin'
+import OrderConfirmation from './pages/OrderConfirmation'
 
 
 import ProtectedRoute from './components/ProtectedRoute'
@@ -59,6 +60,11 @@ function App() {
                             <Route path="/checkout" element={
                                 <ProtectedRoute>
                                     <Checkout />
+                                </ProtectedRoute>
+                            } />
+                            <Route path="/order-confirmation" element={
+                                <ProtectedRoute>
+                                    <OrderConfirmation />
                                 </ProtectedRoute>
                             } />
 

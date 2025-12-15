@@ -177,8 +177,23 @@ const Shop = () => {
                     </div>
 
                     <div className="shop-container">
+                        {/* Mobile Filter Toggle */}
+                        <div className="mobile-filter-toggle" style={{ display: 'none', marginBottom: 'var(--space-4)' }}>
+                            <button
+                                className="btn btn-outline"
+                                style={{ width: '100%' }}
+                                onClick={() => document.querySelector('.shop-filters').classList.toggle('active')}
+                            >
+                                <i className="fas fa-filter"></i> Filters
+                            </button>
+                        </div>
+
                         {/* Filters Sidebar */}
                         <aside className="shop-filters">
+                            <div className="filter-header-mobile" style={{ display: 'none', justifyContent: 'space-between', marginBottom: 'var(--space-4)' }}>
+                                <h3>Filters</h3>
+                                <button onClick={() => document.querySelector('.shop-filters').classList.remove('active')} style={{ background: 'none', border: 'none', fontSize: '1.5rem' }}>&times;</button>
+                            </div>
                             <div className="filter-section">
                                 <h3 className="filter-title">Categories</h3>
                                 <div className="filter-options" id="categoryFilters">
