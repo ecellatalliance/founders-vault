@@ -137,17 +137,73 @@
     position: absolute;
     right: var(--space-1);
     padding: var(--space-2) var(--space-6);
-    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+    background-color: var(--accent-gold);
     color: var(--primary-navy);
     border: none;
-    border-radius: var(--radius-full);
+    border-radius: 0 var(--radius-full) var(--radius-full) 0;
     font-weight: var(--font-semibold);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .search-btn:hover {
-    transform: scale(1.05);
+    background-color: var(--accent-gold-dark);
+}
+
+.search-btn-icon {
+    display: none;
+}
+
+/* Fix for white border artifact on mobile/dark mode */
+.search-input {
+    border: 1px solid var(--border-color);
+    /* Use theme variable */
+}
+
+@media (max-width: 768px) {
+    .search-input-wrapper {
+        margin: 0;
+        max-width: 100% !important;
+    }
+
+    /* Hide the inner left search icon on mobile */
+    .search-icon {
+        display: none;
+    }
+
+    /* Adjust input padding since icon is gone */
+    .search-input {
+        padding-left: var(--space-4);
+        padding-right: 50px;
+        /* Space for the button */
+    }
+
+    .search-btn {
+        padding: 0;
+        width: 36px;
+        height: 36px;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 6px;
+        /* Small gap from right edge */
+        border-radius: 50%;
+        /* Circle button */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .search-btn-text {
+        display: none;
+    }
+
+    .search-btn-icon {
+        display: block;
+        font-size: 1rem;
+    }
 }
 
 .header-actions {
@@ -1032,12 +1088,6 @@
     .hero-title {
         font-size: var(--text-3xl);
     }
-
-    padding: var(--space-4) 0;
-    background-color: var(--white);
-    border-bottom: 1px solid var(--border-color);
-    border-top: 1px solid var(--border-color);
-    /* Added top border */
 }
 
 .category-icons-scroll {

@@ -61,7 +61,10 @@ const Header = () => {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleSearch(e)}
                             />
-                            <button className="search-btn" onClick={handleSearch}>Search</button>
+                            <button className="search-btn" onClick={handleSearch}>
+                                <span className="search-btn-text">Search</span>
+                                <i className="fas fa-search search-btn-icon"></i>
+                            </button>
                         </div>
 
                         {/* Header Actions */}
