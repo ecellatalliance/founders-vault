@@ -393,9 +393,95 @@ const Admin = () => {
         }
     }
 
+    const [selectedOrder, setSelectedOrder] = useState(null)
+    const [approvalDetails, setApprovalDetails] = useState({ date: '', location: 'Founders Vault Desk' })
+
+    const openApprovalModal = (order) => {
+        setSelectedOrder(order)
+        const nextDay = new Date()
+        nextDay.setDate(nextDay.getDate() + 1)
+        nextDay.setHours(12, 0, 0, 0)
+
+        // Adjust for timezone offset for input type="datetime-local" if needed, 
+        // but simple toISOString slice is often 'good enough' for local admin if they know it's UTC/Local.
+        // Better to use a library or careful manipulation, but keeping it simple:
+        // formatting to YYYY-MM-DDTHH:MM
+        const localIso = new Date(nextDay.getTime() - (nextDay.getTimezoneOffset() * 60000)).toISOString().slice(0, 16)
+
+        setApprovalDetails({
+            date: localIso,
+            location: 'Founders Vault Desk (E-Cell Office)'
+        })
+    }
+
+    const handleApproveOrder = async () => {
+        if (!selectedOrder || !approvalDetails.date || !approvalDetails.location) {
+            alert('Please fill in all details')
+            return
+        }
+
+        try {
+            const { error } = await supabase
+                .from('orders')
+                .update({
+                    status: 'completed',
+                    approval_status: 'approved',
+                    pickup_date: new Date(approvalDetails.date).toISOString(),
+                    pickup_location: approvalDetails.location
+                })
+                .eq('id', selectedOrder.id)
+
+            if (error) throw error
+
+            alert('Order Approved!')
+            setSelectedOrder(null)
+            fetchOrders()
+        } catch (error) {
+            console.error('Error approving order:', error)
+            alert('Error approving order: ' + error.message)
+        }
+    }
+
     const renderOrders = () => {
         return (
             <section className="section active">
+                {/* Modal for Approval */}
+                {selectedOrder && (
+                    <div style={{
+                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+                    }}>
+                        <div style={{ backgroundColor: 'var(--bg-primary)', padding: 'var(--space-6)', borderRadius: 'var(--radius-lg)', width: '400px', maxWidth: '90%' }}>
+                            <h3 style={{ marginBottom: 'var(--space-4)' }}>Approve Order #{selectedOrder.id}</h3>
+
+                            <div className="form-group">
+                                <label className="form-label">Pickup Date & Time</label>
+                                <input
+                                    type="datetime-local"
+                                    className="form-input"
+                                    value={approvalDetails.date}
+                                    onChange={e => setApprovalDetails({ ...approvalDetails, date: e.target.value })}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Pickup Location</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    value={approvalDetails.location}
+                                    onChange={e => setApprovalDetails({ ...approvalDetails, location: e.target.value })}
+                                />
+                            </div>
+
+                            <div style={{ display: 'flex', gap: 'var(--space-4)', marginTop: 'var(--space-6)' }}>
+                                <button className="btn btn-primary" onClick={handleApproveOrder} style={{ flex: 1 }}>Approve</button>
+                                <button className="btn btn-outline" onClick={() => setSelectedOrder(null)} style={{ flex: 1 }}>Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 <div className="admin-header">
                     <h1 className="admin-title">Orders</h1>
                     <p className="admin-subtitle">View and manage orders</p>
@@ -409,7 +495,7 @@ const Admin = () => {
                                 <th style={{ padding: 'var(--space-3)' }}>Customer</th>
                                 <th style={{ padding: 'var(--space-3)' }}>Total</th>
                                 <th style={{ padding: 'var(--space-3)' }}>Status</th>
-                                <th style={{ padding: 'var(--space-3)' }}>Fulfillment</th>
+                                <th style={{ padding: 'var(--space-3)' }}>Approval</th>
                                 <th style={{ padding: 'var(--space-3)' }}>Actions</th>
                             </tr>
                         </thead>
@@ -435,31 +521,21 @@ const Admin = () => {
                                             </span>
                                         </td>
                                         <td style={{ padding: 'var(--space-3)' }}>
-                                            {/* Show link for first item if available */}
-                                            {order.items && order.items.length > 0 ? (
-                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                                                    {order.items.map((item, idx) => (
-                                                        item.source_link && (
-                                                            <a
-                                                                key={idx}
-                                                                href={item.source_link}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="btn btn-sm btn-outline"
-                                                                title={item.name}
-                                                            >
-                                                                <i className="fas fa-external-link-alt"></i> Buy {item.name.substring(0, 10)}...
-                                                            </a>
-                                                        )
-                                                    ))}
-                                                </div>
+                                            {order.approval_status === 'pending_approval' ? (
+                                                <button
+                                                    className="btn btn-sm btn-primary"
+                                                    style={{ fontSize: '0.8rem', padding: '4px 8px' }}
+                                                    onClick={() => openApprovalModal(order)}
+                                                >
+                                                    Approve
+                                                </button>
                                             ) : (
-                                                <span style={{ color: 'var(--text-secondary)' }}>-</span>
+                                                <span className="badge badge-success">{order.approval_status || '-'}</span>
                                             )}
                                         </td>
                                         <td style={{ padding: 'var(--space-3)' }}>
                                             <button className="btn btn-outline btn-sm" onClick={() => alert(`Details: \n${JSON.stringify(order.items, null, 2)}`)}>
-                                                View
+                                                Items
                                             </button>
                                         </td>
                                     </tr>

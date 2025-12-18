@@ -34,9 +34,11 @@ const Dashboard = () => {
           id: order.id,
           date: new Date(order.created_at),
           status: order.status || 'pending',
+          approval_status: order.approval_status || 'pending_approval',
+          pickup_date: order.pickup_date ? new Date(order.pickup_date) : null,
+          pickup_location: order.pickup_location,
           total: order.total_amount,
           items: order.items ? order.items.length : 0,
-          // store original items for detail view if needed
           _items: order.items
         }))
         setOrders(formattedOrders)
@@ -198,7 +200,12 @@ const Dashboard = () => {
                   <div key={order.id} className="order-item">
                     <div className="order-header">
                       <div>
-                        <div className="order-id">Order #{order.id}</div>
+                        <div className="order-id">
+                          Order #{order.id}
+                          {order.approval_status === 'approved' && (
+                            <span className="badge badge-success" style={{ marginLeft: '10px', fontSize: '0.7em', padding: '2px 6px' }}>Ready for Pickup</span>
+                          )}
+                        </div>
                         <div className="order-date">
                           {order.date.toLocaleDateString('en-US', {
                             year: 'numeric',
@@ -209,6 +216,27 @@ const Dashboard = () => {
                       </div>
                       <span className={`order-status status-${order.status}`}>{order.status}</span>
                     </div>
+
+                    {/* Pickup Details */}
+                    {order.approval_status === 'approved' && order.pickup_date && (
+                      <div style={{ marginTop: 'var(--space-3)', padding: 'var(--space-3)', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-sm)', fontSize: '0.9rem' }}>
+                        <div style={{ fontWeight: 600, marginBottom: '2px', color: '#059669' }}>
+                          <i className="fas fa-check-circle"></i> Approved for Pickup
+                        </div>
+                        <div>
+                          <strong>When:</strong> {order.pickup_date.toLocaleString()}
+                        </div>
+                        <div>
+                          <strong>Where:</strong> {order.pickup_location}
+                        </div>
+                      </div>
+                    )}
+                    {(order.approval_status === 'pending_approval' || !order.approval_status) && (
+                      <div style={{ marginTop: 'var(--space-2)', fontSize: '0.9rem', color: '#d97706' }}>
+                        <i className="fas fa-clock"></i> Waiting for Admin Approval...
+                      </div>
+                    )}
+
                     <div className="order-details">
                       <div className="order-total">{order.total} 🪙</div>
                       <div className="order-items">{order.items} item(s)</div>

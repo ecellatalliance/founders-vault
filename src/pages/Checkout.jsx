@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import Layout from '../components/Layout'
+import { supabase } from '../supabaseClient'
 
 const Checkout = () => {
     const navigate = useNavigate()
@@ -38,38 +39,55 @@ const Checkout = () => {
         setLoading(true)
 
         try {
-            // Mock order placement
-            await new Promise(resolve => setTimeout(resolve, 2000))
-
-            // Simulate VC deduction (assuming 1:1 conversion for simplicity if total <= balance)
+            // 1. Check Balance
             const currentBalance = user?.vc_balance || 0
 
-            // In a real app, backend handles this transaction atomically. 
-            // Here we update optimistic UI and profile db.
-            if (currentBalance >= total) {
-                await updateVCBalance(-total)
-            } else {
-                console.warn('Insufficient balance - proceeding as external payment order')
+            if (currentBalance < total) {
+                alert('Insufficient Venture Credits!')
+                setLoading(false)
+                return
             }
 
-            console.log('Order placed!', { items: cart, total, customer: formData })
-            console.log('Deducting VCs:', total)
+            // 2. Create Order in Supabase with 'pending_approval'
+            const { data: orderData, error: orderError } = await supabase
+                .from('orders')
+                .insert([{
+                    user_id: user.id,
+                    total_amount: total,
+                    status: 'processing', // Payment status
+                    approval_status: 'pending_approval', // Workflow status
+                    items: cart,
+                    shipping_address: formData,
+                    pickup_date: null,
+                    pickup_location: null,
+                    created_at: new Date().toISOString()
+                }])
+                .select()
+                .single()
+
+            if (orderError) throw orderError
+
+            // 3. Deduct VC (Optimistic)
+            await updateVCBalance(-total)
+
+            console.log('Order placed pending approval!', orderData)
 
             clearCart()
 
             navigate('/order-confirmation', {
                 state: {
                     order: {
-                        id: 'ORD' + Math.floor(Math.random() * 10000),
+                        id: orderData.id,
                         items: cart,
                         total: total,
-                        date: new Date()
+                        date: new Date(orderData.created_at),
+                        approval_status: 'pending_approval'
                     }
                 }
             })
         } catch (error) {
             console.error('Checkout error:', error)
-            alert('Failed to place order.')
+            alert('Failed to place order: ' + error.message)
         } finally {
             setLoading(false)
         }
