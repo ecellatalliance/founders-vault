@@ -10,7 +10,8 @@ const carouselSlides = [
         subtitle: 'UNBOX YOUR SURPRISE TODAY!',
         cta: 'SHOP NOW',
         link: '/shop?category=Mystery',
-        style: { background: 'linear-gradient(135deg, #020024 0%, #090979 35%, #00d4ff 100%)', color: '#fff' } // Deep Space Navy
+        style: { background: 'linear-gradient(135deg, #020024 0%, #090979 35%, #00d4ff 100%)', color: '#fff' }, // Deep Space Navy
+        buttonStyle: { background: '#fff', color: '#090979', borderColor: '#fff' }
     },
     {
         image: '/assets/images/products/Hoodies.png',
@@ -20,7 +21,8 @@ const carouselSlides = [
         subtitle: 'PREMIUM CAMPUS APPAREL',
         cta: 'EXPLORE',
         link: '/shop?category=Premium Apparel',
-        style: { background: 'linear-gradient(135deg, #FDB813 0%, #785C09 100%)', color: '#fff' } // Premium Gold
+        style: { background: 'linear-gradient(135deg, #FDB813 0%, #785C09 100%)', color: '#fff' }, // Premium Gold
+        buttonStyle: { background: '#fff', color: '#785C09', borderColor: '#fff' }
     },
     {
         image: '/assets/images/products/Gaming Headset.png',
@@ -30,7 +32,8 @@ const carouselSlides = [
         subtitle: 'IMMERSIVE AUDIO EXPERIENCE',
         cta: 'BUY NOW',
         link: '/shop?category=Tech Essentials',
-        style: { background: 'linear-gradient(to right, #000000 0%, #434343 100%)', color: '#FDB813' } // Black with Gold Text
+        style: { background: 'linear-gradient(to right, #000000 0%, #434343 100%)', color: '#FDB813' }, // Black with Gold Text
+        buttonStyle: { background: '#FDB813', color: '#000', borderColor: '#FDB813' }
     },
     {
         image: '/assets/images/products/Mechanical Keyboard.png',
@@ -40,7 +43,8 @@ const carouselSlides = [
         subtitle: 'MECHANICAL PRECISION',
         cta: 'GET YOURS',
         link: '/shop?category=Tech Essentials',
-        style: { background: 'linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%)', color: '#1e3a8a' } // Soft Holographic (Tech)
+        style: { background: 'linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%)', color: '#1e3a8a' }, // Soft Holographic (Tech)
+        buttonStyle: { background: '#1e3a8a', color: '#fff', borderColor: '#1e3a8a' }
     },
     {
         image: '/assets/images/products/Mentorship Session.png',
@@ -50,7 +54,8 @@ const carouselSlides = [
         subtitle: 'BOOK YOUR SESSION',
         cta: 'BOOK NOW',
         link: '/shop?category=Books & Learning',
-        style: { background: 'linear-gradient(to top, #09203f 0%, #537895 100%)', color: '#fff' } // Executive Blue/Grey
+        style: { background: 'linear-gradient(to top, #09203f 0%, #537895 100%)', color: '#fff' }, // Executive Blue/Grey
+        buttonStyle: { background: '#fff', color: '#09203f', borderColor: '#fff' }
     }
 ]
 
@@ -96,9 +101,9 @@ const HeroCarousel = () => {
                                     className="hero-btn-shop"
                                     onClick={() => navigate(slide.link)}
                                     style={{
-                                        borderColor: slide.style?.color || 'var(--accent-gold)',
-                                        color: slide.style?.color || 'var(--bg-primary)',
-                                        backgroundColor: slide.style?.color || 'var(--accent-gold)'
+                                        borderColor: slide.buttonStyle?.borderColor || 'var(--accent-gold)',
+                                        color: slide.buttonStyle?.color || 'var(--bg-primary)',
+                                        backgroundColor: slide.buttonStyle?.background || 'var(--accent-gold)'
                                     }}
                                 >
                                     {slide.cta}
