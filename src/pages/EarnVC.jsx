@@ -42,8 +42,8 @@ const EarnVC = () => {
                 <div className="container">
                     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
                         <div className="text-center mb-8">
-                            <h1 className="section-title">How to Earn VCs</h1>
-                            <p className="section-subtitle">
+                            <h1 className="section-title" style={{ color: 'var(--text-primary)' }}>How to Earn VCs</h1>
+                            <p className="section-subtitle" style={{ color: 'var(--text-secondary)' }}>
                                 Follow these simple steps to start earning Virtual Coins and shop for free!
                             </p>
                         </div>
@@ -68,9 +68,9 @@ const EarnVC = () => {
                                     <div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-2)' }}>
                                             <span style={{ fontSize: '1.5rem' }}>{step.icon}</span>
-                                            <h3 style={{ margin: 0, fontSize: 'var(--text-xl)' }}>{step.title}</h3>
+                                            <h3 style={{ margin: 0, fontSize: 'var(--text-xl)', color: 'var(--text-primary)' }}>{step.title}</h3>
                                         </div>
-                                        <p style={{ margin: 0 }}>{step.description}</p>
+                                        <p style={{ margin: 0, color: 'var(--text-primary)' }}>{step.description}</p>
                                         {step.action && (
                                             <div className="mt-4">
                                                 <a href="mailto:ecell@university.edu" className="btn btn-outline btn-sm">
