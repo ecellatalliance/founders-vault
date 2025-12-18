@@ -10,7 +10,7 @@ const carouselSlides = [
         subtitle: 'UNBOX YOUR SURPRISE TODAY!',
         cta: 'SHOP NOW',
         link: '/shop?category=Mystery',
-        style: { background: 'linear-gradient(135deg, #0f172a 0%, #334155 100%)', color: '#fbbf24' } // Navy/Slate (Premium Dark)
+        style: { background: 'linear-gradient(135deg, #020024 0%, #090979 35%, #00d4ff 100%)', color: '#fff' } // Deep Space Navy
     },
     {
         image: '/assets/images/products/Hoodies.png',
@@ -20,7 +20,7 @@ const carouselSlides = [
         subtitle: 'PREMIUM CAMPUS APPAREL',
         cta: 'EXPLORE',
         link: '/shop?category=Premium Apparel',
-        style: { background: 'linear-gradient(135deg, #fbbf24 0%, #d97706 100%)', color: '#fff' } // Gold/Amber (Brand Accent)
+        style: { background: 'linear-gradient(135deg, #FDB813 0%, #785C09 100%)', color: '#fff' } // Premium Gold
     },
     {
         image: '/assets/images/products/Gaming Headset.png',
@@ -30,7 +30,7 @@ const carouselSlides = [
         subtitle: 'IMMERSIVE AUDIO EXPERIENCE',
         cta: 'BUY NOW',
         link: '/shop?category=Tech Essentials',
-        style: { background: 'linear-gradient(to right, #000000, #1a1a1a)', color: '#fbbf24' } // Pure Black (Gaming)
+        style: { background: 'linear-gradient(to right, #000000 0%, #434343 100%)', color: '#FDB813' } // Black with Gold Text
     },
     {
         image: '/assets/images/products/Mechanical Keyboard.png',
@@ -40,7 +40,7 @@ const carouselSlides = [
         subtitle: 'MECHANICAL PRECISION',
         cta: 'GET YOURS',
         link: '/shop?category=Tech Essentials',
-        style: { background: 'linear-gradient(120deg, #f1f5f9 0%, #cbd5e1 100%)', color: '#0f172a' } // Silver/Grey (Clean Tech)
+        style: { background: 'linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%)', color: '#1e3a8a' } // Soft Holographic (Tech)
     },
     {
         image: '/assets/images/products/Mentorship Session.png',
@@ -50,7 +50,7 @@ const carouselSlides = [
         subtitle: 'BOOK YOUR SESSION',
         cta: 'BOOK NOW',
         link: '/shop?category=Books & Learning',
-        style: { background: 'linear-gradient(to top, #1e3a8a 0%, #172554 100%)', color: '#fbbf24' } // Deep Royal Blue (Professional)
+        style: { background: 'linear-gradient(to top, #09203f 0%, #537895 100%)', color: '#fff' } // Executive Blue/Grey
     }
 ]
 
