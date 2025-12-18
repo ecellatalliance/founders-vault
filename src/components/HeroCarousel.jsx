@@ -10,7 +10,7 @@ const carouselSlides = [
         subtitle: 'UNBOX YOUR SURPRISE TODAY!',
         cta: 'SHOP NOW',
         link: '/shop?category=Mystery',
-        style: { background: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)' } // Deep Mystery
+        style: { background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: '#fff' } // Deep Purple
     },
     {
         image: '/assets/images/products/Hoodies.png',
@@ -20,7 +20,7 @@ const carouselSlides = [
         subtitle: 'PREMIUM CAMPUS APPAREL',
         cta: 'EXPLORE',
         link: '/shop?category=Premium Apparel',
-        style: { background: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)', color: '#333' } // Pastel Vibe
+        style: { background: 'linear-gradient(to right, #ff512f, #dd2476)', color: '#fff' } // Vibrant Red/Pink
     },
     {
         image: '/assets/images/products/Gaming Headset.png',
@@ -30,7 +30,7 @@ const carouselSlides = [
         subtitle: 'IMMERSIVE AUDIO EXPERIENCE',
         cta: 'BUY NOW',
         link: '/shop?category=Tech Essentials',
-        style: { background: 'linear-gradient(to right, #000000, #434343)' } // Dark Gamer
+        style: { background: 'linear-gradient(to right, #0f2027, #203a43, #2c5364)', color: '#fff' } // Dark Tech Blue
     },
     {
         image: '/assets/images/products/Mechanical Keyboard.png',
@@ -40,7 +40,7 @@ const carouselSlides = [
         subtitle: 'MECHANICAL PRECISION',
         cta: 'GET YOURS',
         link: '/shop?category=Tech Essentials',
-        style: { background: 'linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%)', color: '#1a1a1a' } // Fresh Green
+        style: { background: 'linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)', color: '#1a1a1a' } // Mint/Blue (Dark Text)
     },
     {
         image: '/assets/images/products/Mentorship Session.png',
@@ -50,7 +50,7 @@ const carouselSlides = [
         subtitle: 'BOOK YOUR SESSION',
         cta: 'BOOK NOW',
         link: '/shop?category=Books & Learning',
-        style: { background: 'linear-gradient(to top, #30cfd0 0%, #330867 100%)' } // Professional Blue/Purple
+        style: { background: 'linear-gradient(to top, #4481eb 0%, #04befe 100%)', color: '#fff' } // Bright Blue
     }
 ]
 
