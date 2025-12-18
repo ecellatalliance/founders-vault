@@ -16,7 +16,9 @@ import Admin from './pages/Admin'
 import ProductDetails from './pages/ProductDetails'
 import Checkout from './pages/Checkout'
 import AdminLogin from './pages/AdminLogin'
+import AdminLogin from './pages/AdminLogin'
 import OrderConfirmation from './pages/OrderConfirmation'
+import Support from './pages/Support'
 
 
 import ProtectedRoute from './components/ProtectedRoute'
@@ -35,6 +37,7 @@ function App() {
                             <Route path="/community" element={<Community />} />
                             <Route path="/admin-login" element={<AdminLogin />} />
                             <Route path="/product/:id" element={<ProductDetails />} />
+                            <Route path="/support" element={<Support />} />
 
                             {/* Protected Routes */}
                             <Route path="/dashboard" element={

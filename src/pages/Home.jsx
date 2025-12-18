@@ -148,15 +148,11 @@ const Home = () => {
                             students. Founders Vault is our initiative to provide exclusive deals and support student-led ventures.
                         </p>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--space-4)', flexWrap: 'wrap' }}>
-                            <a href="https://ecell.in" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-                                <i className="fas fa-globe"></i>
-                                Visit Website
-                            </a>
-                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+                            <a href="https://www.linkedin.com/in/e-cell-alliance-university-a41113392/" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                                 <i className="fab fa-linkedin"></i>
                                 LinkedIn
                             </a>
-                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+                            <a href="https://www.instagram.com/ecellatalliance/" target="_blank" rel="noopener noreferrer" className="btn btn-outline">
                                 <i className="fab fa-instagram"></i>
                                 Instagram
                             </a>
