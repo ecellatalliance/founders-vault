@@ -26,7 +26,11 @@ const Admin = () => {
             totalUsers: 128,
             activeProducts: 24
         })
-    }, [isAuthenticated, user, navigate])
+
+        if (activeSection === 'users') {
+            fetchUsers()
+        }
+    }, [isAuthenticated, user, navigate, activeSection])
 
     if (!isAuthenticated || !user?.isAdmin) return null
 
@@ -288,34 +292,80 @@ const Admin = () => {
         </section>
     )
 
-    const handleAddUser = async (e) => {
-        e.preventDefault()
-        const form = e.target
-        // Note: Real user creation requires Supabase Auth API interactively or Admin API (backend).
-        // Here we will just create a Profile entry for simulation/management purposes
-        // or guide the admin.
+    const [users, setUsers] = useState([])
+    const fetchUsers = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .order('created_at', { ascending: false })
+            if (error) throw error
+            setUsers(data || [])
+        } catch (error) {
+            console.error('Error fetching users:', error)
+        }
+    }
 
-        alert("To create a new login-able user, please use the Registration page or Supabase Dashboard. \n\nAdding users directly via Admin Console requires 'Service Role' keys which are not safe for client-side.")
+    const handleUpdateBalance = async (userId, currentBalance) => {
+        const newBalanceStr = prompt(`Enter new VC Balance for user (Current: ${currentBalance}):`, currentBalance)
+        if (newBalanceStr === null) return
+        const newBalance = parseInt(newBalanceStr)
+        if (isNaN(newBalance)) return alert("Invalid number")
+
+        try {
+            const { error } = await supabase
+                .from('profiles')
+                .update({ vc_balance: newBalance })
+                .eq('id', userId)
+
+            if (error) throw error
+            setUsers(users.map(u => u.id === userId ? { ...u, vc_balance: newBalance } : u))
+            alert("Balance updated!")
+        } catch (error) {
+            console.error("Error updating balance:", error)
+            alert("Error: " + error.message)
+        }
     }
 
     const renderUsers = () => (
         <section className="section active">
             <div className="admin-header">
                 <h1 className="admin-title">Users</h1>
-                <p className="admin-subtitle">Manage user accounts</p>
+                <p className="admin-subtitle">Manage user accounts & Balances</p>
             </div>
 
-            <div className="admin-card">
-                <div className="empty-state" style={{ padding: 'var(--space-6)' }}>
-                    <i className="fas fa-user-shield" style={{ fontSize: '3rem', marginBottom: 'var(--space-4)' }}></i>
-                    <h3>User Management</h3>
-                    <p>For security, new users should register themselves via the Login page.</p>
-                    <p>You can manage existing users (ban/promote) directly in the Supabase Dashboard &gt; Authentication.</p>
-
-                    <a href="https://supabase.com/dashboard/project/ydusbkvnkxtfudleiukk/auth/users" target="_blank" className="btn btn-outline" style={{ marginTop: 'var(--space-4)' }}>
-                        <i className="fas fa-external-link-alt"></i> Go to Supabase Auth
-                    </a>
-                </div>
+            <div className="admin-card" style={{ maxWidth: '100%', overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead>
+                        <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>
+                            <th style={{ padding: '8px' }}>Name</th>
+                            <th style={{ padding: '8px' }}>Email</th>
+                            <th style={{ padding: '8px' }}>Balance (VC)</th>
+                            <th style={{ padding: '8px' }}>Role</th>
+                            <th style={{ padding: '8px' }}>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map(u => (
+                            <tr key={u.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                <td style={{ padding: '8px' }}>{u.name}</td>
+                                <td style={{ padding: '8px' }}>{u.email}</td>
+                                <td style={{ padding: '8px' }}>{u.vc_balance} 🪙</td>
+                                <td style={{ padding: '8px' }}>
+                                    {u.is_admin ? <span className="badge badge-primary">Admin</span> : 'User'}
+                                </td>
+                                <td style={{ padding: '8px' }}>
+                                    <button
+                                        className="btn btn-sm btn-outline"
+                                        onClick={() => handleUpdateBalance(u.id, u.vc_balance)}
+                                    >
+                                        Edit Balance
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </section>
     )

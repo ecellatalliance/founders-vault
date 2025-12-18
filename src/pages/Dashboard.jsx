@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Layout from '../components/Layout'
+import { supabase } from '../supabaseClient'
 
 const Dashboard = () => {
   const { user, isAuthenticated } = useAuth()
@@ -15,38 +16,43 @@ const Dashboard = () => {
       return
     }
 
-    // Load mock data
-    loadMockData()
-  }, [isAuthenticated, navigate])
+    // Load real data
+    const fetchDashboardData = async () => {
+      if (!user) return
 
-  const loadMockData = () => {
-    // Mock badges
-    const mockBadges = [
-      { icon: '🎓', name: 'First Purchase', description: 'Made your first order' },
-      { icon: '🏆', name: 'Top Shopper', description: 'Spent over 1000 VC' },
-      { icon: '⭐', name: 'Early Adopter', description: 'Joined in the first month' }
-    ]
-    setBadges(mockBadges)
+      try {
+        const { data: ordersData, error: ordersError } = await supabase
+          .from('orders')
+          .select('*')
+          .eq('user_id', user.id) // Filter by current user
+          .order('created_at', { ascending: false })
 
-    // Mock orders
-    const mockOrders = [
-      {
-        id: 'ORD12345',
-        date: new Date(Date.now() - 86400000 * 2),
-        status: 'completed',
-        total: 450,
-        items: 3
-      },
-      {
-        id: 'ORD12346',
-        date: new Date(Date.now() - 86400000 * 5),
-        status: 'processing',
-        total: 890,
-        items: 2
+        if (ordersError) throw ordersError
+
+        // Format orders from DB
+        const formattedOrders = (ordersData || []).map(order => ({
+          id: order.id,
+          date: new Date(order.created_at),
+          status: order.status || 'pending',
+          total: order.total_amount,
+          items: order.items ? order.items.length : 0,
+          // store original items for detail view if needed
+          _items: order.items
+        }))
+        setOrders(formattedOrders)
+
+        // Badges - Placeholder for now or fetch if table exists
+        setBadges([
+          { icon: '🎓', name: 'Member', description: 'Joined the Founders Vault' }
+        ])
+
+      } catch (error) {
+        console.error("Error loading dashboard:", error)
       }
-    ]
-    setOrders(mockOrders)
-  }
+    }
+
+    fetchDashboardData()
+  }, [isAuthenticated, navigate, user])
 
   if (!isAuthenticated) return null
 

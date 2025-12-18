@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { supabase } from '../supabaseClient'
+import { useAuth } from './AuthContext'
 
 const CartContext = createContext()
 
@@ -13,15 +15,44 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([])
     const [wishlist, setWishlist] = useState([])
+    const { user, isAuthenticated } = useAuth()
 
     useEffect(() => {
-        // Load cart and wishlist from localStorage
-        const savedCart = localStorage.getItem('spp_cart')
-        const savedWishlist = localStorage.getItem('spp_wishlist')
+        if (isAuthenticated && user) {
+            // Load from DB if available (assuming profile has cart/wishlist columns)
+            if (user.cart) setCart(user.cart)
+            if (user.wishlist) setWishlist(user.wishlist)
+        } else {
+            // Load from localStorage
+            const savedCart = localStorage.getItem('spp_cart')
+            const savedWishlist = localStorage.getItem('spp_wishlist')
 
-        if (savedCart) setCart(JSON.parse(savedCart))
-        if (savedWishlist) setWishlist(JSON.parse(savedWishlist))
-    }, [])
+            if (savedCart) setCart(JSON.parse(savedCart))
+            if (savedWishlist) setWishlist(JSON.parse(savedWishlist))
+        }
+    }, [isAuthenticated, user])
+
+    const saveCart = async (newCart) => {
+        localStorage.setItem('spp_cart', JSON.stringify(newCart))
+        if (isAuthenticated && user) {
+            try {
+                await supabase.from('profiles').update({ cart: newCart }).eq('id', user.id)
+            } catch (err) {
+                console.error("Failed to sync cart to DB (ensure 'cart' column exists):", err)
+            }
+        }
+    }
+
+    const saveWishlist = async (newWishlist) => {
+        localStorage.setItem('spp_wishlist', JSON.stringify(newWishlist))
+        if (isAuthenticated && user) {
+            try {
+                await supabase.from('profiles').update({ wishlist: newWishlist }).eq('id', user.id)
+            } catch (err) {
+                console.error("Failed to sync wishlist to DB (ensure 'wishlist' column exists):", err)
+            }
+        }
+    }
 
     const addToCart = (product, quantity = 1) => {
         setCart(prevCart => {
@@ -38,7 +69,7 @@ export const CartProvider = ({ children }) => {
                 newCart = [...prevCart, { ...product, quantity }]
             }
 
-            localStorage.setItem('spp_cart', JSON.stringify(newCart))
+            saveCart(newCart)
             return newCart
         })
     }
@@ -46,7 +77,7 @@ export const CartProvider = ({ children }) => {
     const removeFromCart = (productId) => {
         setCart(prevCart => {
             const newCart = prevCart.filter(item => item.id !== productId)
-            localStorage.setItem('spp_cart', JSON.stringify(newCart))
+            saveCart(newCart)
             return newCart
         })
     }
@@ -61,14 +92,14 @@ export const CartProvider = ({ children }) => {
             const newCart = prevCart.map(item =>
                 item.id === productId ? { ...item, quantity } : item
             )
-            localStorage.setItem('spp_cart', JSON.stringify(newCart))
+            saveCart(newCart)
             return newCart
         })
     }
 
     const clearCart = () => {
         setCart([])
-        localStorage.removeItem('spp_cart')
+        saveCart([])
     }
 
     const getCartTotal = () => {
@@ -86,7 +117,7 @@ export const CartProvider = ({ children }) => {
                 return prevWishlist
             }
             const newWishlist = [...prevWishlist, product]
-            localStorage.setItem('spp_wishlist', JSON.stringify(newWishlist))
+            saveWishlist(newWishlist)
             return newWishlist
         })
     }
@@ -94,7 +125,7 @@ export const CartProvider = ({ children }) => {
     const removeFromWishlist = (productId) => {
         setWishlist(prevWishlist => {
             const newWishlist = prevWishlist.filter(item => item.id !== productId)
-            localStorage.setItem('spp_wishlist', JSON.stringify(newWishlist))
+            saveWishlist(newWishlist)
             return newWishlist
         })
     }
@@ -113,7 +144,7 @@ export const CartProvider = ({ children }) => {
 
     const clearWishlist = () => {
         setWishlist([])
-        localStorage.removeItem('spp_wishlist')
+        saveWishlist([])
     }
 
     const value = {
