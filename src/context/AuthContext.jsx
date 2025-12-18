@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
                 .single()
 
             if (data) {
-                setUser({ ...authUser, ...data }) // Merge auth data with profile data
+                setUser({ ...authUser, ...data, isAdmin: data.is_admin }) // Merge and normalize admin flag
             } else {
                 // Return basic user if profile missing (shouldn't happen if flow is correct)
                 setUser(authUser)

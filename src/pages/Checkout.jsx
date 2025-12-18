@@ -41,17 +41,22 @@ const Checkout = () => {
             // Mock order placement
             await new Promise(resolve => setTimeout(resolve, 2000))
 
-            // Logic to deduct VC balance if paying with VC
-            // For now assuming all payments are VC or external (just creating order)
+            // Simulate VC deduction (assuming 1:1 conversion for simplicity if total <= balance)
+            const currentBalance = user?.vc_balance || 0
 
-            // In real app with Supabase:
-            // await supabase.from('orders').insert({ ... })
+            // In a real app, backend handles this transaction atomically. 
+            // Here we update optimistic UI and profile db.
+            if (currentBalance >= total) {
+                await updateVCBalance(-total)
+            } else {
+                console.warn('Insufficient balance - proceeding as external payment order')
+            }
 
             console.log('Order placed!', { items: cart, total, customer: formData })
+            console.log('Deducting VCs:', total)
 
             clearCart()
-            // Redirect to success or history
-            // Redirect to success or history
+
             navigate('/order-confirmation', {
                 state: {
                     order: {

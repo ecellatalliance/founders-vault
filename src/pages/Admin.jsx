@@ -99,6 +99,7 @@ const Admin = () => {
             price: parseFloat(form.price.value),
             category: form.category.value,
             image_url: form.image_url.value,
+            source_link: form.source_link.value, // Added source link
             stock: parseInt(form.stock.value),
             rating: 4.5, // Default start rating
             reviews: 0,
@@ -116,6 +117,66 @@ const Admin = () => {
         }
     }
 
+    const [products, setProducts] = useState([])
+
+    useEffect(() => {
+        if (activeSection === 'products') {
+            fetchProducts()
+        }
+    }, [activeSection])
+
+    const fetchProducts = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('products')
+                .select('*')
+                .order('id', { ascending: false })
+
+            if (error) throw error
+            setProducts(data || [])
+        } catch (error) {
+            console.error('Error fetching products:', error)
+        }
+    }
+
+    const handleDeleteProduct = async (id) => {
+        if (!window.confirm('Are you sure you want to delete this product?')) return
+
+        try {
+            const { error } = await supabase
+                .from('products')
+                .delete()
+                .eq('id', id)
+
+            if (error) throw error
+            setProducts(products.filter(p => p.id !== id))
+            alert('Product deleted!')
+        } catch (error) {
+            console.error('Error deleting product:', error)
+            alert('Error deleting product: ' + error.message)
+        }
+    }
+
+    const handleDeleteAllProducts = async () => {
+        const confirmStr = prompt("Type 'DELETE' to confirm deleting ALL products (cannot be undone):")
+        if (confirmStr !== 'DELETE') return
+
+        try {
+            // Fetch all IDs first? Or try bulk delete
+            const { error } = await supabase
+                .from('products')
+                .delete()
+                .neq('id', 0) // Delete all
+
+            if (error) throw error
+            setProducts([])
+            alert('All products deleted!')
+        } catch (error) {
+            console.error('Error deleting all products:', error)
+            alert('Error deleting products: ' + error.message)
+        }
+    }
+
     const renderProducts = () => (
         <section className="section active">
             <div className="admin-header">
@@ -123,11 +184,59 @@ const Admin = () => {
                     <h1 className="admin-title">Products</h1>
                     <p className="admin-subtitle">Manage your product catalog</p>
                 </div>
+                <div>
+                    <button onClick={handleDeleteAllProducts} className="btn btn-outline" style={{ borderColor: 'red', color: 'red' }}>
+                        <i className="fas fa-trash"></i> Delete ALL
+                    </button>
+                </div>
+            </div>
+
+            <div className="admin-card" style={{ maxWidth: '100%', marginBottom: 'var(--space-6)' }}>
+                <h3 style={{ marginBottom: 'var(--space-4)' }}>Product List ({products.length})</h3>
+                <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>
+                                <th style={{ padding: '8px' }}>Name</th>
+                                <th style={{ padding: '8px' }}>Price</th>
+                                <th style={{ padding: '8px' }}>Category</th>
+                                <th style={{ padding: '8px' }}>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {products.length === 0 ? (
+                                <tr><td colSpan="4" style={{ padding: '10px', textAlign: 'center' }}>No products found.</td></tr>
+                            ) : (
+                                products.map(p => (
+                                    <tr key={p.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                        <td style={{ padding: '8px' }}>{p.name}</td>
+                                        <td style={{ padding: '8px' }}>{p.price}</td>
+                                        <td style={{ padding: '8px' }}>{p.category}</td>
+                                        <td style={{ padding: '8px' }}>
+                                            <button
+                                                onClick={() => handleDeleteProduct(p.id)}
+                                                className="btn btn-sm btn-outline"
+                                                style={{ color: 'red', borderColor: 'red' }}
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div className="admin-card" style={{ maxWidth: '800px', margin: '0 0' }}>
                 <h3 style={{ marginBottom: 'var(--space-4)' }}>Add New Product</h3>
                 <form className="login-form" onSubmit={handleAddProduct}>
+                    {/* Reuse existing form content... but wait, replace_file_content replaces the BLOCK. 
+                        I need to include the form content in the ReplacementContent or reference it. 
+                        The block I selected (StartLine 120, EndLine 181) includes the whole renderProducts.
+                        I will copy-paste the form back in.
+                    */}
                     <div className="form-group">
                         <label className="form-label">Product Name</label>
                         <input name="name" className="form-input" required placeholder="e.g. Wireless Headphones" />
@@ -152,18 +261,18 @@ const Admin = () => {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
                         <div className="form-group">
                             <label className="form-label">Category</label>
-                            <select name="category" className="form-input" required>
-                                <option value="Tech Essentials">Tech Essentials</option>
-                                <option value="Premium Apparel">Premium Apparel</option>
-                                <option value="The Launchpad">The Launchpad</option>
-                                <option value="Home Hacks">Home Hacks</option>
-                                <option value="Stationery">Stationery</option>
-                            </select>
+                            <input name="category" className="form-input" required placeholder="e.g. Electronics" />
                         </div>
                         <div className="form-group">
                             <label className="form-label">Image URL</label>
                             <input name="image_url" className="form-input" required placeholder="https://..." />
                         </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label">Source Link (Amazon/Flipkart)</label>
+                        <input name="source_link" className="form-input" placeholder="https://amazon.in/..." />
+                        <small style={{ color: 'var(--text-secondary)' }}>Admin-only link to purchase items for fulfillment.</small>
                     </div>
 
                     <div className="form-group">
@@ -211,15 +320,30 @@ const Admin = () => {
         </section>
     )
 
-    const renderOrders = () => {
-        // Mock data for admin view
-        const adminOrders = [
-            { id: 'ORD5512', customer: 'John Doe', date: '2025-12-15', total: 1200, status: 'Processing' },
-            { id: 'ORD5513', customer: 'Jane Smith', date: '2025-12-14', total: 450, status: 'Shipped' },
-            { id: 'ORD5514', customer: 'Bob Johnson', date: '2025-12-14', total: 2200, status: 'Delivered' },
-            { id: 'ORD5515', customer: 'Alice Brown', date: '2025-12-13', total: 850, status: 'Processing' }
-        ]
+    const [orders, setOrders] = useState([])
 
+    useEffect(() => {
+        if (activeSection === 'orders') {
+            fetchOrders()
+        }
+    }, [activeSection])
+
+    const fetchOrders = async () => {
+        try {
+            // Fetch orders with all columns
+            const { data, error } = await supabase
+                .from('orders')
+                .select('*')
+                .order('created_at', { ascending: false })
+
+            if (error) throw error
+            setOrders(data || [])
+        } catch (error) {
+            console.error('Error fetching orders:', error)
+        }
+    }
+
+    const renderOrders = () => {
         return (
             <section className="section active">
                 <div className="admin-header">
@@ -233,29 +357,64 @@ const Admin = () => {
                             <tr style={{ background: 'var(--bg-secondary)', textAlign: 'left' }}>
                                 <th style={{ padding: 'var(--space-3)' }}>Order ID</th>
                                 <th style={{ padding: 'var(--space-3)' }}>Customer</th>
-                                <th style={{ padding: 'var(--space-3)' }}>Date</th>
                                 <th style={{ padding: 'var(--space-3)' }}>Total</th>
                                 <th style={{ padding: 'var(--space-3)' }}>Status</th>
+                                <th style={{ padding: 'var(--space-3)' }}>Fulfillment</th>
                                 <th style={{ padding: 'var(--space-3)' }}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {adminOrders.map(order => (
-                                <tr key={order.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                    <td style={{ padding: 'var(--space-3)' }}>{order.id}</td>
-                                    <td style={{ padding: 'var(--space-3)' }}>{order.customer}</td>
-                                    <td style={{ padding: 'var(--space-3)' }}>{order.date}</td>
-                                    <td style={{ padding: 'var(--space-3)' }}>{order.total} 🪙</td>
-                                    <td style={{ padding: 'var(--space-3)' }}>
-                                        <span className={`order-status status-${order.status.toLowerCase()}`}>{order.status}</span>
-                                    </td>
-                                    <td style={{ padding: 'var(--space-3)' }}>
-                                        <button className="btn btn-outline btn-sm" onClick={() => alert(`View details for ${order.id}`)}>
-                                            View
-                                        </button>
-                                    </td>
+                            {orders.length === 0 ? (
+                                <tr>
+                                    <td colSpan="6" style={{ padding: 'var(--space-4)', textAlign: 'center' }}>No orders found.</td>
                                 </tr>
-                            ))}
+                            ) : (
+                                orders.map(order => (
+                                    <tr key={order.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                        <td style={{ padding: 'var(--space-3)' }}>#{order.id}</td>
+                                        <td style={{ padding: 'var(--space-3)' }}>
+                                            {order.shipping_address?.name || 'Guest'}
+                                            <div style={{ fontSize: '0.8em', color: 'var(--text-secondary)' }}>
+                                                {new Date(order.created_at).toLocaleDateString()}
+                                            </div>
+                                        </td>
+                                        <td style={{ padding: 'var(--space-3)' }}>{order.total_amount} 🪙</td>
+                                        <td style={{ padding: 'var(--space-3)' }}>
+                                            <span className={`order-status status-${(order.status || 'pending').toLowerCase()}`}>
+                                                {order.status || 'Pending'}
+                                            </span>
+                                        </td>
+                                        <td style={{ padding: 'var(--space-3)' }}>
+                                            {/* Show link for first item if available */}
+                                            {order.items && order.items.length > 0 ? (
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                    {order.items.map((item, idx) => (
+                                                        item.source_link && (
+                                                            <a
+                                                                key={idx}
+                                                                href={item.source_link}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="btn btn-sm btn-outline"
+                                                                title={item.name}
+                                                            >
+                                                                <i className="fas fa-external-link-alt"></i> Buy {item.name.substring(0, 10)}...
+                                                            </a>
+                                                        )
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <span style={{ color: 'var(--text-secondary)' }}>-</span>
+                                            )}
+                                        </td>
+                                        <td style={{ padding: 'var(--space-3)' }}>
+                                            <button className="btn btn-outline btn-sm" onClick={() => alert(`Details: \n${JSON.stringify(order.items, null, 2)}`)}>
+                                                View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
