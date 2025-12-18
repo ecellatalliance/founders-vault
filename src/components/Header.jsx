@@ -41,8 +41,17 @@ const Header = () => {
                 <div className="container">
                     <div className="header-main-content">
                         {/* Logo */}
-                        <Link to="/" className="logo">
+                        <Link to="/" className="logo" style={{ display: 'flex', flexDirection: 'column', textDecoration: 'none' }}>
                             <img src="/logo.png" alt="Founders Vault" className="logo-img" />
+                            <span style={{
+                                fontSize: '0.75rem',
+                                color: 'var(--text-secondary)',
+                                marginTop: '-4px',
+                                letterSpacing: '0.5px',
+                                fontStyle: 'italic'
+                            }}>
+                                Where Innovation Meets Opportunity
+                            </span>
                         </Link>
 
                         {/* Search Bar */}

@@ -9,7 +9,8 @@ const carouselSlides = [
         title2: 'MYSTERY',
         subtitle: 'UNBOX YOUR SURPRISE TODAY!',
         cta: 'SHOP NOW',
-        link: '/shop?category=Mystery'
+        link: '/shop?category=Mystery',
+        style: { background: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)' } // Deep Mystery
     },
     {
         image: '/assets/images/products/Hoodies.png',
@@ -18,7 +19,8 @@ const carouselSlides = [
         title2: 'VIBE',
         subtitle: 'PREMIUM CAMPUS APPAREL',
         cta: 'EXPLORE',
-        link: '/shop?category=Premium Apparel'
+        link: '/shop?category=Premium Apparel',
+        style: { background: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)', color: '#333' } // Pastel Vibe
     },
     {
         image: '/assets/images/products/Gaming Headset.png',
@@ -27,7 +29,8 @@ const carouselSlides = [
         title2: 'YOUR GAME',
         subtitle: 'IMMERSIVE AUDIO EXPERIENCE',
         cta: 'BUY NOW',
-        link: '/shop?category=Tech Essentials'
+        link: '/shop?category=Tech Essentials',
+        style: { background: 'linear-gradient(to right, #000000, #434343)' } // Dark Gamer
     },
     {
         image: '/assets/images/products/Mechanical Keyboard.png',
@@ -36,7 +39,8 @@ const carouselSlides = [
         title2: 'STYLE',
         subtitle: 'MECHANICAL PRECISION',
         cta: 'GET YOURS',
-        link: '/shop?category=Tech Essentials'
+        link: '/shop?category=Tech Essentials',
+        style: { background: 'linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%)', color: '#1a1a1a' } // Fresh Green
     },
     {
         image: '/assets/images/products/Mentorship Session.png',
@@ -45,7 +49,8 @@ const carouselSlides = [
         title2: 'LEADERS',
         subtitle: 'BOOK YOUR SESSION',
         cta: 'BOOK NOW',
-        link: '/shop?category=Books & Learning'
+        link: '/shop?category=Books & Learning',
+        style: { background: 'linear-gradient(to top, #30cfd0 0%, #330867 100%)' } // Professional Blue/Purple
     }
 ]
 
@@ -78,18 +83,23 @@ const HeroCarousel = () => {
                     style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                 >
                     {carouselSlides.map((slide, index) => (
-                        <div key={index} className="hero-carousel-slide">
+                        <div key={index} className="hero-carousel-slide" style={slide.style}>
                             <div className="hero-image-container">
                                 <img src={slide.image} alt={slide.title2} />
                             </div>
                             <div className="hero-content-container">
-                                <div className="hero-text-explore">{slide.title1}</div>
-                                <div className="hero-text-the">{slide.accent}</div>
-                                <div className="hero-text-latest">{slide.title2}</div>
-                                <div className="hero-text-sub">{slide.subtitle}</div>
+                                <div className="hero-text-explore" style={{ color: slide.style?.color || 'inherit' }}>{slide.title1}</div>
+                                <div className="hero-text-the" style={{ color: slide.style?.color || 'var(--accent-gold)' }}>{slide.accent}</div>
+                                <div className="hero-text-latest" style={{ color: slide.style?.color || 'inherit' }}>{slide.title2}</div>
+                                <div className="hero-text-sub" style={{ color: slide.style?.color || 'inherit' }}>{slide.subtitle}</div>
                                 <button
                                     className="hero-btn-shop"
                                     onClick={() => navigate(slide.link)}
+                                    style={{
+                                        borderColor: slide.style?.color || 'var(--accent-gold)',
+                                        color: slide.style?.color || 'var(--bg-primary)',
+                                        backgroundColor: slide.style?.color || 'var(--accent-gold)'
+                                    }}
                                 >
                                     {slide.cta}
                                 </button>
