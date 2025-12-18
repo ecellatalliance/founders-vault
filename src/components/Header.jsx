@@ -166,7 +166,7 @@ const Header = () => {
                                 )}
                                 <li><Link to="/community" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Announcements</Link></li>
                                 <li><Link to="/earn-vc" className="nav-link" onClick={() => setMobileMenuOpen(false)}>How to earn VCs</Link></li>
-                                <li><a href="#about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About E-Cell</a></li>
+                                <li><Link to="/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About E-Cell</Link></li>
                             </ul>
 
                             <button className="theme-toggle" onClick={toggleTheme}>

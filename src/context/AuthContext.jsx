@@ -50,9 +50,14 @@ export const AuthProvider = ({ children }) => {
                 .single()
 
             if (data) {
-                setUser({ ...authUser, ...data, isAdmin: data.is_admin }) // Merge and normalize admin flag
+                // Normalize data structure for frontend
+                setUser({
+                    ...authUser,
+                    ...data,
+                    isAdmin: data.is_admin,
+                    vcBalance: data.vc_balance // Fix: Map snake_case to camelCase
+                })
             } else {
-                // Return basic user if profile missing (shouldn't happen if flow is correct)
                 setUser(authUser)
             }
         } catch (error) {
@@ -109,8 +114,8 @@ export const AuthProvider = ({ children }) => {
 
         const newBalance = (user.vc_balance || 0) + amount
 
-        // Optimistic update
-        setUser(prev => ({ ...prev, vc_balance: newBalance }))
+        // Optimistic update - update both fields to be safe
+        setUser(prev => ({ ...prev, vc_balance: newBalance, vcBalance: newBalance }))
 
         const { error } = await supabase
             .from('profiles')
