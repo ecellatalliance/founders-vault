@@ -23,15 +23,22 @@
     width: 100%;
     /* No fixed height here, let flex handle it or set a min-height */
     height: 300px;
-    background-color: #f3f4f6;
+    background-color: #fff;
+    /* White background for better product visibility */
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .product-card-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    /* Ensure full image is visible */
     transition: transform 0.5s ease;
+    padding: var(--space-4);
+    /* Add padding so it doesn't touch edges */
 }
 
 .product-card:hover .product-card-image {
