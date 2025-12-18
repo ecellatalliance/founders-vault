@@ -18,19 +18,53 @@ const Admin = () => {
     useEffect(() => {
         if (!isAuthenticated || !user?.isAdmin) {
             navigate('/dashboard')
+            return
         }
-        // Load mock stats
-        setStats({
-            totalSales: 15420,
-            totalOrders: 45,
-            totalUsers: 128,
-            activeProducts: 24
-        })
+
+        // Fetch real-time stats
+        fetchStats()
 
         if (activeSection === 'users') {
             fetchUsers()
         }
     }, [isAuthenticated, user, navigate, activeSection])
+
+    const fetchStats = async () => {
+        try {
+            // 1. Total Orders & Sales
+            const { data: ordersData, error: ordersError } = await supabase
+                .from('orders')
+                .select('total_amount, id')
+
+            if (ordersError) throw ordersError
+
+            const totalOrders = ordersData.length
+            const totalSales = ordersData.reduce((sum, order) => sum + (parseFloat(order.total_amount) || 0), 0)
+
+            // 2. Total Users
+            const { count: usersCount, error: usersError } = await supabase
+                .from('profiles')
+                .select('*', { count: 'exact', head: true })
+
+            if (usersError) throw usersError
+
+            // 3. Active Products
+            const { count: productsCount, error: productsError } = await supabase
+                .from('products')
+                .select('*', { count: 'exact', head: true })
+
+            if (productsError) throw productsError
+
+            setStats({
+                totalSales,
+                totalOrders,
+                totalUsers: usersCount || 0,
+                activeProducts: productsCount || 0
+            })
+        } catch (error) {
+            console.error("Error fetching admin stats:", error)
+        }
+    }
 
     if (!isAuthenticated || !user?.isAdmin) return null
 
