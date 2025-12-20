@@ -50,7 +50,7 @@ const Header = () => {
                                 letterSpacing: '0.5px',
                                 fontStyle: 'italic'
                             }}>
-                                Where Innovation Meets Opportunity
+                                First ever rewards store at Alliance University
                             </span>
                         </Link>
 
