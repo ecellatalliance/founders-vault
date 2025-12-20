@@ -27,6 +27,9 @@ const Admin = () => {
         if (activeSection === 'users') {
             fetchUsers()
         }
+        if (activeSection === 'announcements') {
+            fetchAnnouncements()
+        }
     }, [isAuthenticated, user, navigate, activeSection])
 
     const fetchStats = async () => {
@@ -149,6 +152,8 @@ const Admin = () => {
             if (error) throw error
             alert('✅ Product added successfully!')
             form.reset()
+            fetchProducts()
+            fetchStats()
         } catch (error) {
             console.error('Error adding product:', error)
             alert('Error adding product: ' + error.message)
@@ -582,6 +587,32 @@ const Admin = () => {
         )
     }
 
+    const [announcements, setAnnouncements] = useState([])
+
+    const fetchAnnouncements = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('announcements')
+                .select('*')
+                .order('created_at', { ascending: false })
+            if (error) throw error
+            setAnnouncements(data || [])
+        } catch (error) {
+            console.error('Error fetching announcements:', error)
+        }
+    }
+
+    const handleDeleteAnnouncement = async (id) => {
+        if (!confirm('Delete this announcement?')) return
+        try {
+            const { error } = await supabase.from('announcements').delete().eq('id', id)
+            if (error) throw error
+            setAnnouncements(announcements.filter(a => a.id !== id))
+        } catch (error) {
+            alert('Error deleting: ' + error.message)
+        }
+    }
+
     const handleAddAnnouncement = async (e) => {
         e.preventDefault()
         const form = e.target
@@ -598,6 +629,7 @@ const Admin = () => {
             if (error) throw error
             alert('✅ Announcement posted!')
             form.reset()
+            fetchAnnouncements()
         } catch (error) {
             console.error('Error posting announcement:', error)
             alert('Error: ' + error.message)
@@ -610,6 +642,42 @@ const Admin = () => {
                 <div>
                     <h1 className="admin-title">Announcements</h1>
                     <p className="admin-subtitle">Manage community announcements</p>
+                </div>
+            </div>
+
+            {/* List Existing Announcements */}
+            <div className="admin-card" style={{ maxWidth: '800px', marginBottom: 'var(--space-6)' }}>
+                <h3 style={{ marginBottom: 'var(--space-4)' }}>Active Announcements</h3>
+                <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                    {announcements.length === 0 ? (
+                        <p style={{ color: 'var(--text-secondary)' }}>No announcements yet.</p>
+                    ) : (
+                        <ul className="list-group">
+                            {announcements.map(a => (
+                                <li key={a.id} style={{
+                                    padding: '10px',
+                                    borderBottom: '1px solid var(--border-color)',
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center'
+                                }}>
+                                    <div>
+                                        <strong>{a.title}</strong> <span className="badge badge-secondary">{a.category}</span>
+                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                                            {new Date(a.created_at).toLocaleDateString()}
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => handleDeleteAnnouncement(a.id)}
+                                        className="btn btn-sm btn-outline"
+                                        style={{ color: 'red', borderColor: 'red' }}
+                                    >
+                                        Delete
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
             </div>
 
