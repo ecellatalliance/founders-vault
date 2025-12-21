@@ -26,7 +26,16 @@ const Admin = () => {
         salesThisWeek: 0
     })
 
+    const [products, setProducts] = useState([])
+    const [users, setUsers] = useState([])
+    const [orders, setOrders] = useState([])
+    const [announcements, setAnnouncements] = useState([])
+    const [selectedOrder, setSelectedOrder] = useState(null)
+    const [approvalDetails, setApprovalDetails] = useState({ date: '', location: 'Founders Vault Desk' })
+    const [newProductCategory, setNewProductCategory] = useState('')
 
+    // Derive detailed unique categories from products
+    const uniqueCategories = [...new Set(products.map(p => p.category))].filter(Boolean).sort()
 
     useEffect(() => {
         if (!isAuthenticated || !user?.isAdmin) {
@@ -187,10 +196,7 @@ const Admin = () => {
         </section>
     )
 
-    const [newProductCategory, setNewProductCategory] = useState('')
 
-    // Derive detailed unique categories from products
-    const uniqueCategories = [...new Set(products.map(p => p.category))].filter(Boolean).sort()
 
     const handleAddProduct = async (e) => {
         e.preventDefault()
@@ -222,7 +228,7 @@ const Admin = () => {
         }
     }
 
-    const [products, setProducts] = useState([])
+
 
     useEffect(() => {
         if (activeSection === 'products') {
@@ -394,7 +400,7 @@ const Admin = () => {
         </section>
     )
 
-    const [users, setUsers] = useState([])
+
     const fetchUsers = async () => {
         try {
             const { data, error } = await supabase
@@ -472,7 +478,7 @@ const Admin = () => {
         </section>
     )
 
-    const [orders, setOrders] = useState([])
+
 
     useEffect(() => {
         if (activeSection === 'orders') {
@@ -495,8 +501,7 @@ const Admin = () => {
         }
     }
 
-    const [selectedOrder, setSelectedOrder] = useState(null)
-    const [approvalDetails, setApprovalDetails] = useState({ date: '', location: 'Founders Vault Desk' })
+
 
     const openApprovalModal = (order) => {
         setSelectedOrder(order)
@@ -650,7 +655,7 @@ const Admin = () => {
         )
     }
 
-    const [announcements, setAnnouncements] = useState([])
+
 
     const fetchAnnouncements = async () => {
         try {
