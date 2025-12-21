@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 import ProductCard from '../components/ProductCard'
+import CustomDropdown from '../components/CustomDropdown'
 import { useProducts } from '../hooks/useProducts'
 
 const Shop = () => {
@@ -262,20 +263,18 @@ const Shop = () => {
                                 </div>
 
                                 <div className="shop-sort">
-                                    <label htmlFor="sortSelect">Sort by:</label>
-                                    <select
-                                        id="sortSelect"
-                                        className="select"
+                                    <CustomDropdown
                                         value={sortBy}
-                                        onChange={(e) => setSortBy(e.target.value)}
-                                        style={{ width: 'auto' }}
-                                    >
-                                        <option value="featured">Featured</option>
-                                        <option value="price-low">Price: Low to High</option>
-                                        <option value="price-high">Price: High to Low</option>
-                                        <option value="rating">Highest Rated</option>
-                                        <option value="name">Name: A-Z</option>
-                                    </select>
+                                        onChange={setSortBy}
+                                        options={[
+                                            { value: 'featured', label: 'Featured' },
+                                            { value: 'price-low', label: 'Price: Low to High' },
+                                            { value: 'price-high', label: 'Price: High to Low' },
+                                            { value: 'rating', label: 'Highest Rated' },
+                                            { value: 'name', label: 'Name: A-Z' }
+                                        ]}
+                                        placeholder="Sort by"
+                                    />
                                 </div>
                             </div>
 

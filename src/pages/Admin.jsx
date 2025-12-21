@@ -1,19 +1,32 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Layout from '../components/Layout'
 import { supabase } from '../supabaseClient'
+import SearchableDropdown from '../components/SearchableDropdown'
 
 const Admin = () => {
     const { user, isAuthenticated } = useAuth()
     const navigate = useNavigate()
     const [activeSection, setActiveSection] = useState('dashboard')
+
+    // Ref to track active section inside effect without re-subscribing
+    const activeSectionRef = useRef(activeSection)
+    useEffect(() => {
+        activeSectionRef.current = activeSection
+    }, [activeSection])
+
     const [stats, setStats] = useState({
         totalSales: 0,
         totalOrders: 0,
         totalUsers: 0,
-        activeProducts: 0
+        activeProducts: 0,
+        ordersToday: 0,
+        usersToday: 0,
+        salesThisWeek: 0
     })
+
+
 
     useEffect(() => {
         if (!isAuthenticated || !user?.isAdmin) {
@@ -21,7 +34,7 @@ const Admin = () => {
             return
         }
 
-        // Fetch real-time stats
+        // Initial Fetch
         fetchStats()
 
         if (activeSection === 'users') {
@@ -30,19 +43,50 @@ const Admin = () => {
         if (activeSection === 'announcements') {
             fetchAnnouncements()
         }
+        if (activeSection === 'orders') {
+            fetchOrders()
+            // Added explicit fetch here because the generic useEffect below might miss initial load if I rely solely on section change
+            // Actually, the original code had activeSection check in the effect dep array.
+        }
+        if (activeSection === 'products') {
+            fetchProducts()
+        }
     }, [isAuthenticated, user, navigate, activeSection])
 
     const fetchStats = async () => {
         try {
+            // Helper Dates
+            const now = new Date()
+
+            // Start of Today (00:00:00)
+            const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+            const startOfTodayISO = startOfToday.toISOString()
+
+            // Start of This Week (Monday)
+            const day = now.getDay() // 0 (Sun) to 6 (Sat)
+            const diff = now.getDate() - day + (day === 0 ? -6 : 1) // Adjust when day is Sunday
+            const startOfWeek = new Date(now.setDate(diff))
+            startOfWeek.setHours(0, 0, 0, 0)
+            const startOfWeekISO = startOfWeek.toISOString()
+
             // 1. Total Orders & Sales
             const { data: ordersData, error: ordersError } = await supabase
                 .from('orders')
-                .select('total_amount, id')
+                .select('total_amount, id, created_at')
 
             if (ordersError) throw ordersError
 
             const totalOrders = ordersData.length
             const totalSales = ordersData.reduce((sum, order) => sum + (parseFloat(order.total_amount) || 0), 0)
+
+            // Calculations for "Today" and "This Week"
+            const ordersToday = ordersData.filter(o => o.created_at >= startOfTodayISO).length
+
+            // "Sales This Week" - Sum of total_amount for orders created since start of week
+            const salesThisWeek = ordersData
+                .filter(o => o.created_at >= startOfWeekISO)
+                .reduce((sum, order) => sum + (parseFloat(order.total_amount) || 0), 0)
+
 
             // 2. Total Users
             const { count: usersCount, error: usersError } = await supabase
@@ -50,6 +94,15 @@ const Admin = () => {
                 .select('*', { count: 'exact', head: true })
 
             if (usersError) throw usersError
+
+            // New Users Today
+            const { count: usersTodayCount, error: usersTodayError } = await supabase
+                .from('profiles')
+                .select('*', { count: 'exact', head: true })
+                .gte('created_at', startOfTodayISO)
+
+            if (usersTodayError) throw usersTodayError
+
 
             // 3. Active Products
             const { count: productsCount, error: productsError } = await supabase
@@ -62,7 +115,10 @@ const Admin = () => {
                 totalSales,
                 totalOrders,
                 totalUsers: usersCount || 0,
-                activeProducts: productsCount || 0
+                activeProducts: productsCount || 0,
+                ordersToday,
+                usersToday: usersTodayCount || 0,
+                salesThisWeek
             })
         } catch (error) {
             console.error("Error fetching admin stats:", error)
@@ -88,8 +144,8 @@ const Admin = () => {
                     <h3 className="stat-card-title">Total Sales</h3>
                     <div className="stat-card-value">{stats.totalSales} 🪙</div>
                     <div className="stat-card-change">
-                        <i className="fas fa-arrow-up"></i>
-                        <span>+12% this week</span>
+                        <i className="fas fa-chart-line"></i>
+                        <span>{stats.salesThisWeek} 🪙 this week</span>
                     </div>
                 </div>
 
@@ -102,8 +158,8 @@ const Admin = () => {
                     <h3 className="stat-card-title">Total Orders</h3>
                     <div className="stat-card-value">{stats.totalOrders}</div>
                     <div className="stat-card-change">
-                        <i className="fas fa-arrow-up"></i>
-                        <span>+5 new today</span>
+                        <i className="fas fa-plus"></i>
+                        <span>+{stats.ordersToday} new today</span>
                     </div>
                 </div>
 
@@ -117,7 +173,7 @@ const Admin = () => {
                     <div className="stat-card-value">{stats.totalUsers}</div>
                     <div className="stat-card-change">
                         <i className="fas fa-user-plus"></i>
-                        <span>+3 new today</span>
+                        <span>+{stats.usersToday} new today</span>
                     </div>
                 </div>
             </div>
@@ -131,6 +187,11 @@ const Admin = () => {
         </section>
     )
 
+    const [newProductCategory, setNewProductCategory] = useState('')
+
+    // Derive detailed unique categories from products
+    const uniqueCategories = [...new Set(products.map(p => p.category))].filter(Boolean).sort()
+
     const handleAddProduct = async (e) => {
         e.preventDefault()
         const form = e.target
@@ -138,7 +199,7 @@ const Admin = () => {
             name: form.name.value,
             description: form.description.value,
             price: parseFloat(form.price.value),
-            category: form.category.value,
+            category: newProductCategory, // Use state value
             image_url: form.image_url.value,
             source_link: form.source_link.value, // Added source link
             stock: parseInt(form.stock.value),
@@ -152,6 +213,7 @@ const Admin = () => {
             if (error) throw error
             alert('✅ Product added successfully!')
             form.reset()
+            setNewProductCategory('') // Reset category
             fetchProducts()
             fetchStats()
         } catch (error) {
@@ -275,11 +337,6 @@ const Admin = () => {
             <div className="admin-card" style={{ maxWidth: '800px', margin: '0 0' }}>
                 <h3 style={{ marginBottom: 'var(--space-4)' }}>Add New Product</h3>
                 <form className="login-form" onSubmit={handleAddProduct}>
-                    {/* Reuse existing form content... but wait, replace_file_content replaces the BLOCK. 
-                        I need to include the form content in the ReplacementContent or reference it. 
-                        The block I selected (StartLine 120, EndLine 181) includes the whole renderProducts.
-                        I will copy-paste the form back in.
-                    */}
                     <div className="form-group">
                         <label className="form-label">Product Name</label>
                         <input name="name" className="form-input" required placeholder="e.g. Wireless Headphones" />
@@ -303,8 +360,14 @@ const Admin = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
                         <div className="form-group">
-                            <label className="form-label">Category</label>
-                            <input name="category" className="form-input" required placeholder="e.g. Electronics" />
+                            {/* Replaced Input with SearchableDropdown */}
+                            <SearchableDropdown
+                                label="Category"
+                                options={uniqueCategories}
+                                value={newProductCategory}
+                                onChange={setNewProductCategory}
+                                placeholder="Select or type category..."
+                            />
                         </div>
                         <div className="form-group">
                             <label className="form-label">Image URL</label>
@@ -711,6 +774,40 @@ const Admin = () => {
             </div>
         </section>
     )
+
+
+    // Realtime Subscription (Placed here to ensure all fetch functions are defined)
+    useEffect(() => {
+        if (!isAuthenticated || !user?.isAdmin) return
+
+        const handleRealtimeUpdate = (payload) => {
+            console.log('Realtime update:', payload)
+            // Always refresh stats
+            fetchStats()
+
+            // Context-aware refresh
+            const table = payload.table
+            const currentSection = activeSectionRef.current
+
+            if (table === 'orders' && currentSection === 'orders') fetchOrders()
+            if (table === 'products' && currentSection === 'products') fetchProducts()
+            if (table === 'profiles' && currentSection === 'users') fetchUsers()
+            if (table === 'announcements' && currentSection === 'announcements') fetchAnnouncements()
+        }
+
+        const channel = supabase
+            .channel('admin-realtime')
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public' },
+                handleRealtimeUpdate
+            )
+            .subscribe()
+
+        return () => {
+            supabase.removeChannel(channel)
+        }
+    }, [isAuthenticated, user])
 
     return (
         <Layout>
