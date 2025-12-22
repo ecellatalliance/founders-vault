@@ -9,6 +9,23 @@ export const useProducts = () => {
 
     useEffect(() => {
         fetchProducts()
+
+        // Subscribe to realtime changes
+        const channel = supabase
+            .channel('shop-products')
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'products' },
+                () => {
+                    console.log('Product change detected, refreshing...')
+                    fetchProducts()
+                }
+            )
+            .subscribe()
+
+        return () => {
+            supabase.removeChannel(channel)
+        }
     }, [])
 
     const fetchProducts = async () => {
