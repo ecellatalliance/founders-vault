@@ -161,48 +161,19 @@ const EarnVC = () => {
                         <p className="text-xl" style={{ color: 'var(--text-secondary)' }}>Unlock exclusive rewards by engaging with the community</p>
                     </div>
 
-                    {/* Cards Grid */}
-                    <div className="grid-cards mb-12" style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                        gap: 'var(--space-6)'
-                    }}>
+                    {/* Bento Grid Layout */}
+                    <div className="earn-bento-grid">
+                        {/* Reward Cards */}
                         {steps.map((step, index) => (
-                            <div key={index}
-                                className="earn-card"
-                                style={{
-                                    backgroundColor: 'var(--bg-primary)',
-                                    borderRadius: 'var(--radius-xl)',
-                                    padding: 'var(--space-6)',
-                                    boxShadow: 'var(--shadow-md)',
-                                    border: '1px solid var(--border-color)',
-                                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                                    cursor: 'default'
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-5px)';
-                                    e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                    e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                                }}
-                            >
-                                <div className="icon-wrapper mb-4" style={{
-                                    width: '60px',
-                                    height: '60px',
-                                    borderRadius: '50%',
+                            <div key={index} className="earn-card">
+                                <div className="icon-wrapper" style={{
                                     backgroundColor: step.bg,
-                                    color: step.color,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontSize: '1.5rem'
+                                    color: step.color
                                 }}>
                                     <i className={step.icon}></i>
                                 </div>
                                 <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{step.title}</h3>
-                                <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>{step.description}</p>
+                                <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)', flex: 1 }}>{step.description}</p>
                                 <div className="amount-badge" style={{
                                     display: 'inline-block',
                                     padding: '4px 12px',
@@ -210,60 +181,53 @@ const EarnVC = () => {
                                     backgroundColor: step.bg,
                                     color: step.color,
                                     fontWeight: 'bold',
-                                    fontSize: '0.875rem'
+                                    fontSize: '0.875rem',
+                                    width: 'fit-content'
                                 }}>
                                     {step.amount}
                                 </div>
                             </div>
                         ))}
-                    </div>
 
-                    {/* Graph Section */}
-                    <div className="graph-card" style={{
-                        backgroundColor: 'var(--bg-primary)',
-                        borderRadius: 'var(--radius-xl)',
-                        padding: 'var(--space-8)',
-                        boxShadow: 'var(--shadow-md)',
-                        border: '1px solid var(--border-color)'
-                    }}>
-                        <div className="flex justify-between items-center mb-8" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div>
-                                <h2 className="text-2xl font-bold mb-1" style={{ color: 'var(--primary-navy)' }}>VC Growth Tracking</h2>
-                                <p style={{ color: 'var(--text-secondary)' }}>
-                                    {isAuthenticated ? 'Live updates from your wallet' : 'Log in to see your growth'}
-                                </p>
+                        {/* Graph Section (Tall Card) */}
+                        <div className="earn-graph-card">
+                            <div className="flex justify-between items-center mb-8" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div>
+                                    <h2 className="text-2xl font-bold mb-1" style={{ color: 'var(--primary-navy)' }}>VC Growth</h2>
+                                    <p style={{ color: 'var(--text-secondary)' }}>
+                                        {isAuthenticated ? 'Live wallet updates' : 'Login to track'}
+                                    </p>
+                                </div>
+                                <div className="text-right">
+                                    <span className="text-3xl font-bold" style={{ color: 'var(--accent-gold)' }}>{currentBalance}</span>
+                                    <span className="ml-2 font-medium" style={{ color: 'var(--text-secondary)' }}>VCs</span>
+                                </div>
                             </div>
-                            <div className="text-right">
-                                <span className="text-3xl font-bold" style={{ color: 'var(--accent-gold)' }}>{currentBalance}</span>
-                                <span className="ml-2 font-medium" style={{ color: 'var(--text-secondary)' }}>Total VCs</span>
-                            </div>
-                        </div>
 
-                        <div className="graph-container" style={{ position: 'relative', height: '300px', width: '100%', overflow: 'hidden' }}>
-                            <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
-                                <defs>
-                                    <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
-                                        <stop offset="0%" stopColor="var(--accent-gold)" stopOpacity="0.5" />
-                                        <stop offset="100%" stopColor="var(--accent-gold)" stopOpacity="0" />
-                                    </linearGradient>
-                                </defs>
-                                {/* Area area */}
-                                <path
-                                    d={pathArea}
-                                    fill="url(#gradient)"
-                                />
-                                {/* Smooth Line */}
-                                <path
-                                    d={pathLine}
-                                    fill="none"
-                                    stroke="var(--accent-gold)"
-                                    strokeWidth="3"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                                {/* Points */}
-                                {pointCoords.map((pt, i) => {
-                                    return (
+                            <div className="earn-graph-container">
+                                <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
+                                    <defs>
+                                        <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
+                                            <stop offset="0%" stopColor="var(--accent-gold)" stopOpacity="0.5" />
+                                            <stop offset="100%" stopColor="var(--accent-gold)" stopOpacity="0" />
+                                        </linearGradient>
+                                    </defs>
+                                    {/* Area */}
+                                    <path
+                                        d={pathArea}
+                                        fill="url(#gradient)"
+                                    />
+                                    {/* Line */}
+                                    <path
+                                        d={pathLine}
+                                        fill="none"
+                                        stroke="var(--accent-gold)"
+                                        strokeWidth="3"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                    {/* Points */}
+                                    {pointCoords.map((pt, i) => (
                                         <g key={i}
                                             onMouseEnter={() => setHoveredIndex(i)}
                                             onMouseLeave={() => setHoveredIndex(null)}
@@ -290,16 +254,14 @@ const EarnVC = () => {
                                                 </text>
                                             )}
                                         </g>
-                                    )
-                                })}
-                            </svg>
+                                    ))}
+                                </svg>
+                            </div>
 
                             {/* X Axis Labels */}
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px', color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '10px', color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
                                 <span>History</span>
-                                <span>...</span>
-                                <span>...</span>
-                                <span style={{ color: 'var(--accent-gold)', fontWeight: 'bold' }}>Live</span>
+                                <span>Live</span>
                             </div>
                         </div>
                     </div>
