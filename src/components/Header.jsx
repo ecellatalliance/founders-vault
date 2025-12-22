@@ -51,7 +51,7 @@ const Header = () => {
         <>
             <header className="header">
                 {/* Top Bar / Main Header Content */}
-                <div className="container" style={{ position: 'relative' }}>
+                <div className="header-container-fluid" style={{ position: 'relative' }}>
                     <div className="header-main-content">
                         {/* Logo - Left */}
                         <Link to="/" className="logo">
@@ -143,7 +143,7 @@ const Header = () => {
 
                 {/* Desktop Navigation Bar */}
                 <nav className="nav desktop-only">
-                    <div className="container nav-content">
+                    <div className="header-container-fluid nav-content">
                         <ul className="nav-links">
                             {/* Categories Dropdown */}
                             <li className="nav-item-dropdown">

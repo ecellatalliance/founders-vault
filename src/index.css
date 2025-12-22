@@ -55,6 +55,14 @@ button {
     }
 }
 
+/* Full Width Header Container */
+.header-container-fluid {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+    width: 100%;
+    margin: 0 auto;
+}
+
 .container {
     padding-left: var(--container-padding);
     padding-right: var(--container-padding);
