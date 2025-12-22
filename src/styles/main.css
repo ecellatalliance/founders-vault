@@ -146,6 +146,21 @@
     display: none;
 }
 
+/* Make search bar take available space */
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    max-width: 800px;
+    margin: 0 var(--space-8);
+}
+
+/* Utility to hide elements on desktop */
+.mobile-only {
+    display: none !important;
+}
+
 /* Fix for white border artifact on mobile/dark mode */
 .search-input {
     border: 1px solid var(--border-color);
