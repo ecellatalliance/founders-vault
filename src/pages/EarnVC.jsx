@@ -23,7 +23,6 @@ const EarnVC = () => {
         setCurrentBalance(initialBalance)
 
         // Generate a "history" curve ending at current balance
-        // We'll simulate 6 previous points to make it look like a chart
         const generateHistory = (endVal) => {
             const history = []
             let val = endVal * 0.5 // Start at 50%
@@ -65,13 +64,57 @@ const EarnVC = () => {
         }
     }, [user, isAuthenticated])
 
-    // Calculate Polyline Points
-    const maxVal = Math.max(...graphData, 100) // Ensure maxVal isn't 0 to avoid Infinity
-    const points = graphData.map((val, i) => {
-        const x = (i / (graphData.length - 1)) * 100
-        const y = 100 - ((val / maxVal) * 80) // keep some headroom
-        return `${x},${y}`
-    }).join(' ')
+    // --- Graph Calculation Helper ---
+    // Helper to generate smooth curve (Catmull-Rom to Cubic Bezier)
+    const getPathD = (data, isArea) => {
+        if (data.length < 2) return ""
+
+        const maxVal = Math.max(...data, 100)
+
+        // Map data to canvas coordinates (padding included)
+        // Canvas: 0-100. Padding range: 5-95 horizontal.
+        // Vertical: Top padding 20 units (leaving 80% used).
+        const coords = data.map((val, i) => {
+            const x = 5 + (i / (data.length - 1)) * 90
+            const y = 95 - ((val / maxVal) * 80)
+            return [x, y]
+        })
+
+        const d = [`M ${coords[0][0]},${coords[0][1]}`]
+
+        for (let i = 0; i < coords.length - 1; i++) {
+            const [x0, y0] = i > 0 ? coords[i - 1] : coords[0]
+            const [x1, y1] = coords[i]
+            const [x2, y2] = coords[i + 1]
+            const [x3, y3] = i < coords.length - 2 ? coords[i + 2] : coords[coords.length - 1]
+
+            // Catmull-Rom to Cubic Bezier conversion factors
+            const cp1x = x1 + (x2 - x0) / 6
+            const cp1y = y1 + (y2 - y0) / 6
+            const cp2x = x2 - (x3 - x1) / 6
+            const cp2y = y2 - (y3 - y1) / 6
+
+            d.push(`C ${cp1x},${cp1y} ${cp2x},${cp2y} ${x2},${y2}`)
+        }
+
+        if (isArea) {
+            // Close the path at the bottom
+            d.push(`L ${coords[coords.length - 1][0]},120 L ${coords[0][0]},120 Z`)
+        }
+
+        return d.join(" ")
+    }
+
+    const pathLine = getPathD(graphData, false)
+    const pathArea = getPathD(graphData, true)
+
+    // Calculate Points for Circles (Re-calc for alignment)
+    const maxValChart = Math.max(...graphData, 100)
+    const pointCoords = graphData.map((val, i) => {
+        const x = 5 + (i / (graphData.length - 1)) * 90
+        const y = 95 - ((val / maxValChart) * 80)
+        return { x, y, val }
+    })
 
 
     const steps = [
@@ -206,46 +249,44 @@ const EarnVC = () => {
                                 </defs>
                                 {/* Area area */}
                                 <path
-                                    d={`M0,100 ${points.split(' ').map(p => 'L' + p).join(' ')} L100,100 Z`}
+                                    d={pathArea}
                                     fill="url(#gradient)"
                                 />
-                                {/* Line */}
-                                <polyline
+                                {/* Smooth Line */}
+                                <path
+                                    d={pathLine}
                                     fill="none"
                                     stroke="var(--accent-gold)"
-                                    strokeWidth="2"
-                                    points={points}
+                                    strokeWidth="3"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                 />
                                 {/* Points */}
-                                {graphData.map((val, i) => {
-                                    const x = (i / (graphData.length - 1)) * 100
-                                    const y = 100 - (val / maxVal) * 80
+                                {pointCoords.map((pt, i) => {
                                     return (
                                         <g key={i}
                                             onMouseEnter={() => setHoveredIndex(i)}
                                             onMouseLeave={() => setHoveredIndex(null)}
                                         >
                                             <circle
-                                                cx={x}
-                                                cy={y}
-                                                r={hoveredIndex === i ? 2 : 1}
+                                                cx={pt.x}
+                                                cy={pt.y}
+                                                r={hoveredIndex === i ? 4 : 2.5}
                                                 fill="var(--bg-primary)"
                                                 stroke="var(--primary-navy)"
-                                                strokeWidth="0.5"
+                                                strokeWidth="1.5"
                                                 style={{ transition: 'r 0.2s', cursor: 'pointer' }}
                                             />
                                             {hoveredIndex === i && (
                                                 <text
-                                                    x={x}
-                                                    y={y - 5}
-                                                    fontSize="3"
+                                                    x={pt.x}
+                                                    y={pt.y - 10}
+                                                    fontSize="4"
                                                     textAnchor="middle"
                                                     fill="var(--primary-navy)"
                                                     fontWeight="bold"
                                                 >
-                                                    {val}
+                                                    {pt.val}
                                                 </text>
                                             )}
                                         </g>
