@@ -1,16 +1,78 @@
 import Layout from '../components/Layout'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAuth } from '../context/AuthContext'
+import { supabase } from '../supabaseClient'
 
 const EarnVC = () => {
-    // Mock data for the graph
-    const dataPoints = [100, 350, 200, 600, 450, 800, 1000];
-    const maxVal = Math.max(...dataPoints);
-    const points = dataPoints.map((val, i) => {
-        const x = (i / (dataPoints.length - 1)) * 100;
-        const y = 100 - (val / maxVal) * 80; // keep some headroom
-        return `${x},${y}`;
-    }).join(' ');
+    const { user, isAuthenticated } = useAuth()
+    const [graphData, setGraphData] = useState([])
+    const [hoveredIndex, setHoveredIndex] = useState(null)
+    const [currentBalance, setCurrentBalance] = useState(0)
+
+    // Initialize Graph Data & Listen for Realtime Updates
+    useEffect(() => {
+        if (!isAuthenticated || !user) {
+            // Default mock data if not logged in
+            setGraphData([100, 350, 200, 600, 450, 800, 1000])
+            setCurrentBalance(1000)
+            return
+        }
+
+        const initialBalance = user.vcBalance || 0
+        setCurrentBalance(initialBalance)
+
+        // Generate a "history" curve ending at current balance
+        // We'll simulate 6 previous points to make it look like a chart
+        const generateHistory = (endVal) => {
+            const history = []
+            let val = endVal * 0.5 // Start at 50%
+            for (let i = 0; i < 6; i++) {
+                // Random walk towards endVal
+                const variance = Math.random() * (endVal * 0.4) - (endVal * 0.2)
+                val += variance
+                if (val < 0) val = 0
+                history.push(Math.round(val))
+            }
+            history.push(endVal)
+            return history
+        }
+
+        setGraphData(generateHistory(initialBalance))
+
+        // Subscribe to changes
+        const channel = supabase
+            .channel('public:profiles')
+            .on('postgres_changes',
+                { event: 'UPDATE', schema: 'public', table: 'profiles', filter: `id=eq.${user.id}` },
+                (payload) => {
+                    const newBalance = payload.new.vc_balance
+                    console.log('Realtime VC Update:', newBalance)
+                    setCurrentBalance(newBalance)
+
+                    setGraphData(prevData => {
+                        const newData = [...prevData, newBalance]
+                        // Keep max 10 points to keep graph readable, shift if needed
+                        if (newData.length > 10) newData.shift()
+                        return newData
+                    })
+                }
+            )
+            .subscribe()
+
+        return () => {
+            supabase.removeChannel(channel)
+        }
+    }, [user, isAuthenticated])
+
+    // Calculate Polyline Points
+    const maxVal = Math.max(...graphData, 100) // Ensure maxVal isn't 0 to avoid Infinity
+    const points = graphData.map((val, i) => {
+        const x = (i / (graphData.length - 1)) * 100
+        const y = 100 - ((val / maxVal) * 80) // keep some headroom
+        return `${x},${y}`
+    }).join(' ')
+
 
     const steps = [
         {
@@ -46,8 +108,6 @@ const EarnVC = () => {
             bg: '#FDF2F8'
         }
     ]
-
-    const [hoveredIndex, setHoveredIndex] = useState(null);
 
     return (
         <Layout>
@@ -126,10 +186,12 @@ const EarnVC = () => {
                         <div className="flex justify-between items-center mb-8" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div>
                                 <h2 className="text-2xl font-bold mb-1" style={{ color: 'var(--primary-navy)' }}>VC Growth Tracking</h2>
-                                <p style={{ color: 'var(--text-secondary)' }}>Your earning history over the last 7 days</p>
+                                <p style={{ color: 'var(--text-secondary)' }}>
+                                    {isAuthenticated ? 'Live updates from your wallet' : 'Log in to see your growth'}
+                                </p>
                             </div>
                             <div className="text-right">
-                                <span className="text-3xl font-bold" style={{ color: 'var(--accent-gold)' }}>1,000</span>
+                                <span className="text-3xl font-bold" style={{ color: 'var(--accent-gold)' }}>{currentBalance}</span>
                                 <span className="ml-2 font-medium" style={{ color: 'var(--text-secondary)' }}>Total VCs</span>
                             </div>
                         </div>
@@ -157,9 +219,9 @@ const EarnVC = () => {
                                     strokeLinejoin="round"
                                 />
                                 {/* Points */}
-                                {dataPoints.map((val, i) => {
-                                    const x = (i / (dataPoints.length - 1)) * 100;
-                                    const y = 100 - (val / maxVal) * 80;
+                                {graphData.map((val, i) => {
+                                    const x = (i / (graphData.length - 1)) * 100
+                                    const y = 100 - (val / maxVal) * 80
                                     return (
                                         <g key={i}
                                             onMouseEnter={() => setHoveredIndex(i)}
@@ -172,7 +234,7 @@ const EarnVC = () => {
                                                 fill="var(--bg-primary)"
                                                 stroke="var(--primary-navy)"
                                                 strokeWidth="0.5"
-                                                style={{ transition: 'r 0.2s' }}
+                                                style={{ transition: 'r 0.2s', cursor: 'pointer' }}
                                             />
                                             {hoveredIndex === i && (
                                                 <text
@@ -193,13 +255,10 @@ const EarnVC = () => {
 
                             {/* X Axis Labels */}
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px', color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
-                                <span>Mon</span>
-                                <span>Tue</span>
-                                <span>Wed</span>
-                                <span>Thu</span>
-                                <span>Fri</span>
-                                <span>Sat</span>
-                                <span>Sun</span>
+                                <span>History</span>
+                                <span>...</span>
+                                <span>...</span>
+                                <span style={{ color: 'var(--accent-gold)', fontWeight: 'bold' }}>Live</span>
                             </div>
                         </div>
                     </div>
