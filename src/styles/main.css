@@ -448,6 +448,166 @@
     }
 }
 
+/* Mobile Navigation Drawer (New Structure) */
+.mobile-nav-drawer {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 85%;
+    max-width: 320px;
+    background-color: var(--bg-primary);
+    z-index: 1050;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+    transform: translateX(105%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+}
+
+.mobile-nav-drawer.active {
+    display: block;
+    /* Fallback */
+    transform: translateX(0);
+}
+
+.mobile-menu-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.mobile-user-header {
+    padding: var(--space-6);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    cursor: pointer;
+    background-color: var(--bg-secondary);
+}
+
+.user-avatar-mobile {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--primary-navy);
+    box-shadow: var(--shadow-sm);
+}
+
+.user-name-mobile {
+    font-weight: 700;
+    font-size: var(--text-lg);
+    color: var(--text-primary);
+}
+
+.user-balance-mobile {
+    color: var(--accent-gold);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.mobile-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobile-nav-item {
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+.mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-6);
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: var(--text-base);
+    transition: background-color var(--transition-fast);
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+.mobile-nav-link:hover {
+    background-color: var(--bg-secondary-light);
+    color: var(--accent-gold);
+}
+
+.mobile-nav-link i {
+    width: 24px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.mobile-nav-link:hover i {
+    color: var(--accent-gold);
+}
+
+.mobile-dropdown {
+    display: none;
+    background-color: var(--bg-secondary-light);
+    padding: 0 var(--space-6) var(--space-4) var(--space-6);
+    animation: fadeIn 0.3s ease;
+}
+
+.mobile-dropdown.open {
+    display: block;
+}
+
+.category-grid-mobile {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+}
+
+.cat-card-mobile {
+    background-color: var(--bg-primary);
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    font-size: var(--text-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.cat-card-mobile i {
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+}
+
+.cat-card-mobile.view-all {
+    grid-column: 1 / -1;
+    background-color: var(--accent-gold);
+    color: var(--primary-navy);
+    font-weight: bold;
+    border: none;
+}
+
+.dropdown-trigger i.rotate {
+    transform: rotate(180deg);
+}
+
+.dropdown-trigger {
+    justify-content: space-between;
+}
+
+
+/* Responsive Navigation Logic */
 @media (max-width: 768px) {
     .desktop-only {
         display: none !important;
@@ -461,12 +621,16 @@
         display: none !important;
     }
 
+    .mobile-nav-drawer {
+        display: block;
+        /* Element exists, visibility controlled by transform */
+    }
+
     .header-main-content {
         flex-wrap: nowrap;
         gap: var(--space-2);
         padding: var(--space-2) 0;
         position: relative;
-        /* For search absolute positioning if needed */
     }
 
     .logo-img {
@@ -496,7 +660,6 @@
         display: flex;
         position: absolute;
         top: 60px;
-        /* Adjust based on header height */
         left: 0;
         right: 0;
         background: var(--bg-primary);
@@ -506,57 +669,39 @@
         animation: slideDown 0.2s ease-out;
     }
 
-    /* Mobile Menu Drawer */
+    /* Input padding fix for mobile */
+    .search-input {
+        padding-left: var(--space-4);
+        padding-right: 50px;
+    }
+
+    .search-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 8px;
+        border-radius: 50%;
+    }
+
+    .search-btn-text {
+        display: none;
+    }
+
+    .search-btn-icon {
+        display: block;
+        font-size: 1rem;
+    }
+
+    /* Mobile Menu Drawer Toggle */
     .mobile-menu-toggle {
         display: block;
         padding: var(--space-2);
         z-index: 1100;
+        font-size: 1.25rem;
     }
 
-    .nav-links {
-        display: block;
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 85%;
-        max-width: 320px;
-        background-color: var(--bg-primary);
-        z-index: 1050;
-        box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
-        transform: translateX(105%);
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow-y: auto;
-        padding-top: 0;
-    }
-
-    .nav-links.active {
-        transform: translateX(0);
-    }
-
-    /* Overlay for drawer (Optional, but using shadow for now) */
-
-    /* Dropdown inside drawer */
-    .mobile-dropdown {
-        display: none;
-        margin-top: 0.5rem;
-    }
-
-    .mobile-dropdown.open {
-        display: block;
-        animation: fadeIn 0.3s ease;
-    }
-
-    /* Hide desktop nav behaviors */
-    .dropdown-menu {
-        display: none !important;
-    }
-
-    .nav-link::after {
-        display: none;
-    }
-
-    /* Theme toggle adjustments */
     .theme-toggle {
         width: auto;
         margin: 0;
@@ -575,6 +720,16 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }
 

@@ -5,7 +5,7 @@ import { useTheme } from '../context/ThemeContext'
 import { useState } from 'react'
 
 const Header = () => {
-    const { user, isAuthenticated } = useAuth()
+    const { user, isAuthenticated, logout } = useAuth()
     const { getCartCount, wishlist } = useCart()
     const { theme, toggleTheme } = useTheme()
     const navigate = useNavigate()
@@ -39,9 +39,18 @@ const Header = () => {
         }
     }
 
+    const handleLogout = () => {
+        if (window.confirm('Are you sure you want to logout?')) {
+            logout()
+            navigate('/')
+            setMobileMenuOpen(false)
+        }
+    }
+
     return (
         <>
             <header className="header">
+                {/* Top Bar / Main Header Content */}
                 <div className="container" style={{ position: 'relative' }}>
                     <div className="header-main-content">
                         {/* Logo - Left */}
@@ -81,32 +90,19 @@ const Header = () => {
                         {/* Header Actions - Right */}
                         <div className="header-actions">
                             {/* Mobile Search Toggle */}
-                            <button
-                                className="header-action-btn mobile-only"
-                                onClick={() => setSearchOpen(!searchOpen)}
-                                style={{ borderRadius: '50%', width: '40px', height: '40px', padding: 0, justifyContent: 'center' }}
-                            >
-                                <i className={`fas ${searchOpen ? 'fa-times' : 'fa-search'} header-action-icon`} style={{ fontSize: '1.2rem' }}></i>
+                            <button className="header-action-btn mobile-only" onClick={() => setSearchOpen(!searchOpen)}>
+                                <i className={`fas ${searchOpen ? 'fa-times' : 'fa-search'} header-action-icon`}></i>
                             </button>
 
-                            {/* Theme Toggle - Circular Icon */}
-                            <button
-                                className="header-action-btn theme-btn"
-                                onClick={toggleTheme}
-                                title={theme === 'dark' ? 'Switch to Light' : 'Switch to Dark'}
-                                style={{ borderRadius: '50%', width: '40px', height: '40px', padding: 0, justifyContent: 'center' }}
-                            >
-                                <i className={`fas ${theme === 'dark' ? 'fa-sun' : 'fa-moon'} header-action-icon`} style={{ fontSize: '1.2rem' }}></i>
+                            {/* Theme Toggle */}
+                            <button className="header-action-btn theme-btn" onClick={toggleTheme} title="Toggle Theme">
+                                <i className={`fas ${theme === 'dark' ? 'fa-sun' : 'fa-moon'} header-action-icon`}></i>
                             </button>
 
-                            {/* Admin & VC Balance (Desktop mostly, or specialized mobile) */}
+                            {/* Admin & VC Balance */}
                             {isAuthenticated && user?.isAdmin && (
-                                <button
-                                    className="header-action-btn admin-btn desktop-only"
-                                    onClick={() => navigate('/admin')}
-                                    style={{ color: 'var(--accent-gold)' }}
-                                >
-                                    <i className="fas fa-user-shield header-action-icon"></i>
+                                <button className="header-action-btn admin-btn desktop-only" onClick={() => navigate('/admin')} title="Admin Panel">
+                                    <i className="fas fa-user-shield header-action-icon" style={{ color: 'var(--accent-gold)' }}></i>
                                 </button>
                             )}
 
@@ -127,99 +123,126 @@ const Header = () => {
                                 {getCartCount() > 0 && <span className="header-action-badge">{getCartCount()}</span>}
                             </button>
 
-                            <button className="header-action-btn mobile-hidden" onClick={handleUserAction} id="userBtn">
+                            <button className="header-action-btn mobile-hidden" onClick={handleUserAction} title="Account">
                                 <i className="fas fa-user header-action-icon"></i>
                             </button>
 
+                            {isAuthenticated && (
+                                <button className="header-action-btn mobile-hidden" onClick={handleLogout} title="Logout" style={{ color: 'var(--error)' }}>
+                                    <i className="fas fa-power-off header-action-icon"></i>
+                                </button>
+                            )}
+
                             {/* Hamburger Menu - Right */}
-                            <button
-                                className="mobile-menu-toggle"
-                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                style={{ marginLeft: '0.5rem', display: 'none' }} /* display none default, override in CSS */
-                            >
+                            <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                                 <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                {/* Mobile Navigation Drawer */}
-                <div className={`nav-links ${mobileMenuOpen ? 'active' : ''}`} id="navLinks">
-                    <div className="mobile-menu-content">
-                        {/* Mobile User Info Header */}
-                        <div className="mobile-user-header" onClick={handleUserAction} style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer' }}>
-                            <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', color: 'var(--text-primary)' }}>
-                                <i className="fas fa-user"></i>
-                            </div>
-                            <div>
-                                <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{isAuthenticated ? (user?.name || 'User') : 'Login / Signup'}</div>
-                                {isAuthenticated && <div style={{ color: 'var(--accent-gold)', fontSize: '0.9rem', marginTop: '4px' }}>Balance: {user?.vcBalance || 0}🪙</div>}
-                            </div>
-                        </div>
-
-                        <ul className="mobile-nav-list" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                            <li className="mobile-nav-item">
-                                <button
-                                    className={`mobile-nav-link dropdown-trigger ${categoryOpen ? 'open' : ''}`}
-                                    onClick={() => setCategoryOpen(!categoryOpen)}
-                                    style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'none', border: 'none', padding: '1rem 1.5rem', fontSize: '1rem', color: 'var(--text-primary)', cursor: 'pointer', textAlign: 'left' }}
-                                >
-                                    <span><i className="fas fa-th-large" style={{ width: '24px', color: 'var(--text-secondary)' }}></i> Categories</span>
-                                    <i className={`fas fa-chevron-down ${categoryOpen ? 'rotate' : ''}`} style={{ transition: 'transform 0.3s' }}></i>
+                {/* Desktop Navigation Bar */}
+                <nav className="nav desktop-only">
+                    <div className="container nav-content">
+                        <ul className="nav-links">
+                            {/* Categories Dropdown */}
+                            <li className="nav-item-dropdown">
+                                <button className="nav-link dropdown-trigger">
+                                    <i className="fas fa-th-large"></i> Categories <i className="fas fa-chevron-down"></i>
                                 </button>
-
-                                <div className={`mobile-dropdown ${categoryOpen ? 'open' : ''}`} style={{ display: categoryOpen ? 'block' : 'none', padding: '0 1.5rem 1rem 1.5rem', background: 'var(--bg-secondary-light)' }}>
-                                    <div className="category-grid-mobile" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                                        <Link to="/shop?sort=bestsellers" onClick={() => setMobileMenuOpen(false)} className="cat-card-mobile" style={{ padding: '0.75rem', backgroundColor: 'var(--bg-primary)', borderRadius: '8px', textAlign: 'center', border: '1px solid var(--border-color)', textDecoration: 'none', color: 'var(--text-primary)' }}>
-                                            <i className="fas fa-heart text-accent" style={{ display: 'block', marginBottom: '4px' }}></i> Best Sellers
+                                <div className="dropdown-menu">
+                                    <div className="category-grid">
+                                        <Link to="/shop?sort=bestsellers" className="category-grid-item">
+                                            <i className="fas fa-heart text-accent"></i>
+                                            <span>Best Sellers</span>
                                         </Link>
-                                        <Link to="/shop?sort=newest" onClick={() => setMobileMenuOpen(false)} className="cat-card-mobile" style={{ padding: '0.75rem', backgroundColor: 'var(--bg-primary)', borderRadius: '8px', textAlign: 'center', border: '1px solid var(--border-color)', textDecoration: 'none', color: 'var(--text-primary)' }}>
-                                            <i className="fas fa-box-open text-accent" style={{ display: 'block', marginBottom: '4px' }}></i> New
+                                        <Link to="/shop?sort=newest" className="category-grid-item">
+                                            <i className="fas fa-box-open text-accent"></i>
+                                            <span>New Arrivals</span>
                                         </Link>
-                                        <Link to="/shop?category=Tech Essentials" onClick={() => setMobileMenuOpen(false)} className="cat-card-mobile" style={{ padding: '0.75rem', backgroundColor: 'var(--bg-primary)', borderRadius: '8px', textAlign: 'center', border: '1px solid var(--border-color)', textDecoration: 'none', color: 'var(--text-primary)' }}>
-                                            <i className="fas fa-microchip" style={{ display: 'block', marginBottom: '4px' }}></i> Tech
+                                        <Link to="/shop?category=Tech Essentials" className="category-grid-item">
+                                            <i className="fas fa-microchip"></i>
+                                            <span>Tech</span>
                                         </Link>
-                                        <Link to="/shop?category=Premium Apparel" onClick={() => setMobileMenuOpen(false)} className="cat-card-mobile" style={{ padding: '0.75rem', backgroundColor: 'var(--bg-primary)', borderRadius: '8px', textAlign: 'center', border: '1px solid var(--border-color)', textDecoration: 'none', color: 'var(--text-primary)' }}>
-                                            <i className="fas fa-tshirt" style={{ display: 'block', marginBottom: '4px' }}></i> Apparel
+                                        <Link to="/shop?category=Home Hacks" className="category-grid-item">
+                                            <i className="fas fa-couch"></i>
+                                            <span>Home</span>
                                         </Link>
-                                        <Link to="/shop" onClick={() => setMobileMenuOpen(false)} className="cat-card-mobile" style={{ gridColumn: '1 / -1', padding: '0.75rem', backgroundColor: 'var(--accent-gold)', borderRadius: '8px', textAlign: 'center', textDecoration: 'none', color: 'var(--primary-navy)', fontWeight: 'bold' }}>
-                                            View All
+                                        <Link to="/shop?category=Premium Apparel" className="category-grid-item">
+                                            <i className="fas fa-tshirt"></i>
+                                            <span>Apparel</span>
+                                        </Link>
+                                        <Link to="/shop?category=Stationery" className="category-grid-item">
+                                            <i className="fas fa-pen-alt"></i>
+                                            <span>Stationery</span>
+                                        </Link>
+                                        <Link to="/shop?category=Accessories" className="category-grid-item">
+                                            <i className="fas fa-headphones"></i>
+                                            <span>Accessories</span>
+                                        </Link>
+                                        <Link to="/shop" className="category-grid-item">
+                                            <i className="fas fa-arrow-right"></i>
+                                            <span>View All</span>
                                         </Link>
                                     </div>
                                 </div>
                             </li>
 
+                            <li><Link to="/shop" className="nav-link">Shop All</Link></li>
+                            <li><Link to="/community" className="nav-link">Announcements</Link></li>
+                            <li><Link to="/earn-vc" className="nav-link">How to Earn VCs</Link></li>
+                            <li><Link to="/about" className="nav-link">About E-Cell</Link></li>
+                        </ul>
+                    </div>
+                </nav>
+
+                {/* Mobile Menu Drawer */}
+                <div className={`mobile-nav-drawer ${mobileMenuOpen ? 'active' : ''}`}>
+                    <div className="mobile-menu-content">
+                        {/* Mobile User Info Header */}
+                        <div className="mobile-user-header" onClick={handleUserAction}>
+                            <div className="user-avatar-mobile">
+                                <i className="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <div className="user-name-mobile">{isAuthenticated ? (user?.name || 'User') : 'Login / Signup'}</div>
+                                {isAuthenticated && <div className="user-balance-mobile">Balance: {user?.vcBalance || 0}🪙</div>}
+                            </div>
+                        </div>
+
+                        <ul className="mobile-nav-list">
                             <li className="mobile-nav-item">
-                                <Link to="/shop" onClick={() => setMobileMenuOpen(false)} className="mobile-nav-link" style={{ display: 'block', padding: '1rem 1.5rem', textDecoration: 'none', color: 'var(--text-primary)', borderTop: '1px solid var(--border-color-light)' }}>
-                                    <i className="fas fa-shopping-bag" style={{ width: '24px', color: 'var(--text-secondary)' }}></i> Shop All
-                                </Link>
+                                <button className={`mobile-nav-link dropdown-trigger ${categoryOpen ? 'open' : ''}`} onClick={() => setCategoryOpen(!categoryOpen)}>
+                                    <span><i className="fas fa-th-large"></i> Categories</span>
+                                    <i className={`fas fa-chevron-down ${categoryOpen ? 'rotate' : ''}`}></i>
+                                </button>
+
+                                <div className={`mobile-dropdown ${categoryOpen ? 'open' : ''}`}>
+                                    <div className="category-grid-mobile">
+                                        <Link to="/shop?sort=bestsellers" onClick={() => setMobileMenuOpen(false)} className="cat-card-mobile"><i className="fas fa-heart text-accent"></i> Best Sellers</Link>
+                                        <Link to="/shop?sort=newest" onClick={() => setMobileMenuOpen(false)} className="cat-card-mobile"><i className="fas fa-box-open text-accent"></i> New</Link>
+                                        <Link to="/shop?category=Tech Essentials" onClick={() => setMobileMenuOpen(false)} className="cat-card-mobile"><i className="fas fa-microchip"></i> Tech</Link>
+                                        <Link to="/shop?category=Premium Apparel" onClick={() => setMobileMenuOpen(false)} className="cat-card-mobile"><i className="fas fa-tshirt"></i> Apparel</Link>
+                                        <Link to="/shop" onClick={() => setMobileMenuOpen(false)} className="cat-card-mobile view-all">View All</Link>
+                                    </div>
+                                </div>
                             </li>
 
+                            <li className="mobile-nav-item"><Link to="/shop" onClick={() => setMobileMenuOpen(false)} className="mobile-nav-link"><i className="fas fa-shopping-bag"></i> Shop All</Link></li>
                             {isAuthenticated && user?.isAdmin && (
-                                <li className="mobile-nav-item">
-                                    <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="mobile-nav-link" style={{ display: 'block', padding: '1rem 1.5rem', textDecoration: 'none', color: 'var(--accent-gold)', borderTop: '1px solid var(--border-color-light)' }}>
-                                        <i className="fas fa-user-shield" style={{ width: '24px' }}></i> Admin Panel
-                                    </Link>
+                                <li className="mobile-nav-item"><Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="mobile-nav-link text-accent"><i className="fas fa-user-shield"></i> Admin Panel</Link></li>
+                            )}
+                            <li className="mobile-nav-item"><Link to="/community" onClick={() => setMobileMenuOpen(false)} className="mobile-nav-link"><i className="fas fa-bullhorn"></i> Announcements</Link></li>
+                            <li className="mobile-nav-item"><Link to="/earn-vc" onClick={() => setMobileMenuOpen(false)} className="mobile-nav-link"><i className="fas fa-coins"></i> How to Earn VCs</Link></li>
+                            <li className="mobile-nav-item"><Link to="/about" onClick={() => setMobileMenuOpen(false)} className="mobile-nav-link"><i className="fas fa-info-circle"></i> About E-Cell</Link></li>
+
+                            {isAuthenticated && (
+                                <li className="mobile-nav-item" style={{ marginTop: 'auto', borderTop: '1px solid var(--border-color)' }}>
+                                    <button onClick={handleLogout} className="mobile-nav-link" style={{ width: '100%', textAlign: 'left', color: 'var(--error)' }}>
+                                        <i className="fas fa-power-off"></i> Logout
+                                    </button>
                                 </li>
                             )}
-
-                            <li className="mobile-nav-item">
-                                <Link to="/community" onClick={() => setMobileMenuOpen(false)} className="mobile-nav-link" style={{ display: 'block', padding: '1rem 1.5rem', textDecoration: 'none', color: 'var(--text-primary)', borderTop: '1px solid var(--border-color-light)' }}>
-                                    <i className="fas fa-bullhorn" style={{ width: '24px', color: 'var(--text-secondary)' }}></i> Announcements
-                                </Link>
-                            </li>
-
-                            <li className="mobile-nav-item">
-                                <Link to="/earn-vc" onClick={() => setMobileMenuOpen(false)} className="mobile-nav-link" style={{ display: 'block', padding: '1rem 1.5rem', textDecoration: 'none', color: 'var(--text-primary)', borderTop: '1px solid var(--border-color-light)' }}>
-                                    <i className="fas fa-coins" style={{ width: '24px', color: 'var(--text-secondary)' }}></i> How to Earn VCs
-                                </Link>
-                            </li>
-
-                            <li className="mobile-nav-item">
-                                <Link to="/about" onClick={() => setMobileMenuOpen(false)} className="mobile-nav-link" style={{ display: 'block', padding: '1rem 1.5rem', textDecoration: 'none', color: 'var(--text-primary)', borderTop: '1px solid var(--border-color-light)' }}>
-                                    <i className="fas fa-info-circle" style={{ width: '24px', color: 'var(--text-secondary)' }}></i> About E-Cell
-                                </Link>
-                            </li>
                         </ul>
                     </div>
                 </div>
