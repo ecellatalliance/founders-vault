@@ -122,7 +122,7 @@ const EarnVC = () => {
             icon: 'fas fa-calendar-check',
             title: 'Attend Events',
             description: 'Join our workshops and sessions to earn points instantly.',
-            amount: '50-100 VCs',
+            amount: '25 VCs',
             color: '#4F46E5', // Indigo
             bg: '#EEF2FF'
         },
@@ -130,7 +130,7 @@ const EarnVC = () => {
             icon: 'fas fa-users',
             title: 'Refer Friends',
             description: 'Bring your friends to the E-Cell community.',
-            amount: '200 VCs',
+            amount: '15 VCs',
             color: '#10B981', // Emerald
             bg: '#ECFDF5'
         },
@@ -138,15 +138,15 @@ const EarnVC = () => {
             icon: 'fas fa-trophy',
             title: 'Win Competitions',
             description: 'Participate and win in our hackathons.',
-            amount: '500+ VCs',
+            amount: '30 VCs',
             color: '#F59E0B', // Amber
             bg: '#FFFBEB'
         },
         {
             icon: 'fas fa-shopping-cart',
             title: 'Shop & Review',
-            description: 'Get cashback VCs when you purchase and review items.',
-            amount: '10% Back',
+            description: 'Get a chance of cashback VCs when you purchase and review items.',
+            amount: '5% Back',
             color: '#EC4899', // Pink
             bg: '#FDF2F8'
         }
