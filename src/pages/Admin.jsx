@@ -211,6 +211,7 @@ const Admin = () => {
             stock: parseInt(form.stock.value),
             rating: 4.5, // Default start rating
             reviews: 0,
+            badge_text: form.badge_text.value, // Added badge text
             features: form.features.value.split(',').map(f => f.trim())
         }
 
@@ -366,7 +367,7 @@ const Admin = () => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
                         <div className="form-group">
-                            {/* Replaced Input with SearchableDropdown */}
+                            <label className="form-label">Category</label>
                             <SearchableDropdown
                                 label="Category"
                                 options={uniqueCategories}
@@ -378,6 +379,13 @@ const Admin = () => {
                         <div className="form-group">
                             <label className="form-label">Image URL</label>
                             <input name="image_url" className="form-input" required placeholder="https://..." />
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'var(--space-4)', marginBottom: 'var(--space-4)' }}>
+                        <div className="form-group">
+                            <label className="form-label">Badge Text (Optional)</label>
+                            <input name="badge_text" className="form-input" placeholder="e.g. Bestseller, New Arrival, Audiophile Choice" />
                         </div>
                     </div>
 

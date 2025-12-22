@@ -15,7 +15,7 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
         'Hi-Res Audio with LDAC',
         'boAt Spatial Audio'
     ]
-    const colors = product.colors || ['#000', '#aaa', '#f00']
+    // Removed colors logic as per request
 
     return (
         <div className={`product-card ${variant}`}>
@@ -34,10 +34,17 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
                 </Link>
 
 
-                {/* Badges */}
-                {variant === 'vertical' && (
-                    <div className="card-badge badge-bestseller">
-                        <i className="fas fa-rocket"></i> Bestseller
+                {/* Badges - Dynamic from DB */}
+                {variant === 'vertical' && product.badge && (
+                    <div className="card-badge badge-dynamic">
+                        <i className="fas fa-certificate"></i> {product.badge}
+                    </div>
+                )}
+
+                {/* Fallback for Bestseller if needed, or remove if fully dynamic */}
+                {variant === 'vertical' && !product.badge && discount > 50 && (
+                    <div className="card-badge badge-sale">
+                        <i className="fas fa-bolt"></i> Mega Sale
                     </div>
                 )}
 
@@ -57,7 +64,7 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
                 <div className="highlight-bar">
                     {variant === 'vertical' && (
                         <div className="rating-pill">
-                            <i className="fas fa-star" style={{ color: '#fbbf24' }}></i> {product.rating}
+                            <i className="fas fa-star" style={{ color: '#fbbf24' }}></i> {product.rating?.toFixed(1) || '4.5'}
                         </div>
                     )}
                 </div>
@@ -69,7 +76,7 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
                 {variant === 'horizontal' && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-2)' }}>
                         <i className="fas fa-star" style={{ color: '#fbbf24' }}></i>
-                        <span style={{ fontWeight: 600 }}>{product.rating}</span>
+                        <span style={{ fontWeight: 600 }}>{product.rating?.toFixed(1) || '4.5'}</span>
                         <i className="fas fa-check-circle" style={{ color: '#059669' }}></i>
                     </div>
                 )}
@@ -89,16 +96,6 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
                         {discount > 0 && (
                             <span className="price-discount">{discount}% off</span>
                         )}
-
-                        {/* Horizontal: Color picker on right of price line */}
-                        {variant === 'horizontal' && (
-                            <div className="color-options">
-                                {colors.slice(0, 2).map((c, i) => (
-                                    <div key={i} className="color-dot" style={{ backgroundColor: c }}></div>
-                                ))}
-                                <span className="color-dot more">+{colors.length - 2}</span>
-                            </div>
-                        )}
                     </div>
                 ) : (
                     <div className="product-price-row">
@@ -112,19 +109,6 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
                         {features.map((f, i) => (
                             <span key={i} className="feature-tag">{f}</span>
                         ))}
-                    </div>
-                )}
-
-                {/* Vertical: Color options at bottom right of price line or separate */}
-                {isAuthenticated && variant === 'vertical' && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'var(--space-2)' }}>
-                        <div style={{ textDecoration: 'line-through', color: 'transparent' }}>.</div> {/* Spacer */}
-                        <div className="color-options">
-                            {colors.slice(0, 2).map((c, i) => (
-                                <div key={i} className="color-dot" style={{ backgroundColor: c }}></div>
-                            ))}
-                            <span className="color-dot more">+{Math.max(0, colors.length - 2)}</span>
-                        </div>
                     </div>
                 )}
 

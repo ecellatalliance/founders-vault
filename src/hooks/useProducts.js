@@ -47,7 +47,7 @@ export const useProducts = () => {
                 // Generate deterministic random rating between 3.8 and 5.0 based on ID
                 rating: 3.8 + ((p.id % 12) / 10),
                 features: p.features || [], // Ensure array
-                colors: ['#000', '#aaa'] // Mock colors
+                badge: p.badge_text || null // Map DB badge_text
             }))
 
             setProducts(mappedProducts)
