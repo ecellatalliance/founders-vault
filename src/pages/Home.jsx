@@ -38,12 +38,7 @@ const Home = () => {
             {/* Hero Carousel */}
             <HeroCarousel />
 
-            {/* Featured Products Carousel */}
-            <ProductCarousel
-                title="⭐ Top Picks for Students"
-                products={getFeaturedProducts()}
-                viewAllLink="/shop"
-            />
+
 
             {/* Products Under 300 */}
             <ProductCarousel
