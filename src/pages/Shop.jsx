@@ -35,7 +35,22 @@ const Shop = () => {
         { label: 'Above 5000🪙', min: 5001, max: Infinity },
     ]
 
+
+    // DB Categories: 'Planner', 'Books', 'Beauty', 'Stationery', 'Kitchen', 'Office', 'Accessories', 'Electronics', 'Fashion', 'Health', 'Decor'
+    const categoryMap = {
+        'Tech Essentials': ['Electronics'],
+        'Premium Apparel': ['Fashion', 'Accessories'],
+        'The Launchpad': [], // No exact match
+        'Office Supplies': ['Office', 'Stationery', 'Planner'],
+        'Books & Learning': ['Books'],
+        'Home Hacks': ['Decor', 'Kitchen'],
+        'Bottles & Sippers': ['Kitchen'],
+        'Storage & Organizers': ['Office', 'Decor'],
+        'Personalised Products': ['Beauty', 'Health']
+    }
+
     // Sync URL params to state
+
     useEffect(() => {
         const category = searchParams.get('category')
         if (category) {
@@ -67,7 +82,16 @@ const Shop = () => {
 
         // Category filter
         if (selectedCategories.length > 0) {
-            filtered = filtered.filter(p => selectedCategories.includes(p.category))
+            filtered = filtered.filter(p => {
+                // If the product category matches one of the selected UI categories directly
+                if (selectedCategories.includes(p.category)) return true
+
+                // Or if it matches through the map
+                return selectedCategories.some(selectedCat => {
+                    const mappedCats = categoryMap[selectedCat] || []
+                    return mappedCats.includes(p.category)
+                })
+            })
         }
 
         // Price range filter
