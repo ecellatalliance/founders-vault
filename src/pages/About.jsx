@@ -40,7 +40,7 @@ const About = () => {
                             </div>
                             <h2 className="text-3xl font-bold mb-4" style={{ color: 'var(--primary-navy)' }}>Who We Are</h2>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: '1.7', fontSize: '1.1rem' }}>
-                                The Entrepreneurship Cell (E-Cell) at Alliance University is a vibrant ecosystem dedicated to fostering the spirit of entrepreneurship. We are a student-led body that provides a platform for budding entrepreneurs to turn their innovative ideas into reality through mentorship, resources, and networking.
+                                The Entrepreneurship Cell (E-Cell) at Alliance University is a high-octane ecosystem engineered to ignite the entrepreneurial spirit. We serve as the ultimate launchpad for visionaries, transforming innovative concepts into market-ready ventures through strategic mentorship, comprehensive resources, and a global network of industry leaders.
                             </p>
                         </div>
 
