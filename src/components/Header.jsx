@@ -53,6 +53,11 @@ const Header = () => {
                 {/* Top Bar / Main Header Content */}
                 <div className="header-container-fluid" style={{ position: 'relative' }}>
                     <div className="header-main-content">
+                        {/* Mobile Menu Toggle - Left */}
+                        <button className="mobile-menu-toggle mobile-only" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                            <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+                        </button>
+
                         {/* Logo - Left */}
                         <Link to="/" className="logo">
                             <img src="/logo.png" alt="Founders Vault" className="logo-img" />
@@ -133,10 +138,6 @@ const Header = () => {
                                 </button>
                             )}
 
-                            {/* Hamburger Menu - Right */}
-                            <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                                <i className={`fas ${mobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
-                            </button>
                         </div>
                     </div>
                 </div>

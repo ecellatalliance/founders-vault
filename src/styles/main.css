@@ -84,7 +84,7 @@
 }
 
 .logo-img {
-    height: 48px;
+    height: 60px;
     width: auto;
     object-fit: contain;
 }
@@ -214,6 +214,8 @@
     display: flex;
     align-items: center;
     gap: var(--space-4);
+    margin-left: auto;
+    /* Push actions to the right */
 }
 
 .header-action-btn {
@@ -655,10 +657,13 @@
         gap: var(--space-2);
         padding: var(--space-2) 0;
         position: relative;
+        align-items: center;
+        justify-content: flex-start;
+        /* Align start to put menu next to logo */
     }
 
     .logo-img {
-        height: 32px;
+        height: 48px;
     }
 
     .logo-text {
@@ -724,6 +729,12 @@
         padding: var(--space-2);
         z-index: 1100;
         font-size: 1.25rem;
+        margin-right: var(--space-2);
+        /* Spacing between menu and logo */
+        color: var(--text-primary);
+        background: none;
+        border: none;
+        cursor: pointer;
     }
 
     .theme-toggle {
@@ -1577,88 +1588,89 @@
     }
 
 }
-    /* ============================================
+
+/* ============================================
    EARN VC BENTO GRID
    ============================================ */
+.earn-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: var(--space-6);
+    margin-bottom: var(--space-12);
+}
+
+.earn-card {
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+}
+
+.earn-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.earn-card .icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: var(--space-4);
+}
+
+/* Graph card in bento layout */
+.earn-graph-card {
+    grid-column: 3 / 4;
+    grid-row: 1 / 3;
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.earn-graph-container {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+    overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
     .earn-bento-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        gap: var(--space-6);
-        margin-bottom: var(--space-12);
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
     }
 
-    .earn-card {
-        background-color: var(--bg-primary);
-        border-radius: var(--radius-xl);
-        padding: var(--space-6);
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border-color);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: default;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .earn-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-lg);
-    }
-
-    .earn-card .icon-wrapper {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        margin-bottom: var(--space-4);
-    }
-
-    /* Graph card in bento layout */
     .earn-graph-card {
-        grid-column: 3 / 4;
-        grid-row: 1 / 3;
-        background-color: var(--bg-primary);
-        border-radius: var(--radius-xl);
-        padding: var(--space-8);
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border-color);
+        grid-column: 1 / -1;
+        grid-row: auto;
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 640px) {
+    .earn-bento-grid {
         display: flex;
         flex-direction: column;
+        gap: var(--space-4);
     }
 
-    .earn-graph-container {
-        flex: 1;
-        position: relative;
-        width: 100%;
+    .earn-graph-card {
         min-height: 300px;
-        overflow: hidden;
     }
-
-    /* Responsive */
-    @media (max-width: 1024px) {
-        .earn-bento-grid {
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: auto;
-        }
-
-        .earn-graph-card {
-            grid-column: 1 / -1;
-            grid-row: auto;
-            min-height: 400px;
-        }
-    }
-
-    @media (max-width: 640px) {
-        .earn-bento-grid {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-4);
-        }
-
-        .earn-graph-card {
-            min-height: 300px;
-        }
-    }
+}

@@ -279,7 +279,8 @@
 @media (max-width: 1024px) {
     .hero-carousel-slide {
         background: linear-gradient(180deg, #FCEFA1 40%, #FFFFF0 40%);
-        flex-direction: column;
+        flex-direction: column-reverse;
+        /* Text above image */
     }
 
     .hero-image-container {
@@ -289,7 +290,8 @@
         transform: none;
         width: 300px;
         height: 250px;
-        margin-top: 20px;
+        margin-top: 0;
+        margin-bottom: 20px;
     }
 
     .hero-content-container {
@@ -298,7 +300,8 @@
         width: 100%;
         align-items: center;
         text-align: center;
-        padding: 20px;
+        padding: 40px 20px 20px 20px;
+        /* More padding at top (green area) */
     }
 
     .hero-text-explore,
