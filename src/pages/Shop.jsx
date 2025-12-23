@@ -220,7 +220,27 @@ const Shop = () => {
                                 <button onClick={() => document.querySelector('.shop-filters').classList.remove('active')} style={{ background: 'none', border: 'none', fontSize: '1.5rem' }}>&times;</button>
                             </div>
                             <div className="filter-section">
-                                <h3 className="filter-title">Categories</h3>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-2)' }}>
+                                    <h3 className="filter-title" style={{ marginBottom: 0 }}>Categories</h3>
+                                    {selectedCategories.length > 0 && (
+                                        <button
+                                            onClick={() => setSelectedCategories([])}
+                                            className="clear-filter-btn"
+                                            style={{
+                                                background: 'none',
+                                                border: '1px solid var(--primary-color)',
+                                                color: 'var(--primary-color)',
+                                                padding: '2px 8px',
+                                                borderRadius: '4px',
+                                                fontSize: '0.8rem',
+                                                cursor: 'pointer',
+                                                fontWeight: 'bold'
+                                            }}
+                                        >
+                                            Clear Filter
+                                        </button>
+                                    )}
+                                </div>
                                 <div className="filter-options" id="categoryFilters">
                                     {categories.map((category) => (
                                         <label key={category} className="filter-checkbox">
