@@ -1,0 +1,115 @@
+/* Checkout Page Styles */
+
+.checkout-main {
+    padding: var(--space-8) 0;
+    min-height: 80vh;
+}
+
+.checkout-title {
+    margin-bottom: var(--space-6);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--space-8);
+}
+
+/* Form Section */
+.checkout-form-section {
+    background-color: var(--white);
+}
+
+.section-heading {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-4);
+    font-weight: 600;
+}
+
+.checkout-form {
+    display: grid;
+    gap: var(--space-4);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.input-full {
+    width: 100%;
+}
+
+.form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+/* Summary Section */
+.checkout-summary-section {
+    background: var(--bg-secondary);
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    height: fit-content;
+    position: sticky;
+    top: var(--space-6);
+}
+
+.summary-items {
+    margin-bottom: var(--space-4);
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-2);
+    font-size: 0.95rem;
+}
+
+.summary-divider {
+    border-top: 1px solid var(--border-color);
+    margin: var(--space-4) 0;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: var(--space-3);
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .checkout-grid {
+        grid-template-columns: 1fr;
+        /* Stack on mobile */
+    }
+
+    .checkout-summary-section {
+        order: -1;
+        /* Show summary first on mobile? Or keep bottom? Keeping intuitive order usually means form first, but for ecommerce summary often last. Let's keep form first. */
+        order: 1;
+        /* Explicitly keep at bottom or default */
+        position: static;
+        /* No sticky on mobile usually */
+    }
+
+    /* Optional: Stack form row inputs on very small screens */
+    @media (max-width: 480px) {
+        .form-row-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+}

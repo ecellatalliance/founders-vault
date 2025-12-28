@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import Layout from '../components/Layout'
 import { supabase } from '../supabaseClient'
+import '../styles/checkout.css'
 
 const Checkout = () => {
     const navigate = useNavigate()
@@ -95,67 +96,62 @@ const Checkout = () => {
 
     return (
         <Layout>
-            <main className="checkout-main" style={{ padding: 'var(--space-8) 0' }}>
+            <main className="checkout-main">
                 <div className="container">
-                    <h1 style={{ marginBottom: 'var(--space-6)' }}>Checkout</h1>
+                    <h1 className="checkout-title">Checkout</h1>
 
-                    <div className="checkout-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: 'var(--space-8)' }}>
+                    <div className="checkout-grid">
                         {/* Shipping Form */}
                         <div className="checkout-form-section">
-                            <h2 style={{ fontSize: '1.5rem', marginBottom: 'var(--space-4)' }}>Shipping Details</h2>
-                            <form id="checkoutForm" onSubmit={handleSubmit} style={{ display: 'grid', gap: 'var(--space-4)' }}>
+                            <h2 className="section-heading">Shipping Details</h2>
+                            <form id="checkoutForm" onSubmit={handleSubmit} className="checkout-form">
                                 <div className="form-group">
-                                    <label style={{ display: 'block', marginBottom: 'var(--space-2)' }}>Full Name</label>
+                                    <label>Full Name</label>
                                     <input
                                         type="text"
                                         required
-                                        className="input"
-                                        style={{ width: '100%' }}
+                                        className="input input-full"
                                         value={formData.name}
                                         onChange={e => setFormData({ ...formData, name: e.target.value })}
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label style={{ display: 'block', marginBottom: 'var(--space-2)' }}>Email</label>
+                                    <label>Email</label>
                                     <input
                                         type="email"
                                         required
-                                        className="input"
-                                        style={{ width: '100%' }}
+                                        className="input input-full"
                                         value={formData.email}
                                         onChange={e => setFormData({ ...formData, email: e.target.value })}
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label style={{ display: 'block', marginBottom: 'var(--space-2)' }}>Address</label>
+                                    <label>Address</label>
                                     <input
                                         type="text"
                                         required
-                                        className="input"
-                                        style={{ width: '100%' }}
+                                        className="input input-full"
                                         value={formData.address}
                                         onChange={e => setFormData({ ...formData, address: e.target.value })}
                                     />
                                 </div>
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+                                <div className="form-row-2">
                                     <div className="form-group">
-                                        <label style={{ display: 'block', marginBottom: 'var(--space-2)' }}>City</label>
+                                        <label>City</label>
                                         <input
                                             type="text"
                                             required
-                                            className="input"
-                                            style={{ width: '100%' }}
+                                            className="input input-full"
                                             value={formData.city}
                                             onChange={e => setFormData({ ...formData, city: e.target.value })}
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label style={{ display: 'block', marginBottom: 'var(--space-2)' }}>ZIP Code</label>
+                                        <label>ZIP Code</label>
                                         <input
                                             type="text"
                                             required
-                                            className="input"
-                                            style={{ width: '100%' }}
+                                            className="input input-full"
                                             value={formData.zip}
                                             onChange={e => setFormData({ ...formData, zip: e.target.value })}
                                         />
@@ -165,30 +161,25 @@ const Checkout = () => {
                         </div>
 
                         {/* Order Summary */}
-                        <div className="checkout-summary-section" style={{
-                            background: 'var(--bg-secondary)',
-                            padding: 'var(--space-6)',
-                            borderRadius: 'var(--radius-lg)',
-                            height: 'fit-content'
-                        }}>
-                            <h2 style={{ fontSize: '1.5rem', marginBottom: 'var(--space-4)' }}>Order Summary</h2>
+                        <div className="checkout-summary-section">
+                            <h2 className="section-heading">Order Summary</h2>
 
-                            <div className="summary-items" style={{ marginBottom: 'var(--space-4)' }}>
+                            <div className="summary-items">
                                 {cart.map(item => (
-                                    <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)', fontSize: '0.95rem' }}>
+                                    <div key={item.id} className="summary-item">
                                         <span>{item.name} x {item.quantity}</span>
                                         <span style={{ fontWeight: 600 }}>{(item.price * item.quantity).toLocaleString('en-IN')}🪙</span>
                                     </div>
                                 ))}
                             </div>
 
-                            <div style={{ borderTop: '1px solid var(--border-color)', margin: 'var(--space-4) 0' }}></div>
+                            <div className="summary-divider"></div>
 
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
+                            <div className="summary-item">
                                 <span>Subtotal</span>
                                 <span>{total.toLocaleString('en-IN')}🪙</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-4)', fontWeight: 700, fontSize: '1.2rem' }}>
+                            <div className="summary-total">
                                 <span>Total</span>
                                 <span style={{ color: 'var(--primary-color)' }}>{total.toLocaleString('en-IN')}🪙</span>
                             </div>
@@ -196,8 +187,7 @@ const Checkout = () => {
                             <button
                                 type="submit"
                                 form="checkoutForm"
-                                className="btn btn-primary"
-                                style={{ width: '100%', padding: 'var(--space-3)' }}
+                                className="btn btn-primary checkout-btn"
                                 disabled={loading}
                             >
                                 {loading ? 'Processing...' : 'Place Order'}
