@@ -45,7 +45,7 @@ export const useProducts = () => {
                 image: p.image_url, // UI expects 'image'
                 originalPrice: p.price * 1.5, // Mock original price
                 // Generate deterministic random rating between 3.8 and 5.0 based on ID
-                rating: 3.8 + ((p.id % 12) / 10),
+                features: p.features || [], // Ensure array
                 features: p.features || [], // Ensure array
                 badge: p.badge_text || null // Map DB badge_text
             }))

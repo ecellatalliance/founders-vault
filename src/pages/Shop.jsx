@@ -11,7 +11,7 @@ const Shop = () => {
     const [filteredProducts, setFilteredProducts] = useState([])
     const [selectedCategories, setSelectedCategories] = useState([])
     const [selectedPriceRanges, setSelectedPriceRanges] = useState([])
-    const [minRating, setMinRating] = useState(0)
+
     const [sortBy, setSortBy] = useState('featured')
     const [currentView, setCurrentView] = useState('grid')
     const [currentPage, setCurrentPage] = useState(1)
@@ -65,7 +65,7 @@ const Shop = () => {
     useEffect(() => {
         const search = searchParams.get('search')
         applyFilters(search)
-    }, [products, selectedCategories, selectedPriceRanges, minRating, sortBy, searchParams])
+    }, [products, selectedCategories, selectedPriceRanges, sortBy, searchParams])
 
     const applyFilters = (searchQuery = null) => {
         let filtered = [...products]
@@ -101,10 +101,7 @@ const Shop = () => {
             )
         }
 
-        // Rating filter
-        if (minRating > 0) {
-            filtered = filtered.filter(p => p.rating >= minRating)
-        }
+
 
         // Sorting
         switch (sortBy) {
@@ -114,9 +111,7 @@ const Shop = () => {
             case 'price-high':
                 filtered.sort((a, b) => b.price - a.price)
                 break
-            case 'rating':
-                filtered.sort((a, b) => b.rating - a.rating)
-                break
+
             case 'name':
                 filtered.sort((a, b) => a.name.localeCompare(b.name))
                 break
@@ -147,7 +142,7 @@ const Shop = () => {
     const clearFilters = () => {
         setSelectedCategories([])
         setSelectedPriceRanges([])
-        setMinRating(0)
+
         setSortBy('featured')
     }
 
@@ -271,27 +266,7 @@ const Shop = () => {
                                 </div>
                             </div>
 
-                            <div className="filter-section">
-                                <h3 className="filter-title">Rating</h3>
-                                <div className="filter-options">
-                                    <label className="filter-checkbox">
-                                        <input
-                                            type="checkbox"
-                                            checked={minRating === 4}
-                                            onChange={() => setMinRating(minRating === 4 ? 0 : 4)}
-                                        />
-                                        <span>4★ & above</span>
-                                    </label>
-                                    <label className="filter-checkbox">
-                                        <input
-                                            type="checkbox"
-                                            checked={minRating === 3}
-                                            onChange={() => setMinRating(minRating === 3 ? 0 : 3)}
-                                        />
-                                        <span>3★ & above</span>
-                                    </label>
-                                </div>
-                            </div>
+
 
                             <button className="btn btn-outline" style={{ width: '100%' }} onClick={clearFilters}>
                                 <i className="fas fa-redo"></i>
@@ -314,7 +289,7 @@ const Shop = () => {
                                             { value: 'featured', label: 'Featured' },
                                             { value: 'price-low', label: 'Price: Low to High' },
                                             { value: 'price-high', label: 'Price: High to Low' },
-                                            { value: 'rating', label: 'Highest Rated' },
+
                                             { value: 'name', label: 'Name: A-Z' }
                                         ]}
                                         placeholder="Sort by"

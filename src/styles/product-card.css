@@ -75,40 +75,7 @@
     color: var(--primary-navy);
 }
 
-/* Highlight Bar (Yellow Bar) */
-.highlight-bar {
-    background-color: #fbbf24;
-    /* Yellow/Gold matching reference */
-    color: #000;
-    font-weight: 700;
-    text-align: center;
-    padding: var(--space-2);
-    font-size: var(--text-sm);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-}
 
-/* Vertical card specific adjustment */
-.product-card.vertical .highlight-bar {
-    position: absolute;
-    bottom: 0;
-}
-
-.rating-pill {
-    background-color: #fff;
-    padding: 2px 6px;
-    border-radius: var(--radius-sm);
-    font-size: var(--text-xs);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
 
 /* Card Content */
 .product-card-details {
@@ -167,12 +134,7 @@
     flex-shrink: 0;
 }
 
-.product-card.horizontal .highlight-bar {
-    /* Style as yellow bar at the bottom of the image container */
-    bottom: 0;
-    left: 0;
-    width: 100%;
-}
+
 
 .product-card.horizontal .product-card-details {
     width: 60%;

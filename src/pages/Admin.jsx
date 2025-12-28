@@ -209,8 +209,7 @@ const Admin = () => {
             image_url: form.image_url.value,
             source_link: form.source_link.value, // Added source link
             stock: parseInt(form.stock.value),
-            rating: 4.5, // Default start rating
-            reviews: 0,
+
             badge_text: form.badge_text.value, // Added badge text
             features: form.features.value.split(',').map(f => f.trim())
         }

@@ -60,26 +60,13 @@ const ProductCard = ({ product, variant = 'vertical' }) => {
                     </button>
                 )}
 
-                {/* Highlight Bar */}
-                <div className="highlight-bar">
-                    {variant === 'vertical' && (
-                        <div className="rating-pill">
-                            <i className="fas fa-star" style={{ color: '#fbbf24' }}></i> {product.rating?.toFixed(1) || '4.5'}
-                        </div>
-                    )}
-                </div>
+
             </div>
 
             {/* Content Details */}
             <div className="product-card-details">
                 {/* Horizontal: Rating at top */}
-                {variant === 'horizontal' && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-2)' }}>
-                        <i className="fas fa-star" style={{ color: '#fbbf24' }}></i>
-                        <span style={{ fontWeight: 600 }}>{product.rating?.toFixed(1) || '4.5'}</span>
-                        <i className="fas fa-check-circle" style={{ color: '#059669' }}></i>
-                    </div>
-                )}
+
 
                 <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <h3 className="product-title">{product.name}</h3>

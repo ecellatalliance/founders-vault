@@ -106,15 +106,7 @@ const ProductDetails = () => {
                                 Brand: E-Cell Store
                             </div>
 
-                            {/* Ratings */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-4)', borderBottom: '1px solid #e7e7e7', paddingBottom: 'var(--space-4)' }}>
-                                <div style={{ display: 'flex', color: '#F0C14B', fontSize: '0.9rem' }}>
-                                    {[...Array(5)].map((_, i) => (
-                                        <i key={i} className={`fas fa-star ${i < Math.floor(product.rating || 4) ? '' : 'text-gray-300'}`} style={{ color: i < Math.floor(product.rating || 4) ? '#FFA41C' : '#e5e7eb' }}></i>
-                                    ))}
-                                </div>
-                                <span style={{ color: '#007185', fontSize: '0.9rem' }}>{product.reviews || 12} ratings</span>
-                            </div>
+
 
                             {/* Price Section */}
                             <div style={{ marginBottom: 'var(--space-4)' }}>
@@ -319,18 +311,7 @@ const ProductDetails = () => {
                                 </tbody>
                             </table>
 
-                            <h2 style={{ fontSize: '1.3rem', color: '#C7511F', marginBottom: 'var(--space-4)' }}>Customer Reviews</h2>
-                            <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
-                                <div style={{ display: 'flex', color: '#FFA41C' }}>
-                                    {[...Array(5)].map((_, i) => (
-                                        <i key={i} className={`fas fa-star ${i < Math.floor(product.rating || 4) ? '' : 'text-gray-300'}`}></i>
-                                    ))}
-                                </div>
-                                <span style={{ fontSize: '0.9rem' }}>4.5 out of 5</span>
-                            </div>
-                            <p style={{ marginTop: 'var(--space-2)', fontSize: '0.9rem' }}>
-                                "Great product, highly recommended for students!" - <span style={{ color: '#565959' }}>Verified Purchase</span>
-                            </p>
+
                         </div>
                     </div>
                 </div>
