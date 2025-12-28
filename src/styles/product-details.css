@@ -1,0 +1,194 @@
+/* Desktop Layout */
+.product-details-container {
+    padding: var(--space-4) 0;
+    background-color: #fff;
+    min-height: 80vh;
+}
+
+.product-details-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 4.5fr) minmax(0, 4.5fr) minmax(0, 2.5fr);
+    gap: var(--space-8);
+    align-items: start;
+}
+
+/* Image Gallery */
+.product-gallery-section {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.thumbnails-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.thumbnail-item {
+    width: 40px;
+    height: 50px;
+    border: 1px solid #a2a6ac;
+    border-radius: 3px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.thumbnail-item.selected {
+    border-color: #e77600;
+    box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5);
+}
+
+.thumbnail-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.main-image-wrapper {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    background-color: #fff;
+}
+
+.main-image-wrapper img {
+    max-width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+}
+
+/* Buy Box (Desktop) */
+.product-buy-box {
+    border: 1px solid #d5d9d9;
+    border-radius: 8px;
+    padding: var(--space-4);
+    background-color: #fff;
+}
+
+/* Mobile Action Bar (Hidden by default) */
+.mobile-action-bar {
+    display: none;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    .product-details-container {
+        padding-bottom: 120px;
+        /* Space for the fixed footer */
+    }
+
+    .product-details-grid {
+        display: block;
+        /* Use block flow on mobile */
+    }
+
+    .product-gallery-section {
+        flex-direction: column-reverse;
+        /* Thumbnails below on mobile */
+        margin-bottom: var(--space-4);
+    }
+
+    .thumbnails-vertical {
+        flex-direction: row;
+        margin-top: var(--space-2);
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .main-image-wrapper img {
+        max-height: 350px;
+        /* Allow reasonable height on mobile */
+        width: 100%;
+    }
+
+    /* Details alignment */
+    .product-details-center {
+        padding: 0 var(--space-2);
+        margin-bottom: var(--space-4);
+    }
+
+    /* Hide standard buy box buttons on mobile, keep info */
+    .product-buy-box {
+        border: none;
+        padding: 0 var(--space-2);
+        margin-bottom: var(--space-4);
+    }
+
+    .buy-box-buttons {
+        display: none !important;
+        /* Force hide desktop buttons */
+    }
+
+    /* Show Mobile Action Bar */
+    .mobile-action-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+        z-index: 900;
+        /* High enough but below modals (1050) */
+        padding: 12px 16px;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        align-items: center;
+        gap: 12px;
+        border-top: 1px solid #e7e7e7;
+    }
+
+    /* Mobile Action Bar Layout */
+    .mobile-action-bar .price-info {
+        display: flex;
+        flex-direction: column;
+        min-width: 80px;
+    }
+
+    .mobile-action-bar .price-current {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0F1111;
+        line-height: 1.2;
+    }
+
+    .mobile-action-bar .price-original {
+        font-size: 0.85rem;
+        text-decoration: line-through;
+        color: #565959;
+    }
+
+    .mobile-action-bar-btn {
+        flex: 1;
+        background-color: #FFD814;
+        border: 1px solid #FCD200;
+        border-radius: 25px;
+        /* Pill shape */
+        height: 44px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        color: #0F1111;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-action-bar-btn.buy-now {
+        background-color: #FFA41C;
+        border-color: #FF8F00;
+    }
+
+    .mobile-action-bar-btn.notify-me {
+        background-color: #F0F2F2;
+        border-color: #D5D9D9;
+        color: #0F1111;
+    }
+
+    /* Adjust specs table font size */
+    table th,
+    table td {
+        padding: 8px !important;
+        font-size: 0.9rem !important;
+    }
+}

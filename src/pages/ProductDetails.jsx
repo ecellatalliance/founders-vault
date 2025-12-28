@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext'
 import Layout from '../components/Layout'
 import { useProducts } from '../hooks/useProducts'
 import { useAuth } from '../context/AuthContext'
+import '../styles/product-details.css'
 
 const ProductDetails = () => {
     const { id } = useParams()
@@ -50,18 +51,18 @@ const ProductDetails = () => {
         )
     }
 
-    const discount = product.originalPrice
-        ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-        : 0
-
     const handleBuyNow = () => {
         addToCart(product)
         navigate('/checkout')
     }
 
+    const handleNotifyMe = () => {
+        alert("We'll notify you when this item is back in stock!")
+    }
+
     return (
         <Layout>
-            <main className="product-details-main" style={{ padding: 'var(--space-4) 0', backgroundColor: '#fff' }}>
+            <main className="product-details-container">
                 <div className="container">
                     {/* Breadcrumbs */}
                     <div style={{ marginBottom: 'var(--space-4)', color: '#565959', fontSize: '0.85rem' }}>
@@ -70,48 +71,34 @@ const ProductDetails = () => {
                         <span style={{ color: '#C7511F', cursor: 'pointer' }}>{product.category}</span>
                     </div>
 
-                    <div className="product-grid-amazon" style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'minmax(0, 4.5fr) minmax(0, 4.5fr) minmax(0, 2.5fr)',
-                        gap: 'var(--space-8)',
-                        alignItems: 'start'
-                    }}>
+                    <div className="product-details-grid">
 
                         {/* 1. Left Column: Images */}
-                        <div className="product-gallery-section" style={{ display: 'flex', gap: 'var(--space-4)' }}>
-                            {/* Thumbnails (Vertical) */}
-                            <div className="thumbnails-vertical" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                        <div className="product-gallery-section">
+                            {/* Thumbnails */}
+                            <div className="thumbnails-vertical">
                                 {[product.image].map((img, i) => (
                                     <div
                                         key={i}
-                                        style={{
-                                            width: '40px',
-                                            height: '50px',
-                                            border: selectedImage === i ? '1px solid #e77600' : '1px solid #a2a6ac',
-                                            borderRadius: '3px',
-                                            overflow: 'hidden',
-                                            cursor: 'pointer',
-                                            boxShadow: selectedImage === i ? '0 0 3px 2px rgba(228,121,17,0.5)' : 'none'
-                                        }}
+                                        className={`thumbnail-item ${selectedImage === i ? 'selected' : ''}`}
                                         onMouseEnter={() => setSelectedImage(i)}
                                     >
-                                        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                                        <img src={img} alt="" />
                                     </div>
                                 ))}
                             </div>
 
                             {/* Main Image */}
-                            <div className="main-image-wrapper" style={{ flex: 1, textAlign: 'center' }}>
+                            <div className="main-image-wrapper">
                                 <img
                                     src={product.image}
                                     alt={product.name}
-                                    style={{ maxWidth: '100%', maxHeight: '500px', objectFit: 'contain' }}
                                 />
                             </div>
                         </div>
 
                         {/* 2. Center Column: Details */}
-                        <div className="product-dateils-center">
+                        <div className="product-details-center">
                             <h1 style={{ fontSize: '1.5rem', fontWeight: 500, lineHeight: 1.3, marginBottom: 'var(--space-1)', color: '#0F1111' }}>
                                 {product.name}
                             </h1>
@@ -169,12 +156,7 @@ const ProductDetails = () => {
                         </div>
 
                         {/* 3. Right Column: Buy Box */}
-                        <div className="product-buy-box" style={{
-                            border: '1px solid #d5d9d9',
-                            borderRadius: '8px',
-                            padding: 'var(--space-4)',
-                            backgroundColor: '#fff'
-                        }}>
+                        <div className="product-buy-box">
                             {isAuthenticated ? (
                                 <>
                                     <div style={{ fontSize: '1.2rem', fontWeight: 500, color: '#B12704', marginBottom: 'var(--space-2)' }}>
@@ -190,44 +172,64 @@ const ProductDetails = () => {
                                         {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
                                     </div>
 
-                                    {/* Actions */}
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-                                        <button
-                                            onClick={() => addToCart(product)}
-                                            disabled={product.stock === 0}
-                                            style={{
-                                                backgroundColor: '#FFD814',
-                                                borderColor: '#FCD200',
-                                                borderRadius: '20px',
-                                                padding: '8px',
-                                                cursor: 'pointer',
-                                                boxShadow: '0 2px 5px 0 rgba(213,217,217,.5)',
-                                                borderStyle: 'solid',
-                                                borderWidth: '1px',
-                                                width: '100%',
-                                                fontSize: '0.9rem'
-                                            }}
-                                        >
-                                            Add to Cart
-                                        </button>
-                                        <button
-                                            onClick={handleBuyNow}
-                                            disabled={product.stock === 0}
-                                            style={{
-                                                backgroundColor: '#FFA41C',
-                                                borderColor: '#FF8F00',
-                                                borderRadius: '20px',
-                                                padding: '8px',
-                                                cursor: 'pointer',
-                                                boxShadow: '0 2px 5px 0 rgba(213,217,217,.5)',
-                                                borderStyle: 'solid',
-                                                borderWidth: '1px',
-                                                width: '100%',
-                                                fontSize: '0.9rem'
-                                            }}
-                                        >
-                                            Buy Now
-                                        </button>
+                                    {/* Desktop Actions - Hidden on mobile via CSS */}
+                                    <div className="buy-box-buttons" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+                                        {product.stock > 0 ? (
+                                            <>
+                                                <button
+                                                    onClick={() => addToCart(product)}
+                                                    style={{
+                                                        backgroundColor: '#FFD814',
+                                                        borderColor: '#FCD200',
+                                                        borderRadius: '20px',
+                                                        padding: '8px',
+                                                        cursor: 'pointer',
+                                                        boxShadow: '0 2px 5px 0 rgba(213,217,217,.5)',
+                                                        borderStyle: 'solid',
+                                                        borderWidth: '1px',
+                                                        width: '100%',
+                                                        fontSize: '0.9rem'
+                                                    }}
+                                                >
+                                                    Add to Cart
+                                                </button>
+                                                <button
+                                                    onClick={handleBuyNow}
+                                                    style={{
+                                                        backgroundColor: '#FFA41C',
+                                                        borderColor: '#FF8F00',
+                                                        borderRadius: '20px',
+                                                        padding: '8px',
+                                                        cursor: 'pointer',
+                                                        boxShadow: '0 2px 5px 0 rgba(213,217,217,.5)',
+                                                        borderStyle: 'solid',
+                                                        borderWidth: '1px',
+                                                        width: '100%',
+                                                        fontSize: '0.9rem'
+                                                    }}
+                                                >
+                                                    Buy Now
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <button
+                                                onClick={handleNotifyMe}
+                                                style={{
+                                                    backgroundColor: '#F0F2F2',
+                                                    borderColor: '#D5D9D9',
+                                                    borderRadius: '20px',
+                                                    padding: '8px',
+                                                    cursor: 'pointer',
+                                                    boxShadow: '0 2px 5px 0 rgba(213,217,217,.5)',
+                                                    borderStyle: 'solid',
+                                                    borderWidth: '1px',
+                                                    width: '100%',
+                                                    fontSize: '0.9rem'
+                                                }}
+                                            >
+                                                Notify Me
+                                            </button>
+                                        )}
                                     </div>
 
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginTop: 'var(--space-4)', fontSize: '0.85rem', color: '#565959' }}>
@@ -302,7 +304,6 @@ const ProductDetails = () => {
                                         <th style={{ textAlign: 'left', padding: '10px', backgroundColor: '#f3f3f3', width: '30%', color: '#565959', fontWeight: 500 }}>Stock Status</th>
                                         <td style={{ padding: '10px' }}>{product.stock > 0 ? 'Available' : 'Unavailable'}</td>
                                     </tr>
-                                    {/* Mock specs since we don't have them in DB yet */}
                                     {['Mechanical Keyboard', 'Gaming Headset'].includes(product.name) && (
                                         <>
                                             <tr style={{ borderBottom: '1px solid #e7e7e7' }}>
@@ -333,6 +334,45 @@ const ProductDetails = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* Mobile Floating Action Bar */}
+                {isAuthenticated && (
+                    <div className="mobile-action-bar">
+                        <div className="price-info">
+                            <span className="price-current">🪙{product.price}</span>
+                            {product.originalPrice > product.price && (
+                                <span className="price-original">🪙{product.originalPrice}</span>
+                            )}
+                        </div>
+                        {product.stock > 0 ? (
+                            <>
+                                <button
+                                    className="mobile-action-bar-btn"
+                                    onClick={() => addToCart(product)}
+                                >
+                                    <i className="fas fa-shopping-cart"></i>
+                                    Add
+                                </button>
+                                <button
+                                    className="mobile-action-bar-btn buy-now"
+                                    onClick={handleBuyNow}
+                                >
+                                    <i className="fas fa-bolt"></i>
+                                    Buy
+                                </button>
+                            </>
+                        ) : (
+                            <button
+                                className="mobile-action-bar-btn notify-me"
+                                onClick={handleNotifyMe}
+                                style={{ width: '100%' }}
+                            >
+                                <i className="fas fa-bell"></i>
+                                Notify Me
+                            </button>
+                        )}
+                    </div>
+                )}
             </main>
         </Layout>
     )
