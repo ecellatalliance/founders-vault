@@ -77,19 +77,21 @@
 .hero-carousel {
     position: relative;
     width: 100%;
-    height: 500px;
+    height: 90vh;
+    /* Increased for full screen feel */
+    min-height: 600px;
     overflow: hidden;
     background-color: #FFFDE7;
     /* Fallback */
-    margin-top: var(--space-4);
+    margin-top: 0;
+    /* Removed margin */
 }
 
 .hero-carousel-container {
     position: relative;
     width: 100%;
     height: 100%;
-    max-width: 1400px;
-    /* Wider container */
+    /* Removed max-width for full screen */
     margin: 0 auto;
 }
 

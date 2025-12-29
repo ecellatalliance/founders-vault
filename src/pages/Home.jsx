@@ -36,7 +36,7 @@ const Home = () => {
     return (
         <Layout>
             {/* Hero Carousel */}
-            <HeroCarousel />
+            <HeroCarousel products={products} />
 
 
 
