@@ -1,87 +1,15 @@
 /* ============================================
-   CATEGORY ICON BAR
-   ============================================ */
-
-.category-icon-bar {
-    padding: var(--space-4) 0;
-    background-color: var(--white);
-    border-bottom: 1px solid var(--border-color);
-    border-top: 1px solid var(--border-color);
-    /* Added top border */
-}
-
-.category-icons-scroll {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    overflow-x: auto;
-    scrollbar-width: none;
-    /* Firefox */
-    padding: 0 var(--space-4);
-}
-
-.category-icons-scroll::-webkit-scrollbar {
-    display: none;
-    /* Chrome/Safari */
-}
-
-.category-icon-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-2);
-    text-decoration: none;
-    color: var(--text-primary);
-    min-width: 100px;
-    /* Fixed width for consistency */
-    transition: color var(--transition-fast);
-    padding: 0 var(--space-2);
-}
-
-.category-icon-item:hover {
-    color: var(--accent-gold);
-}
-
-.icon-circle {
-    font-size: 1.5rem;
-    /* Smaller icons */
-    color: var(--text-secondary);
-    margin-bottom: var(--space-1);
-    transition: color var(--transition-fast);
-}
-
-.category-icon-item:hover .icon-circle {
-    color: var(--accent-gold);
-}
-
-.category-icon-item span {
-    font-size: 0.85rem;
-    /* Smaller text */
-    font-weight: var(--font-medium);
-    text-align: center;
-    white-space: nowrap;
-    color: var(--text-secondary);
-}
-
-.category-separator {
-    width: 1px;
-    height: 40px;
-    background-color: var(--border-color);
-    margin: 0 var(--space-2);
-}
-
-/* ============================================
-   HERO IMAGE CAROUSEL (Card Layout)
+   HERO IMAGE CAROUSEL (Arch Layout)
    ============================================ */
 
 .hero-carousel {
     position: relative;
     width: 100%;
     height: 100vh;
-    /* Full viewport height */
     min-height: 700px;
     overflow: hidden;
-    background-color: #f8fafc;
+    background-color: #fafaef;
+    /* Very subtle cream/white background */
     margin-top: 0;
 }
 
@@ -106,138 +34,149 @@
     justify-content: center;
     position: relative;
     padding: var(--space-8);
-    /* This creates the 'transparent padding' around the card */
 }
 
 /* 
-   Glassmorphism Card 
-   Centered floating card
+   Arch Card 
 */
 .hero-card {
     position: relative;
     width: 90%;
-    max-width: 1500px;
-    /* Wide card */
-    height: 70%;
-    /* 70% of screen height */
-    min-height: 500px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 30px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-width: 1400px;
+    height: 600px;
+    background: #F3F4F6;
+    /* Light grey/white as per reference */
+    border-radius: 40px;
     display: flex;
     flex-direction: row;
-    /* Image Left, Content Right */
     align-items: center;
     justify-content: space-between;
     padding: var(--space-12);
-    overflow: hidden;
-    /* Contain content inside card */
+    overflow: visible;
+    /* Allow glow to spill out */
     z-index: 10;
+    transition: box-shadow 0.5s ease;
 }
 
-/* Background overlay for slide to show gradient */
-.hero-slide-bg {
+/* Dynamic Glow Pseudo-element */
+.hero-card::before {
+    content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    z-index: -1;
+    border-radius: 44px;
+    background: var(--active-gradient, linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%));
+    filter: blur(20px);
+    opacity: 0.6;
+    transition: background 0.8s ease, opacity 0.5s ease;
 }
 
-/* Image on the Left */
-.hero-image-container {
-    flex: 0 0 45%;
-    /* Take up 45% of width */
-    height: 100%;
+/* Arch Image Container */
+.hero-arch-container {
+    flex: 0 0 40%;
+    height: 90%;
+    background-color: #fff;
+    border-radius: 200px 200px 40px 40px;
+    /* Arch shape */
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    z-index: 11;
     padding: var(--space-8);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-.hero-image-container img {
-    max-width: 100%;
-    max-height: 100%;
+.hero-arch-container img {
+    max-width: 90%;
+    max-height: 90%;
     object-fit: contain;
-    /* properly scale */
-    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15));
     transition: transform 0.5s ease;
 }
 
-.hero-card:hover .hero-image-container img {
+.hero-card:hover .hero-arch-container img {
     transform: scale(1.05);
+}
+
+/* Floating Pill Tag */
+.hero-floating-pill {
+    position: absolute;
+    top: 20%;
+    right: -40px;
+    /* Overlap right side of arch */
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    padding: 12px 30px;
+    border-radius: 50px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    font-family: 'Playfair Display', serif;
+    /* Elegant font */
+    font-size: 1.5rem;
+    color: #9CA3AF;
+    /* Muted grey text for pill */
+    white-space: nowrap;
+    z-index: 15;
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 /* Content on the Right */
 .hero-content-container {
     flex: 1;
-    padding-left: var(--space-12);
+    padding-left: 80px;
+    /* Space from arch */
     padding-right: var(--space-8);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     height: 100%;
-    position: relative;
-    z-index: 12;
 }
 
 /* Typography */
-.hero-eyebrow {
-    font-size: 1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: var(--text-secondary);
-    margin-bottom: var(--space-6);
-    background: rgba(0, 0, 0, 0.05);
-    /* Subtle bg */
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-full);
+.hero-tagline {
+    font-family: 'Playfair Display', serif;
+    /* Elegant Serif */
+    font-size: 3.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #1F2937;
+    /* Dark Grey */
+    margin-bottom: var(--space-8);
+    max-width: 90%;
 }
 
-.hero-tagline {
-    font-family: 'Oswald', sans-serif;
-    font-size: 3.5rem;
-    /* Large impact */
-    font-weight: 700;
-    line-height: 1.1;
-    color: var(--text-primary);
-    margin-bottom: var(--space-8);
-    text-transform: uppercase;
-    max-width: 90%;
+.hero-tagline span {
+    font-style: italic;
+    color: #4B5563;
 }
 
 /* Bottom Right Button */
 .hero-btn-shop {
-    position: absolute;
-    bottom: 40px;
-    right: 40px;
-    padding: 15px 40px;
-    background-color: var(--text-primary);
-    color: var(--white);
-    font-size: 1.1rem;
-    font-weight: 700;
+    padding: 16px 36px;
+    background-color: #fff;
+    color: #1F2937;
+    font-size: 1rem;
+    font-weight: 600;
     text-transform: uppercase;
-    border: none;
-    border-radius: var(--radius-full);
+    border: 1px solid #E5E7EB;
+    border-radius: 50px;
+    /* Pill */
     cursor: pointer;
     transition: all 0.3s ease;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     display: flex;
     align-items: center;
     gap: var(--space-3);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .hero-btn-shop:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    background-color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    color: var(--primary-color);
 }
 
 .hero-btn-shop i {
@@ -252,23 +191,22 @@
     transform: translateY(-50%);
     width: 60px;
     height: 60px;
-    background-color: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: #E5E7EB;
+    /* Light grey circle */
+    border: none;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    color: var(--white);
+    color: #374151;
     transition: all 0.3s ease;
     z-index: 20;
 }
 
 .hero-carousel-btn:hover {
-    background-color: var(--white);
-    color: var(--primary-navy);
+    background-color: #D1D5DB;
     transform: translateY(-50%) scale(1.1);
 }
 
@@ -280,31 +218,6 @@
     right: var(--space-8);
 }
 
-.hero-carousel-dots {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: var(--space-3);
-    z-index: 20;
-}
-
-.hero-carousel-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.5);
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.hero-carousel-dot.active {
-    background-color: var(--white);
-    transform: scale(1.3);
-}
-
 /* Responsive */
 @media (max-width: 1024px) {
     .hero-card {
@@ -312,18 +225,24 @@
         height: auto;
         min-height: 80vh;
         width: 95%;
-        padding: var(--space-8) var(--space-6) 80px var(--space-6);
-        /* Extra bottom padding for button */
+        padding: var(--space-8);
         text-align: center;
     }
 
-    .hero-image-container {
+    .hero-arch-container {
         flex: 0 0 auto;
         width: 100%;
-        height: 300px;
-        order: -1;
-        margin-bottom: var(--space-6);
-        padding: 0;
+        max-width: 400px;
+        height: 350px;
+        margin: 0 auto var(--space-12) auto;
+    }
+
+    .hero-floating-pill {
+        top: auto;
+        bottom: -20px;
+        right: 50%;
+        transform: translateX(50%);
+        font-size: 1.2rem;
     }
 
     .hero-content-container {
@@ -335,15 +254,12 @@
     }
 
     .hero-tagline {
-        font-size: 2.2rem;
+        font-size: 2rem;
         margin-bottom: var(--space-8);
         max-width: 100%;
     }
 
     .hero-btn-shop {
-        bottom: 30px;
-        right: 50%;
-        transform: translateX(50%);
         width: auto;
         min-width: 200px;
         justify-content: center;

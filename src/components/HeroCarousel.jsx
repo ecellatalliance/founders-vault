@@ -22,19 +22,19 @@ const HeroCarousel = ({ products = [] }) => {
                 const style = carouselStyles[index % carouselStyles.length]
 
                 // Logic for Tagline vs Name
-                // Main focus: Tagline (Description)
-                // Secondary: Name (Eyebrow)
+                // Name -> Floating Pill
+                // Description -> Main Tagline
                 const tagline = product.description
-                    ? product.description.substring(0, 40) + (product.description.length > 40 ? '...' : '')
-                    : 'EXPERIENCE EXCELLENCE'
+                    ? product.description.substring(0, 60) + (product.description.length > 60 ? '...' : '')
+                    : 'A COMPREHENSIVE COLLECTION OF PREMIUM STUDENT ESSENTIALS'
 
                 return {
                     id: product.id,
                     image: product.image,
-                    name: product.name, // Eyebrow
+                    name: product.name, // Pill text
                     tagline: tagline.toUpperCase(), // Main Text
                     link: `/product/${product.id}`,
-                    style: { background: style.background },
+                    style: { background: style.background }, // Gradient for border glow
                     buttonStyle: style.button
                 }
             })
@@ -45,8 +45,8 @@ const HeroCarousel = ({ products = [] }) => {
                 {
                     id: 'default',
                     image: '/logo.svg',
-                    name: 'WELCOME TO FOUNDERS VAULT',
-                    tagline: 'PREMIUM STUDENT REWARDS',
+                    name: 'Founders Vault',
+                    tagline: 'YOUR ONE STOP SHOP FOR EVERYTHING ENTREPRENEURSHIP',
                     link: '/shop',
                     style: carouselStyles[0],
                     buttonStyle: carouselStyles[0].button
@@ -60,7 +60,7 @@ const HeroCarousel = ({ products = [] }) => {
 
         const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % slides.length)
-        }, 6000) // Slightly longer for reading
+        }, 6000)
 
         return () => clearInterval(interval)
     }, [slides.length])
@@ -68,10 +68,6 @@ const HeroCarousel = ({ products = [] }) => {
     const moveCarousel = (direction) => {
         if (slides.length === 0) return
         setCurrentSlide((prev) => (prev + direction + slides.length) % slides.length)
-    }
-
-    const goToSlide = (index) => {
-        setCurrentSlide(index)
     }
 
     if (slides.length === 0) return null
@@ -86,27 +82,29 @@ const HeroCarousel = ({ products = [] }) => {
                 >
                     {slides.map((slide, index) => (
                         <div key={index} className="hero-carousel-slide">
-                            {/* Full Screen Background Gradient */}
-                            <div className="hero-slide-bg" style={slide.style}></div>
 
-                            {/* Floating Card */}
-                            <div className="hero-card">
-                                <div className="hero-image-container">
+                            {/* Arch Card - Pass gradient as Variable */}
+                            <div
+                                className="hero-card"
+                                style={{ '--active-gradient': slide.style.background }}
+                            >
+                                {/* Left: Arch Image Container */}
+                                <div className="hero-arch-container">
                                     <img src={slide.image} alt={slide.name} />
+
+                                    {/* Floating Pill Tag */}
+                                    <div className="hero-floating-pill">
+                                        {slide.name}
+                                    </div>
                                 </div>
 
+                                {/* Right: Content */}
                                 <div className="hero-content-container">
-                                    <div className="hero-eyebrow">{slide.name}</div>
                                     <div className="hero-tagline">{slide.tagline}</div>
 
-                                    {/* Button at Bottom Right of Card */}
                                     <button
                                         className="hero-btn-shop"
                                         onClick={() => navigate(slide.link)}
-                                        style={{
-                                            backgroundColor: slide.buttonStyle?.background || 'var(--primary-color)',
-                                            color: slide.buttonStyle?.color || 'white'
-                                        }}
                                     >
                                         Shop Now <i className="fas fa-arrow-right"></i>
                                     </button>
@@ -129,15 +127,6 @@ const HeroCarousel = ({ products = [] }) => {
                         >
                             <i className="fas fa-chevron-right"></i>
                         </button>
-                        <div className="hero-carousel-dots" id="heroCarouselDots">
-                            {slides.map((_, index) => (
-                                <button
-                                    key={index}
-                                    className={`hero-carousel-dot ${index === currentSlide ? 'active' : ''}`}
-                                    onClick={() => goToSlide(index)}
-                                />
-                            ))}
-                        </div>
                     </>
                 )}
             </div>
