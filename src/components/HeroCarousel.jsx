@@ -20,35 +20,33 @@ const HeroCarousel = ({ products = [] }) => {
             const featuredProducts = products.filter(p => p.featured || p.price > 500).slice(0, 5)
             const slidesData = (featuredProducts.length > 0 ? featuredProducts : products.slice(0, 5)).map((product, index) => {
                 const style = carouselStyles[index % carouselStyles.length]
-                const nameWords = product.name.split(' ')
-                const title1 = nameWords[0] || 'NEW'
-                const accent = nameWords.length > 1 ? nameWords[1] : 'ARRIVAL'
-                const title2 = nameWords.slice(2).join(' ') || 'PRODUCT'
+
+                // Logic for Tagline vs Name
+                // Main focus: Tagline (Description)
+                // Secondary: Name (Eyebrow)
+                const tagline = product.description
+                    ? product.description.substring(0, 40) + (product.description.length > 40 ? '...' : '')
+                    : 'EXPERIENCE EXCELLENCE'
 
                 return {
                     id: product.id,
                     image: product.image,
-                    title1: title1.toUpperCase(),
-                    accent: accent.toLowerCase(),
-                    title2: title2.toUpperCase(),
-                    subtitle: product.description ? product.description.substring(0, 50) + '...' : 'DISCOVER PREMIUM QUALITY',
-                    cta: 'SHOP NOW',
+                    name: product.name, // Eyebrow
+                    tagline: tagline.toUpperCase(), // Main Text
                     link: `/product/${product.id}`,
-                    style: { background: style.background, color: style.color },
+                    style: { background: style.background },
                     buttonStyle: style.button
                 }
             })
             setSlides(slidesData)
         } else {
-            // Fallback default slides if no products provided
+            // Fallback default slides
             setSlides([
                 {
-                    image: '/logo.svg', // Use logo as fallback
-                    title1: 'WELCOME',
-                    accent: 'to',
-                    title2: 'FOUNDERS VAULT',
-                    subtitle: 'PREMIUM STUDENT REWARDS',
-                    cta: 'EXPLORE SHOP',
+                    id: 'default',
+                    image: '/logo.svg',
+                    name: 'WELCOME TO FOUNDERS VAULT',
+                    tagline: 'PREMIUM STUDENT REWARDS',
                     link: '/shop',
                     style: carouselStyles[0],
                     buttonStyle: carouselStyles[0].button
@@ -62,7 +60,7 @@ const HeroCarousel = ({ products = [] }) => {
 
         const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % slides.length)
-        }, 5000)
+        }, 6000) // Slightly longer for reading
 
         return () => clearInterval(interval)
     }, [slides.length])
@@ -87,26 +85,32 @@ const HeroCarousel = ({ products = [] }) => {
                     style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                 >
                     {slides.map((slide, index) => (
-                        <div key={index} className="hero-carousel-slide" style={slide.style}>
-                            <div className="hero-image-container">
-                                <img src={slide.image} alt={slide.title2 || 'Product'} />
-                            </div>
-                            <div className="hero-content-container">
-                                <div className="hero-text-explore" style={{ color: slide.style?.color || 'inherit' }}>{slide.title1}</div>
-                                <div className="hero-text-the" style={{ color: slide.style?.color || 'var(--accent-gold)' }}>{slide.accent}</div>
-                                <div className="hero-text-latest" style={{ color: slide.style?.color || 'inherit' }}>{slide.title2}</div>
-                                <div className="hero-text-sub" style={{ color: slide.style?.color || 'inherit' }}>{slide.subtitle}</div>
-                                <button
-                                    className="hero-btn-shop"
-                                    onClick={() => navigate(slide.link)}
-                                    style={{
-                                        borderColor: slide.buttonStyle?.borderColor || 'var(--accent-gold)',
-                                        color: slide.buttonStyle?.color || 'var(--bg-primary)',
-                                        backgroundColor: slide.buttonStyle?.background || 'var(--accent-gold)'
-                                    }}
-                                >
-                                    {slide.cta}
-                                </button>
+                        <div key={index} className="hero-carousel-slide">
+                            {/* Full Screen Background Gradient */}
+                            <div className="hero-slide-bg" style={slide.style}></div>
+
+                            {/* Floating Card */}
+                            <div className="hero-card">
+                                <div className="hero-image-container">
+                                    <img src={slide.image} alt={slide.name} />
+                                </div>
+
+                                <div className="hero-content-container">
+                                    <div className="hero-eyebrow">{slide.name}</div>
+                                    <div className="hero-tagline">{slide.tagline}</div>
+
+                                    {/* Button at Bottom Right of Card */}
+                                    <button
+                                        className="hero-btn-shop"
+                                        onClick={() => navigate(slide.link)}
+                                        style={{
+                                            backgroundColor: slide.buttonStyle?.background || 'var(--primary-color)',
+                                            color: slide.buttonStyle?.color || 'white'
+                                        }}
+                                    >
+                                        Shop Now <i className="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     ))}

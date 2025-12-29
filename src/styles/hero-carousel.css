@@ -71,34 +71,31 @@
 }
 
 /* ============================================
-   HERO IMAGE CAROUSEL (Split Layout)
+   HERO IMAGE CAROUSEL (Card Layout)
    ============================================ */
 
 .hero-carousel {
     position: relative;
     width: 100%;
-    height: 90vh;
-    /* Increased for full screen feel */
+    height: 100vh;
+    /* Full viewport height */
     min-height: 600px;
     overflow: hidden;
-    background-color: #FFFDE7;
-    /* Fallback */
+    background-color: #f8fafc;
     margin-top: 0;
-    /* Removed margin */
 }
 
 .hero-carousel-container {
     position: relative;
     width: 100%;
     height: 100%;
-    /* Removed max-width for full screen */
     margin: 0 auto;
 }
 
 .hero-carousel-track {
     display: flex;
     height: 100%;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .hero-carousel-slide {
@@ -108,211 +105,230 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    /* Split Background: 40% Yellow, 60% Cream */
-    background: linear-gradient(90deg, #FCEFA1 35%, #FFFFF0 35%);
+    padding: var(--space-8);
 }
 
-/* Left Side: Image Container */
-.hero-image-container {
+/* 
+   Glassmorphism Card 
+   Centered floating card
+*/
+.hero-card {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    height: 550px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-12);
+    overflow: visible;
+    /* Allow image to pop out if needed */
+    z-index: 10;
+}
+
+/* Background overlay for slide to show gradient */
+.hero-slide-bg {
     position: absolute;
-    left: 15%;
-    /* Positioned to overlap the split */
-    top: 50%;
-    transform: translateY(-50%);
-    width: 450px;
-    height: 350px;
-    border-radius: 180px 180px 40px 40px;
-    /* Oval/Arch shape */
-    overflow: hidden;
-    z-index: 2;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-    background-color: white;
-    /* Fallback */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+/* Image on the Left (or Right) - Floating effect */
+.hero-image-container {
+    flex: 1;
+    height: 130%;
+    /* Large image popping out */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: -15%;
+    /* float up */
+    z-index: 11;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15));
+    transition: transform 0.5s ease;
 }
 
 .hero-image-container img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
-    /* Contain to show full product */
-    padding: 20px;
-    transition: transform 0.8s ease;
+    transform: scale(1.1);
 }
 
-.hero-carousel-slide:hover .hero-image-container img {
-    transform: scale(1.05);
-}
-
-/* Right Side: Text Content */
+/* Content on the Right */
 .hero-content-container {
-    position: absolute;
-    right: 10%;
-    width: 45%;
+    flex: 1.2;
+    padding-left: var(--space-8);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    z-index: 3;
-    padding-left: var(--space-8);
+    height: 100%;
+    position: relative;
+    z-index: 12;
 }
 
-.hero-text-explore {
-    font-family: 'Oswald', sans-serif;
-    font-size: 5rem;
-    /* Large */
+/* Typography */
+.hero-eyebrow {
+    font-size: var(--text-sm);
     font-weight: 700;
-    line-height: 0.9;
-    color: #000;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.hero-text-the {
-    font-family: 'Dancing Script', cursive;
-    font-size: 4.5rem;
-    color: #E6C15C;
-    /* Gold color */
-    margin: -30px 0 -20px 80px;
-    /* Overlap effect */
-    z-index: 4;
-    transform: rotate(-5deg);
-}
-
-.hero-text-latest {
-    font-family: 'Oswald', sans-serif;
-    font-size: 5rem;
-    font-weight: 700;
-    line-height: 0.9;
-    color: #000;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: var(--space-4);
-}
-
-.hero-text-sub {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #E6C15C;
-    /* Gold color */
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-bottom: var(--space-8);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-4);
+    background: var(--bg-secondary);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
 }
 
+.hero-tagline {
+    font-family: 'Oswald', sans-serif;
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-primary);
+    margin-bottom: var(--space-6);
+    text-transform: uppercase;
+}
+
+/* Bottom Right Button */
 .hero-btn-shop {
-    padding: 12px 30px;
-    background-color: #546E7A;
-    /* Blue-grey color */
+    position: absolute;
+    bottom: var(--space-8);
+    right: var(--space-8);
+    padding: var(--space-4) var(--space-8);
+    background-color: var(--text-primary);
+    /* Default black */
     color: var(--white);
     font-size: 1rem;
     font-weight: 700;
     text-transform: uppercase;
     border: none;
-    border-radius: 2px;
-    /* Rectangular */
+    border-radius: var(--radius-full);
+    /* Pill shape */
     cursor: pointer;
-    transition: all var(--transition-base);
+    transition: all 0.3s ease;
     letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .hero-btn-shop:hover {
-    background-color: #455A64;
-    box-shadow: 0 4px 10px rgba(84, 110, 122, 0.3);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
+
+.hero-btn-shop i {
+    font-size: 0.9em;
+}
+
 
 /* Navigation Buttons */
 .hero-carousel-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border: none;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--text-lg);
-    color: var(--primary-navy);
-    transition: all var(--transition-fast);
-    z-index: 10;
+    font-size: 1.5rem;
+    color: var(--white);
+    transition: all 0.3s ease;
+    z-index: 20;
 }
 
 .hero-carousel-btn:hover {
     background-color: var(--white);
+    color: var(--primary-navy);
+    transform: translateY(-50%) scale(1.1);
 }
 
 .hero-carousel-prev {
-    left: var(--space-4);
+    left: var(--space-8);
 }
 
 .hero-carousel-next {
-    right: var(--space-4);
+    right: var(--space-8);
 }
 
 .hero-carousel-dots {
     position: absolute;
-    bottom: var(--space-4);
+    bottom: var(--space-8);
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: var(--space-2);
-    z-index: 10;
+    gap: var(--space-3);
+    z-index: 20;
 }
 
 .hero-carousel-dot {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background-color: #D1D5DB;
+    background-color: rgba(255, 255, 255, 0.5);
     border: none;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: all 0.3s ease;
 }
 
 .hero-carousel-dot.active {
-    background-color: #546E7A;
-    transform: scale(1.2);
+    background-color: var(--white);
+    transform: scale(1.3);
 }
 
 /* Responsive */
 @media (max-width: 1024px) {
-    .hero-carousel-slide {
-        background: linear-gradient(180deg, #FCEFA1 40%, #FFFFF0 40%);
-        flex-direction: column-reverse;
-        /* Text above image */
+    .hero-card {
+        flex-direction: column;
+        height: auto;
+        padding: var(--space-8) var(--space-6) var(--space-16) var(--space-6);
+        /* Extra bottom padding for button */
+        max-width: 90%;
+        text-align: center;
     }
 
     .hero-image-container {
-        position: relative;
-        left: auto;
-        top: auto;
-        transform: none;
-        width: 300px;
         height: 250px;
-        margin-top: 0;
-        margin-bottom: 20px;
+        top: 0;
+        margin-bottom: var(--space-6);
+        order: -1;
     }
 
     .hero-content-container {
-        position: relative;
-        right: auto;
-        width: 100%;
+        padding-left: 0;
         align-items: center;
-        text-align: center;
-        padding: 40px 20px 20px 20px;
-        /* More padding at top (green area) */
     }
 
-    .hero-text-explore,
-    .hero-text-latest {
-        font-size: 3rem;
+    .hero-tagline {
+        font-size: 2.5rem;
     }
 
-    .hero-text-the {
-        font-size: 3rem;
-        margin: -15px 0 -10px 0;
+    .hero-btn-shop {
+        bottom: var(--space-6);
+        right: 50%;
+        transform: translateX(50%);
+        width: 80%;
+        justify-content: center;
+    }
+
+    .hero-btn-shop:hover {
+        transform: translateX(50%) translateY(-2px);
     }
 }
