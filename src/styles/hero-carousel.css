@@ -79,7 +79,7 @@
     width: 100%;
     height: 100vh;
     /* Full viewport height */
-    min-height: 600px;
+    min-height: 700px;
     overflow: hidden;
     background-color: #f8fafc;
     margin-top: 0;
@@ -106,6 +106,7 @@
     justify-content: center;
     position: relative;
     padding: var(--space-8);
+    /* This creates the 'transparent padding' around the card */
 }
 
 /* 
@@ -114,19 +115,24 @@
 */
 .hero-card {
     position: relative;
-    width: 100%;
-    max-width: 1100px;
-    height: 550px;
+    width: 90%;
+    max-width: 1500px;
+    /* Wide card */
+    height: 70%;
+    /* 70% of screen height */
+    min-height: 500px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
-    border-radius: 20px;
+    border-radius: 30px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     display: flex;
+    flex-direction: row;
+    /* Image Left, Content Right */
     align-items: center;
     justify-content: space-between;
     padding: var(--space-12);
-    overflow: visible;
-    /* Allow image to pop out if needed */
+    overflow: hidden;
+    /* Contain content inside card */
     z-index: 10;
 }
 
@@ -140,33 +146,37 @@
     z-index: 1;
 }
 
-/* Image on the Left (or Right) - Floating effect */
+/* Image on the Left */
 .hero-image-container {
-    flex: 1;
-    height: 130%;
-    /* Large image popping out */
+    flex: 0 0 45%;
+    /* Take up 45% of width */
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    top: -15%;
-    /* float up */
     z-index: 11;
-    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15));
-    transition: transform 0.5s ease;
+    padding: var(--space-8);
 }
 
 .hero-image-container img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    transform: scale(1.1);
+    /* properly scale */
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.2));
+    transition: transform 0.5s ease;
+}
+
+.hero-card:hover .hero-image-container img {
+    transform: scale(1.05);
 }
 
 /* Content on the Right */
 .hero-content-container {
-    flex: 1.2;
-    padding-left: var(--space-8);
+    flex: 1;
+    padding-left: var(--space-12);
+    padding-right: var(--space-8);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -178,54 +188,56 @@
 
 /* Typography */
 .hero-eyebrow {
-    font-size: var(--text-sm);
+    font-size: 1rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     color: var(--text-secondary);
-    margin-bottom: var(--space-4);
-    background: var(--bg-secondary);
-    padding: var(--space-1) var(--space-3);
+    margin-bottom: var(--space-6);
+    background: rgba(0, 0, 0, 0.05);
+    /* Subtle bg */
+    padding: var(--space-2) var(--space-4);
     border-radius: var(--radius-full);
 }
 
 .hero-tagline {
     font-family: 'Oswald', sans-serif;
-    font-size: 4rem;
+    font-size: 3.5rem;
+    /* Large impact */
     font-weight: 700;
     line-height: 1.1;
     color: var(--text-primary);
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-8);
     text-transform: uppercase;
+    max-width: 90%;
 }
 
 /* Bottom Right Button */
 .hero-btn-shop {
     position: absolute;
-    bottom: var(--space-8);
-    right: var(--space-8);
-    padding: var(--space-4) var(--space-8);
+    bottom: 40px;
+    right: 40px;
+    padding: 15px 40px;
     background-color: var(--text-primary);
-    /* Default black */
     color: var(--white);
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
     text-transform: uppercase;
     border: none;
     border-radius: var(--radius-full);
-    /* Pill shape */
     cursor: pointer;
     transition: all 0.3s ease;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     display: flex;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-3);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .hero-btn-shop:hover {
     transform: translateY(-2px) scale(1.02);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background-color: #000;
 }
 
 .hero-btn-shop i {
@@ -270,7 +282,7 @@
 
 .hero-carousel-dots {
     position: absolute;
-    bottom: var(--space-8);
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -298,37 +310,42 @@
     .hero-card {
         flex-direction: column;
         height: auto;
-        padding: var(--space-8) var(--space-6) var(--space-16) var(--space-6);
+        min-height: 80vh;
+        width: 95%;
+        padding: var(--space-8) var(--space-6) 80px var(--space-6);
         /* Extra bottom padding for button */
-        max-width: 90%;
         text-align: center;
     }
 
     .hero-image-container {
-        height: 250px;
-        top: 0;
-        margin-bottom: var(--space-6);
+        flex: 0 0 auto;
+        width: 100%;
+        height: 300px;
         order: -1;
+        margin-bottom: var(--space-6);
+        padding: 0;
     }
 
     .hero-content-container {
         padding-left: 0;
+        padding-right: 0;
         align-items: center;
+        justify-content: flex-start;
+        flex: 0 0 auto;
     }
 
     .hero-tagline {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+        margin-bottom: var(--space-8);
+        max-width: 100%;
     }
 
     .hero-btn-shop {
-        bottom: var(--space-6);
+        bottom: 30px;
         right: 50%;
         transform: translateX(50%);
-        width: 80%;
+        width: auto;
+        min-width: 200px;
         justify-content: center;
-    }
-
-    .hero-btn-shop:hover {
-        transform: translateX(50%) translateY(-2px);
     }
 }
