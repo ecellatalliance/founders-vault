@@ -34,7 +34,7 @@ const AdminLogin = () => {
                 <div className="login-container">
                     <div className="login-header">
                         <div className="login-logo">
-                            <i className="fas fa-user-shield" style={{ fontSize: '3rem', color: 'var(--primary-color)' }}></i>
+                            <img src="/logo.svg" alt="Admin" style={{ height: '80px', width: 'auto' }} />
                         </div>
                         <h1 className="login-title">Admin Access</h1>
                         <p className="login-subtitle">Restricted Area. Authorized Personnel Only.</p>

@@ -1,19 +1,21 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom' // Added useNavigate
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import Layout from '../components/Layout'
+import '../styles/cart.css'
 
 const Cart = () => {
     const { cart, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart()
     const { user } = useAuth()
+    const navigate = useNavigate() // Hook for navigation
 
     if (cart.length === 0) {
         return (
             <Layout>
-                <main style={{ padding: 'var(--space-16) 0', minHeight: 'calc(100vh - 400px)' }}>
+                <main className="cart-main">
                     <div className="container">
-                        <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
-                            <div style={{ fontSize: '8rem', marginBottom: 'var(--space-6)', opacity: 0.3 }}>🛒</div>
+                        <div className="cart-empty">
+                            <div className="empty-icon">🛒</div>
                             <h2 style={{ fontSize: 'var(--text-3xl)', fontWeight: 'var(--font-bold)', marginBottom: 'var(--space-4)' }}>
                                 Your cart is empty
                             </h2>
@@ -33,55 +35,48 @@ const Cart = () => {
 
     return (
         <Layout>
-            <main style={{ padding: 'var(--space-8) 0', minHeight: 'calc(100vh - 400px)' }}>
+            <main className="cart-main">
                 <div className="container">
-                    <h1 style={{ fontSize: 'var(--text-4xl)', fontWeight: 'var(--font-bold)', marginBottom: 'var(--space-8)' }}>
-                        Shopping Cart
-                    </h1>
+                    <h1 className="cart-title">Shopping Cart</h1>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'var(--space-8)' }}>
+                    <div className="cart-grid">
                         {/* Cart Items */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+                        <div className="cart-items-list">
                             {cart.map((item) => (
-                                <div key={item.id} className="card" style={{ display: 'flex', gap: 'var(--space-4)', padding: 'var(--space-6)' }}>
+                                <div key={item.id} className="cart-item-card">
                                     <img
                                         src={item.image}
                                         alt={item.name}
-                                        style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: 'var(--radius-lg)' }}
+                                        className="cart-item-image"
                                         onError={(e) => e.target.src = 'https://via.placeholder.com/120'}
                                     />
-                                    <div style={{ flex: 1 }}>
-                                        <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-semibold)', marginBottom: 'var(--space-2)' }}>
-                                            {item.name}
-                                        </h3>
-                                        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-                                            {item.category}
-                                        </p>
-                                        <p style={{ fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-bold)', color: 'var(--accent-gold)' }}>
-                                            {item.price}🪙
-                                        </p>
+                                    <div className="cart-item-details">
+                                        <div className="cart-item-info">
+                                            <h3>{item.name}</h3>
+                                            <p className="cart-item-category">{item.category}</p>
+                                            <p className="cart-item-price">{item.price}🪙</p>
+                                        </div>
                                     </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 'var(--space-3)' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-1)' }}>
+
+                                    <div className="cart-item-actions">
+                                        <div className="quantity-controls">
                                             <button
                                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-md)', border: 'none', background: 'none', cursor: 'pointer' }}
+                                                className="qty-btn"
                                             >
                                                 <i className="fas fa-minus"></i>
                                             </button>
-                                            <span style={{ width: '48px', textAlign: 'center', fontWeight: 'var(--font-semibold)' }}>
-                                                {item.quantity}
-                                            </span>
+                                            <span className="qty-display">{item.quantity}</span>
                                             <button
                                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-md)', border: 'none', background: 'none', cursor: 'pointer' }}
+                                                className="qty-btn"
                                             >
                                                 <i className="fas fa-plus"></i>
                                             </button>
                                         </div>
                                         <button
                                             onClick={() => removeFromCart(item.id)}
-                                            style={{ color: 'var(--error)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 'var(--text-sm)' }}
+                                            className="remove-btn"
                                         >
                                             <i className="fas fa-trash"></i> Remove
                                         </button>
@@ -91,31 +86,34 @@ const Cart = () => {
                         </div>
 
                         {/* Order Summary */}
-                        <div className="card" style={{ padding: 'var(--space-6)' }}>
-                            <h2 style={{ fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-bold)', marginBottom: 'var(--space-6)' }}>
-                                Order Summary
-                            </h2>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginBottom: 'var(--space-6)' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <span style={{ color: 'var(--text-secondary)' }}>Subtotal</span>
-                                    <span style={{ fontWeight: 'var(--font-semibold)' }}>{getCartTotal()}🪙</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <span style={{ color: 'var(--text-secondary)' }}>Shipping</span>
-                                    <span style={{ fontWeight: 'var(--font-semibold)', color: 'var(--success)' }}>FREE</span>
-                                </div>
-                                {user && (
-                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <span style={{ color: 'var(--text-secondary)' }}>Your VC Balance</span>
-                                        <span style={{ fontWeight: 'var(--font-semibold)' }}>{user.vcBalance}🪙</span>
-                                    </div>
-                                )}
-                                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: 'var(--space-3)', display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-xl)', fontWeight: 'var(--font-bold)' }}>
-                                    <span>Total</span>
-                                    <span style={{ color: 'var(--accent-gold)' }}>{getCartTotal()}🪙</span>
-                                </div>
+                        <div className="cart-summary-card">
+                            <h2 className="summary-title">Order Summary</h2>
+
+                            <div className="summary-row">
+                                <span style={{ color: 'var(--text-secondary)' }}>Subtotal</span>
+                                <span style={{ fontWeight: '600' }}>{getCartTotal().toLocaleString('en-IN')}🪙</span>
                             </div>
-                            <button className="btn btn-primary" style={{ width: '100%', marginBottom: 'var(--space-3)' }}>
+                            <div className="summary-row">
+                                <span style={{ color: 'var(--text-secondary)' }}>Shipping</span>
+                                <span style={{ fontWeight: '600', color: 'var(--success)' }}>FREE</span>
+                            </div>
+                            {user && (
+                                <div className="summary-row">
+                                    <span style={{ color: 'var(--text-secondary)' }}>Your VC Balance</span>
+                                    <span style={{ fontWeight: '600' }}>{user.vcBalance || user.vc_balance}🪙</span>
+                                </div>
+                            )}
+
+                            <div className="summary-total">
+                                <span>Total</span>
+                                <span style={{ color: 'var(--accent-gold)' }}>{getCartTotal().toLocaleString('en-IN')}🪙</span>
+                            </div>
+
+                            <button
+                                className="btn btn-primary"
+                                style={{ width: '100%', marginBottom: 'var(--space-3)' }}
+                                onClick={() => navigate('/checkout')}
+                            >
                                 <i className="fas fa-check"></i>
                                 Proceed to Checkout
                             </button>

@@ -60,7 +60,7 @@ const Header = () => {
 
                         {/* Logo - Left */}
                         <Link to="/" className="logo">
-                            <img src="/logo.png" alt="Founders Vault" className="logo-img" />
+                            <img src="/logo.svg" alt="Founders Vault" className="logo-img" />
                             <div className="logo-text desktop-only">
                                 <span style={{
                                     fontSize: '0.75rem',

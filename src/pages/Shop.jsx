@@ -4,6 +4,7 @@ import Layout from '../components/Layout'
 import ProductCard from '../components/ProductCard'
 import CustomDropdown from '../components/CustomDropdown'
 import { useProducts } from '../hooks/useProducts'
+import '../styles/shop.css'
 
 const Shop = () => {
     const [searchParams] = useSearchParams()
@@ -15,6 +16,7 @@ const Shop = () => {
     const [sortBy, setSortBy] = useState('featured')
     const [currentView, setCurrentView] = useState('grid')
     const [currentPage, setCurrentPage] = useState(1)
+    const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false) // State for mobile filter
     const itemsPerPage = 12
 
     const categories = [
@@ -198,21 +200,25 @@ const Shop = () => {
 
                     <div className="shop-container">
                         {/* Mobile Filter Toggle */}
-                        <div className="mobile-filter-toggle" style={{ display: 'none', marginBottom: 'var(--space-4)' }}>
+                        <div className="mobile-filter-toggle">
                             <button
                                 className="btn btn-outline"
-                                style={{ width: '100%' }}
-                                onClick={() => document.querySelector('.shop-filters').classList.toggle('active')}
+                                onClick={() => setIsMobileFilterOpen(true)}
                             >
                                 <i className="fas fa-filter"></i> Filters
                             </button>
                         </div>
 
                         {/* Filters Sidebar */}
-                        <aside className="shop-filters">
-                            <div className="filter-header-mobile" style={{ display: 'none', justifyContent: 'space-between', marginBottom: 'var(--space-4)' }}>
+                        <aside className={`shop-filters ${isMobileFilterOpen ? 'active' : ''}`}>
+                            <div className="filter-header-mobile">
                                 <h3>Filters</h3>
-                                <button onClick={() => document.querySelector('.shop-filters').classList.remove('active')} style={{ background: 'none', border: 'none', fontSize: '1.5rem' }}>&times;</button>
+                                <button
+                                    onClick={() => setIsMobileFilterOpen(false)}
+                                    style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}
+                                >
+                                    &times;
+                                </button>
                             </div>
                             <div className="filter-section">
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-2)' }}>
@@ -268,10 +274,25 @@ const Shop = () => {
 
 
 
-                            <button className="btn btn-outline" style={{ width: '100%' }} onClick={clearFilters}>
+                            <button
+                                className="btn btn-outline"
+                                style={{ width: '100%', marginBottom: 'var(--space-4)' }}
+                                onClick={clearFilters}
+                            >
                                 <i className="fas fa-redo"></i>
                                 Clear Filters
                             </button>
+
+                            {/* Mobile Apply Button */}
+                            {isMobileFilterOpen && (
+                                <button
+                                    className="btn btn-primary"
+                                    style={{ width: '100%' }}
+                                    onClick={() => setIsMobileFilterOpen(false)}
+                                >
+                                    Apply Filters ({filteredProducts.length})
+                                </button>
+                            )}
                         </aside>
 
                         {/* Products Grid */}

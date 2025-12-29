@@ -37,9 +37,8 @@ const Login = () => {
         <div className="login-page">
             <div className="login-container">
                 <div className="login-header">
-                    <div className="login-logo">
-                        <div className="login-logo-icon">🚀</div>
-                        <div className="login-logo-text">Founders Vault</div>
+                    <div className="login-logo-img" style={{ marginBottom: '1rem' }}>
+                        <img src="/logo.svg" alt="Founders Vault" style={{ height: '80px', width: 'auto' }} />
                     </div>
                     <h1 className="login-title">Welcome Back!</h1>
                     <p className="login-subtitle">Login to access exclusive student deals</p>

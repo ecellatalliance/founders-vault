@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Layout from '../components/Layout'
 import { supabase } from '../supabaseClient'
+import '../styles/dashboard.css'
 
 const Dashboard = () => {
   const { user, isAuthenticated } = useAuth()
@@ -176,7 +177,7 @@ const Dashboard = () => {
                 <div className="empty-state">
                   <i className="fas fa-trophy"></i>
                   <p>No badges earned yet</p>
-                  <Link to="/shop" className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Start Shopping</Link>
+                  <Link to="/shop" className="btn btn-primary btn-sm">Start Shopping</Link>
                 </div>
               )}
             </div>
@@ -247,7 +248,7 @@ const Dashboard = () => {
                 <div className="empty-state">
                   <i className="fas fa-shopping-bag"></i>
                   <p>No orders yet</p>
-                  <Link to="/shop" className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Browse Products</Link>
+                  <Link to="/shop" className="btn btn-primary btn-sm">Browse Products</Link>
                 </div>
               )}
             </div>
