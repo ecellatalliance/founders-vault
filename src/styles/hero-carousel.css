@@ -44,8 +44,8 @@
     width: 90%;
     max-width: 1400px;
     height: 600px;
-    background: #F3F4F6;
-    /* Light grey/white as per reference */
+    background: #FFFFFF;
+    /* Force White */
     border-radius: 40px;
     display: flex;
     flex-direction: row;
@@ -56,21 +56,22 @@
     /* Allow glow to spill out */
     z-index: 10;
     transition: box-shadow 0.5s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
 }
 
 /* Dynamic Glow Pseudo-element */
 .hero-card::before {
     content: '';
     position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
     z-index: -1;
     border-radius: 44px;
     background: var(--active-gradient, linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%));
-    filter: blur(20px);
-    opacity: 0.6;
+    filter: blur(25px);
+    opacity: 0.5;
     transition: background 0.8s ease, opacity 0.5s ease;
 }
 
@@ -94,7 +95,6 @@
     max-width: 90%;
     max-height: 90%;
     object-fit: contain;
-    /* Removed drop-shadow potentially to avoid clipping issues, or keep it if internal */
     transition: transform 0.5s ease;
 }
 
@@ -110,13 +110,13 @@
     /* Position relative to the whole card now */
     transform: translateX(-50%);
     background: rgba(255, 255, 255, 0.9);
-    /* Slightly more opaque */
     backdrop-filter: blur(12px);
     padding: 12px 30px;
     border-radius: 50px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     font-family: 'Playfair Display', serif;
     font-size: 1.3rem;
+    /* Slightly smaller for better fit */
     color: #6B7280;
     white-space: nowrap;
     z-index: 15;
@@ -141,11 +141,13 @@
 /* Typography */
 .hero-tagline {
     font-family: 'Playfair Display', serif;
+    /* Elegant Serif */
     font-size: 3rem;
-    /* Slightly smaller for better fit */
+    /* Clean serif */
     font-weight: 500;
     line-height: 1.2;
     color: #1F2937;
+    /* Dark Grey */
     margin-bottom: var(--space-8);
     max-width: 95%;
 }
@@ -242,8 +244,10 @@
     .hero-floating-pill {
         top: auto;
         bottom: -20px;
-        right: 50%;
-        transform: translateX(50%);
+        left: 50%;
+        /* Center horizontally since standard flex doesn't apply to absolute */
+        right: auto;
+        transform: translateX(-50%);
         font-size: 1.2rem;
     }
 

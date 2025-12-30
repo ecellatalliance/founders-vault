@@ -91,11 +91,11 @@ const HeroCarousel = ({ products = [] }) => {
                                 {/* Left: Arch Image Container */}
                                 <div className="hero-arch-container">
                                     <img src={slide.image} alt={slide.name} />
+                                </div>
 
-                                    {/* Floating Pill Tag */}
-                                    <div className="hero-floating-pill">
-                                        {slide.name}
-                                    </div>
+                                {/* Floating Pill Tag - Outside Container */}
+                                <div className="hero-floating-pill">
+                                    {slide.name}
                                 </div>
 
                                 {/* Right: Content */}
