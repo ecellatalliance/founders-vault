@@ -93,14 +93,9 @@ const HeroCarousel = ({ products = [] }) => {
                                     <img src={slide.image} alt={slide.name} />
                                 </div>
 
-                                {/* Floating Pill Tag - Outside Container */}
-                                <div className="hero-floating-pill">
-                                    {slide.name}
-                                </div>
-
                                 {/* Right: Content */}
                                 <div className="hero-content-container">
-                                    <div className="hero-tagline">{slide.tagline}</div>
+
 
                                     <button
                                         className="hero-btn-shop"
