@@ -28,11 +28,26 @@ const HeroCarousel = ({ products = [] }) => {
                     ? product.description.substring(0, 60) + (product.description.length > 60 ? '...' : '')
                     : 'A COMPREHENSIVE COLLECTION OF PREMIUM STUDENT ESSENTIALS'
 
+                // Dynamic Highlight Logic
+                let highlight = { text: product.name, icon: '✨', type: 'default', subtext: 'Discover Premium Quality' }
+
+                if (product.stock && product.stock < 20) {
+                    highlight = { text: `Only ${product.stock} Left!`, icon: '🔥', type: 'urgent', subtext: 'Selling Fast' }
+                } else if (product.originalPrice && product.price) {
+                    const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+                    if (discount > 20) {
+                        highlight = { text: `Save ${discount}%`, icon: '🏷️', type: 'sale', subtext: 'Limited Time Offer' }
+                    } else if (product.rating && product.rating >= 4.5) {
+                        highlight = { text: 'Top Rated', icon: '⭐', type: 'popular', subtext: 'Student Favorite' }
+                    }
+                }
+
                 return {
                     id: product.id,
                     image: product.image,
-                    name: product.name, // Pill text
-                    tagline: tagline.toUpperCase(), // Main Text
+                    name: product.name, // Pill text (unused now)
+                    tagline: tagline.toUpperCase(), // Main Text (unused now)
+                    highlight: highlight, // NEW Dynamic Content
                     link: `/product/${product.id}`,
                     style: { background: style.background }, // Gradient for border glow
                     buttonStyle: style.button
@@ -96,6 +111,13 @@ const HeroCarousel = ({ products = [] }) => {
                                 {/* Right: Content */}
                                 <div className="hero-content-container">
 
+                                    <div className={`hero-dynamic-content ${slide.highlight.type}`}>
+                                        <div className="dynamic-icon">{slide.highlight.icon}</div>
+                                        <div className="dynamic-text-wrapper">
+                                            <div className="dynamic-main-text">{slide.highlight.text}</div>
+                                            <div className="dynamic-sub-text">{slide.highlight.subtext}</div>
+                                        </div>
+                                    </div>
 
                                     <button
                                         className="hero-btn-shop"
